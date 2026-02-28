@@ -1,5 +1,6 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PWCEPortal.ApplicationClass;
@@ -50,9 +51,21 @@ builder.Services.ConfigureApplicationCookie(a =>
 });
 builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 {
-    options.TokenLifespan = TimeSpan.FromHours(24); // Adjust the duration as needed
+    options.TokenLifespan = TimeSpan.FromHours(24);
 });
 
+// ── Permission model: handler + named policies for every permission ──────────
+builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+builder.Services.AddAuthorization(options =>
+{
+    foreach (var permission in Permissions.GetAll())
+    {
+        options.AddPolicy(permission, policy =>
+            policy.Requirements.Add(new PermissionRequirement(permission)));
+    }
+});
+
+// ── Application services ─────────────────────────────────────────────────────
 builder.Services.AddScoped<seed>();
 builder.Services.AddScoped<IUserCreation, UserCreationService>();
 builder.Services.AddScoped<IEmailSender, EmailSenderService>();
@@ -61,6 +74,7 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IAcademicService, AcademicService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddScoped<ExcelExportService>();
 builder.Services.AddTransient<DataHelper>();
 

@@ -1,0 +1,125 @@
+@model IEnumerable<PWCEPortal.ViewModel.Permissions.RolePermissionsSummaryViewModel>
+@{
+    ViewBag.Title = "Role Permissions";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Role Permissions</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("index", "AdminDashboard")">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Permissions</li>
+            </ol>
+        </nav>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0"><i class="fas fa-shield-alt me-2"></i>Role Permission Matrix</h3>
+        </div>
+        <div class="card-body">
+            <p class="text-muted mb-3">
+                Configure the fine-grained permissions assigned to each role. Changes take effect at
+                the next login for existing sessions.
+            </p>
+
+            <div class="table-responsive">
+                <table id="permissionsTable" class="table table-hover table-striped align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Role</th>
+                            <th>Description</th>
+                            <th class="text-center">Permissions Assigned</th>
+                            <th class="text-center">Phase</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var row in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@row.RoleName</strong>
+                                </td>
+                                <td class="text-muted small">@row.Description</td>
+                                <td class="text-center">
+                                    <span class="badge @(row.PermissionCount > 0 ? "bg-success" : "bg-secondary")">
+                                        @row.PermissionCount
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    @if (row.IsPhase2Role)
+                                    {
+                                        <span class="badge bg-info text-dark">Phase 2</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-light text-dark border">Phase 1</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("Edit", "Permissions", new { roleName = row.RoleName })"
+                                       class="btn btn-sm btn-outline-primary me-1"
+                                       title="Edit permissions">
+                                        <i class="fas fa-edit me-1"></i>Edit
+                                    </a>
+                                    <form asp-action="ResetToDefault" asp-controller="Permissions"
+                                          method="post" class="d-inline"
+                                          onsubmit="return confirm('Reset permissions for @Html.Raw(row.RoleName) to system defaults?');">
+                                        <input type="hidden" name="roleName" value="@row.RoleName" />
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-outline-secondary" title="Reset to defaults">
+                                            <i class="fas fa-undo me-1"></i>Reset
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>About the Permission Model</h5>
+        </div>
+        <div class="card-body small text-muted">
+            <ul class="mb-0">
+                <li>Permissions are stored as role claims in ASP.NET Identity and are automatically inherited by all users in a role.</li>
+                <li>The <strong>System Admin</strong> role always has full access regardless of the claims listed here.</li>
+                <li>Changes take effect when users next log in (existing sessions are not immediately affected).</li>
+                <li>Use <strong>Reset</strong> to restore a role to its Phase 2 proposal defaults.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#permissionsTable').DataTable({
+                pageLength: 25,
+                order: [[3, 'asc'], [0, 'asc']],
+            });
+        });
+    </script>
+}
