@@ -1,0 +1,72 @@
+@model IEnumerable<PWCEPortal.Models.Academic.Lecturer>
+@{
+    ViewBag.Title = "Lecturers";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Lecturers</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index","AdminDashboard")">Dashboard</a></li>
+                <li class="breadcrumb-item active">Lecturers</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="mb-3 text-end">
+        @if (User.HasClaim("Permission", "Permissions.CourseLecturer.Assign"))
+        {
+            <a asp-action="CreateLecturer" class="btn btn-primary"><i class="fas fa-user-plus me-1"></i>Add Lecturer Profile</a>
+        }
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="table1" class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Staff ID</th>
+                            <th>Department</th>
+                            <th>Qualification</th>
+                            <th>Specialisation</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var l in Model)
+                        {
+                            <tr>
+                                <td><strong>@l.User?.LastName @l.User?.FirstName</strong></td>
+                                <td>@l.StaffId</td>
+                                <td>@l.Department?.DepartmentName</td>
+                                <td>@l.Qualification</td>
+                                <td>@l.Specialisation</td>
+                                <td class="text-center">
+                                    @if (User.HasClaim("Permission", "Permissions.CourseLecturer.Assign"))
+                                    {
+                                        <a asp-action="EditLecturer" asp-route-id="@l.Id" class="btn btn-sm btn-outline-primary me-1">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    }
+                                    @if (User.HasClaim("Permission", "Permissions.CourseLecturer.Remove"))
+                                    {
+                                        <form asp-action="DeleteLecturer" method="post" class="d-inline"
+                                              onsubmit="return confirm('Remove this lecturer profile?')">
+                                            <input type="hidden" name="id" value="@l.Id" />
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

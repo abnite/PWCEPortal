@@ -1,0 +1,81 @@
+@model IEnumerable<PWCEPortal.Models.Academic.GradingScale>
+@{
+    ViewBag.Title = "Grading Scales";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Grading Scales</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Index">Assessment Structures</a></li>
+                <li class="breadcrumb-item active">Grading Scales</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="mb-3 text-end">
+        @if (User.HasClaim("Permission", "Permissions.GradingScale.Configure"))
+        {
+            <a asp-action="CreateGradingScale" class="btn btn-primary"><i class="fas fa-plus me-1"></i>New Grading Scale</a>
+        }
+    </div>
+
+    @foreach (var scale in Model)
+    {
+        <div class="card shadow-sm mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center @(scale.IsDefault ? "bg-success text-white" : "")">
+                <h5 class="mb-0">
+                    @scale.ScaleName
+                    @if (scale.IsDefault) { <span class="badge bg-light text-dark ms-2">Default</span> }
+                </h5>
+                <div>
+                    @if (User.HasClaim("Permission", "Permissions.GradingScale.Configure"))
+                    {
+                        <a asp-action="EditGradingScale" asp-route-id="@scale.Id" class="btn btn-sm btn-outline-primary me-1">Edit</a>
+                        @if (!scale.IsDefault)
+                        {
+                            <form asp-action="SetDefault" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@scale.Id" />
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-outline-success me-1">Set Default</button>
+                            </form>
+                            <form asp-action="DeleteGradingScale" method="post" class="d-inline"
+                                  onsubmit="return confirm('Delete this grading scale?')">
+                                <input type="hidden" name="id" value="@scale.Id" />
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                            </form>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered align-middle">
+                        <thead class="table-light">
+                            <tr><th>Grade</th><th>Min %</th><th>Max %</th><th>Grade Point</th><th>Remark</th></tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var g in scale.Grades?.OrderByDescending(g => g.MinScore) ?? new List<PWCEPortal.Models.Academic.GradeDefinition>())
+                            {
+                                <tr>
+                                    <td><strong>@g.GradeLetter</strong></td>
+                                    <td>@g.MinScore</td>
+                                    <td>@g.MaxScore</td>
+                                    <td><span class="badge bg-primary">@g.GradePoint</span></td>
+                                    <td>@g.Remark</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">No grading scales configured. <a asp-action="CreateGradingScale">Create one now.</a></div>
+    }
+</div>

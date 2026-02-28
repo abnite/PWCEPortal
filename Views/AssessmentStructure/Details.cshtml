@@ -1,0 +1,64 @@
+@model PWCEPortal.Models.Academic.AssessmentStructure
+@{
+    ViewBag.Title = "Assessment Structure Details";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">@Model.Name</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index","AdminDashboard")">Dashboard</a></li>
+                <li class="breadcrumb-item"><a asp-action="Index">Structures</a></li>
+                <li class="breadcrumb-item active">Details</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Programme</dt>
+                <dd class="col-sm-9">@(Model.CollegeProgram?.ProgramName ?? "All Programmes")</dd>
+                <dt class="col-sm-3">Level</dt>
+                <dd class="col-sm-9">@(Model.ApplicableLevel.HasValue ? $"Level {Model.ApplicableLevel}" : "All Levels")</dd>
+                <dt class="col-sm-3">Description</dt>
+                <dd class="col-sm-9">@Model.Description</dd>
+            </dl>
+
+            <h5 class="mt-4">Components</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr><th>#</th><th>Component</th><th>Weight %</th><th>Max Score</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var c in Model.Components?.OrderBy(c => c.DisplayOrder) ?? new List<PWCEPortal.Models.Academic.AssessmentComponent>())
+                        {
+                            <tr>
+                                <td>@c.DisplayOrder</td>
+                                <td>@c.ComponentName</td>
+                                <td><span class="badge bg-primary">@c.WeightPercent%</span></td>
+                                <td>@c.MaxScore</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2"><strong>Total</strong></td>
+                            <td><strong>@(Model.Components?.Sum(c => c.WeightPercent) ?? 0)%</strong></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <a asp-action="Index" class="btn btn-outline-secondary mt-3">Back to List</a>
+            @if (User.HasClaim("Permission", "Permissions.AssessmentStructure.Configure"))
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary mt-3 ms-2">Edit</a>
+            }
+        </div>
+    </div>
+</div>

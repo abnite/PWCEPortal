@@ -78,6 +78,16 @@ builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddScoped<ExcelExportService>();
 builder.Services.AddTransient<DataHelper>();
 
+// Phase 2 services
+builder.Services.AddScoped<ICourseLecturerService, CourseLecturerService>();
+builder.Services.AddScoped<IAssessmentStructureService, AssessmentStructureService>();
+builder.Services.AddScoped<IMarksEntryService, MarksEntryService>();
+builder.Services.AddScoped<IAssessmentApprovalService, AssessmentApprovalService>();
+builder.Services.AddScoped<IGPAService, GPAService>();
+builder.Services.AddScoped<ITranscriptService, TranscriptService>();
+builder.Services.AddScoped<ITeachingAppraisalService, TeachingAppraisalService>();
+builder.Services.AddScoped<INonTeachingStaffService, NonTeachingStaffService>();
+
 var cultureInfo = new CultureInfo("en-GH");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;

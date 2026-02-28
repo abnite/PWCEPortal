@@ -1,0 +1,47 @@
+@model IEnumerable<PWCEPortal.Models.Staff.AppraisalTemplate>
+@{
+    ViewBag.Title = "Appraisal Templates";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Teaching Appraisal Templates</h1>
+    </div>
+    <div class="mb-3 text-end">
+        <a asp-action="CreateTemplate" class="btn btn-primary"><i class="fas fa-plus me-1"></i>New Template</a>
+        <a asp-action="Index" class="btn btn-outline-secondary ms-2"><i class="fas fa-list me-1"></i>View Appraisals</a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="table1" class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr><th>Template Name</th><th>Criteria</th><th>Active</th><th class="text-center">Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var t in Model)
+                        {
+                            <tr>
+                                <td><strong>@t.TemplateName</strong><br /><small class="text-muted">@t.Description</small></td>
+                                <td><span class="badge bg-info text-dark">@(t.Criteria?.Count ?? 0)</span></td>
+                                <td>@(t.IsActive ? "Yes" : "No")</td>
+                                <td class="text-center">
+                                    <a asp-action="EditTemplate" asp-route-id="@t.Id" class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></a>
+                                    <form asp-action="DeleteTemplate" method="post" class="d-inline"
+                                          onsubmit="return confirm('Delete this template?')">
+                                        <input type="hidden" name="id" value="@t.Id" />
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                        @if (!Model.Any()) { <tr><td colspan="4" class="text-center text-muted">No templates yet.</td></tr> }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

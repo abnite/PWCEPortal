@@ -1,0 +1,36 @@
+@{
+    ViewBag.Title = "Bulk Upload Marks";
+    Layout = "_AdminLayout";
+    var assignment = ViewBag.Assignment as PWCEPortal.Models.Academic.CourseLecturerAssignment;
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Bulk Upload Marks</h1>
+    <p class="text-muted">Course: <strong>@assignment?.Course?.CourseName (@assignment?.Course?.CourseCode)</strong></p>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white"><h5 class="mb-0">Upload Excel File</h5></div>
+        <div class="card-body">
+            <div class="alert alert-info">
+                <h6>Excel Format:</h6>
+                <p class="mb-1">Column A: <strong>Student ID</strong> (as shown on student record)</p>
+                <p class="mb-1">Column B: <strong>Component Name</strong> (must match exactly)</p>
+                <p class="mb-1">Column C: <strong>Score</strong></p>
+                <p class="mb-0">Column D: <strong>Remarks</strong> (optional)</p>
+                <p class="mt-2 mb-0"><em>Row 1 is treated as the header and is skipped.</em></p>
+            </div>
+
+            <form asp-action="BulkUpload" asp-route-assignmentId="@assignment?.Id" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="mb-3">
+                    <label class="form-label">Select Excel File (.xlsx)</label>
+                    <input type="file" name="file" class="form-control" accept=".xlsx,.xls" required />
+                </div>
+                <div class="d-flex gap-2">
+                    <a asp-action="EnterMarks" asp-route-assignmentId="@assignment?.Id" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-success"><i class="fas fa-upload me-1"></i>Upload Marks</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

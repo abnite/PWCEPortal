@@ -193,6 +193,141 @@
                 </li>
             }
 
+            <!-- Phase 2: My Work (Lecturers) -->
+            @if (User.HasClaim("Permission", "Permissions.MarksEntry.Enter") || User.HasClaim("Permission", "Permissions.TeachingAppraisal.ViewOwn"))
+            {
+                <li class="dropdown @(ViewContext.RouteData.Values["Controller"].ToString() == "MarksEntry" || (ViewContext.RouteData.Values["Controller"].ToString() == "TeachingAppraisal" && ViewContext.RouteData.Values["Action"].ToString() == "MyAppraisals") ? "active" : "")">
+                    <a href="#">
+                        <i class="fas fa-pencil-alt"></i>
+                        <span>My Work</span>
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="submenu">
+                        @if (User.HasClaim("Permission", "Permissions.MarksEntry.Enter"))
+                        {
+                            <li><a asp-action="Index" asp-controller="MarksEntry"><i class="fas fa-keyboard"></i> Enter Marks</a></li>
+                        }
+                        @if (User.HasClaim("Permission", "Permissions.TeachingAppraisal.ViewOwn"))
+                        {
+                            <li><a asp-action="MyAppraisals" asp-controller="TeachingAppraisal"><i class="fas fa-star"></i> My Appraisals</a></li>
+                        }
+                    </ul>
+                </li>
+            }
+
+            <!-- Phase 2: HOD (Course Assignment & Approvals) -->
+            @if (User.HasClaim("Permission", "Permissions.CourseLecturer.View") || User.HasClaim("Permission", "Permissions.AssessmentApproval.HODReview"))
+            {
+                <li class="dropdown @(ViewContext.RouteData.Values["Controller"].ToString() == "CourseLecturer" || ViewContext.RouteData.Values["Controller"].ToString() == "AssessmentApproval" ? "active" : "")">
+                    <a href="#">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span>HOD</span>
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="submenu">
+                        @if (User.HasClaim("Permission", "Permissions.CourseLecturer.View"))
+                        {
+                            <li><a asp-action="Index" asp-controller="CourseLecturer"><i class="fas fa-link"></i> Course Assignments</a></li>
+                            <li><a asp-action="Lecturers" asp-controller="CourseLecturer"><i class="fas fa-user-tie"></i> Lecturers</a></li>
+                            <li><a asp-action="Departments" asp-controller="CourseLecturer"><i class="fas fa-sitemap"></i> Departments</a></li>
+                        }
+                        @if (User.HasClaim("Permission", "Permissions.AssessmentApproval.HODReview"))
+                        {
+                            <li><a asp-action="Pending" asp-controller="AssessmentApproval"><i class="fas fa-tasks"></i> Assessment Approvals</a></li>
+                        }
+                    </ul>
+                </li>
+            }
+
+            <!-- Phase 2: Academic Affairs -->
+            @if (User.HasClaim("Permission", "Permissions.AssessmentStructure.View") || User.HasClaim("Permission", "Permissions.Results.View") || User.HasClaim("Permission", "Permissions.Results.ViewOwn"))
+            {
+                <li class="dropdown @(ViewContext.RouteData.Values["Controller"].ToString() == "AssessmentStructure" || ViewContext.RouteData.Values["Controller"].ToString() == "StudentResults" ? "active" : "")">
+                    <a href="#">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Academic Affairs</span>
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="submenu">
+                        @if (User.HasClaim("Permission", "Permissions.AssessmentStructure.View"))
+                        {
+                            <li><a asp-action="Index" asp-controller="AssessmentStructure"><i class="fas fa-layer-group"></i> Assessment Structures</a></li>
+                            <li><a asp-action="GradingScales" asp-controller="AssessmentStructure"><i class="fas fa-star-half-alt"></i> Grading Scales</a></li>
+                        }
+                        @if (User.HasClaim("Permission", "Permissions.Results.View"))
+                        {
+                            <li><a asp-action="AllResults" asp-controller="StudentResults"><i class="fas fa-poll"></i> Results Management</a></li>
+                        }
+                        @if (User.HasClaim("Permission", "Permissions.Results.ViewOwn"))
+                        {
+                            <li><a asp-action="MyResults" asp-controller="StudentResults"><i class="fas fa-chart-bar"></i> My Results</a></li>
+                        }
+                    </ul>
+                </li>
+            }
+
+            <!-- Phase 2: Transcripts -->
+            @if (User.HasClaim("Permission", "Permissions.Transcript.ViewOwn") || User.HasClaim("Permission", "Permissions.Transcript.Generate"))
+            {
+                <li class="dropdown @(ViewContext.RouteData.Values["Controller"].ToString() == "Transcript" ? "active" : "")">
+                    <a href="#">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transcripts</span>
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="submenu">
+                        @if (User.HasClaim("Permission", "Permissions.Transcript.ViewOwn"))
+                        {
+                            <li><a asp-action="MyTranscript" asp-controller="Transcript"><i class="fas fa-file-pdf"></i> My Transcript</a></li>
+                        }
+                        @if (User.HasClaim("Permission", "Permissions.Transcript.Generate"))
+                        {
+                            <li><a asp-action="Generate" asp-controller="Transcript"><i class="fas fa-print"></i> Generate Official</a></li>
+                            <li><a asp-action="Log" asp-controller="Transcript"><i class="fas fa-history"></i> Transcript Log</a></li>
+                        }
+                    </ul>
+                </li>
+            }
+
+            <!-- Phase 2: Appraisals & Non-Teaching Staff -->
+            @if (User.HasClaim("Permission", "Permissions.TeachingAppraisal.View") || User.HasClaim("Permission", "Permissions.NonTeachingStaff.View") || User.HasClaim("Permission", "Permissions.NonTeachingAppraisal.View"))
+            {
+                <li class="dropdown @(ViewContext.RouteData.Values["Controller"].ToString() == "TeachingAppraisal" || ViewContext.RouteData.Values["Controller"].ToString() == "NonTeachingStaff" ? "active" : "")">
+                    <a href="#">
+                        <i class="fas fa-clipboard-check"></i>
+                        <span>Appraisals</span>
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="submenu">
+                        @if (User.HasClaim("Permission", "Permissions.TeachingAppraisal.View"))
+                        {
+                            <li><a asp-action="Index" asp-controller="TeachingAppraisal"><i class="fas fa-chalkboard-teacher"></i> Teaching Appraisals</a></li>
+                            <li><a asp-action="StartAppraisal" asp-controller="TeachingAppraisal"><i class="fas fa-play-circle"></i> Start Appraisal</a></li>
+                            <li><a asp-action="Templates" asp-controller="TeachingAppraisal"><i class="fas fa-file-invoice"></i> Appraisal Templates</a></li>
+                        }
+                        @if (User.HasClaim("Permission", "Permissions.NonTeachingStaff.View"))
+                        {
+                            <li><a asp-action="Index" asp-controller="NonTeachingStaff"><i class="fas fa-users-cog"></i> Non-Teaching Staff</a></li>
+                        }
+                        @if (User.HasClaim("Permission", "Permissions.NonTeachingAppraisal.View"))
+                        {
+                            <li><a asp-action="Appraisals" asp-controller="NonTeachingStaff"><i class="fas fa-clipboard-list"></i> Non-Teaching Appraisals</a></li>
+                        }
+                    </ul>
+                </li>
+            }
+
+            <!-- Role Permissions -->
+            @if (User.HasClaim("Permission", "Permissions.Roles.View"))
+            {
+                <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Permissions" ? "active" : "")">
+                    <a asp-action="Index" asp-controller="Permissions">
+                        <i class="fas fa-lock"></i>
+                        <span>Role Permissions</span>
+                    </a>
+                </li>
+            }
+
             <!-- Logout -->
             <li>
                 <a asp-action="Logout" asp-controller="Account">

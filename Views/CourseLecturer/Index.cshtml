@@ -1,0 +1,95 @@
+@model IEnumerable<PWCEPortal.Models.Academic.CourseLecturerAssignment>
+@{
+    ViewBag.Title = "Course-Lecturer Assignments";
+    Layout = "_AdminLayout";
+    var semesters = ViewBag.Semesters as IEnumerable<PWCEPortal.Models.Academic.AcademicSemester>;
+    var departments = ViewBag.Departments as IEnumerable<PWCEPortal.Models.Academic.Department>;
+    var selectedSemesterId = ViewBag.SelectedSemesterId as Guid?;
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Course-Lecturer Assignments</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index","AdminDashboard")">Dashboard</a></li>
+                <li class="breadcrumb-item active">Assignments</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <form method="get" class="d-flex gap-2">
+                <select name="semesterId" class="form-select" onchange="this.form.submit()">
+                    <option value="">-- All Semesters --</option>
+                    @foreach (var s in semesters!)
+                    {
+                        <option value="@s.Id" selected="@(s.Id == selectedSemesterId)">
+                            @s.AcademicYear?.Year – @s.SemesterName
+                        </option>
+                    }
+                </select>
+            </form>
+        </div>
+        <div class="col-md-auto ms-auto">
+            @if (User.HasClaim("Permission", "Permissions.CourseLecturer.Assign"))
+            {
+                <a asp-action="Assign" class="btn btn-primary me-2"><i class="fas fa-plus me-1"></i>Assign Lecturer</a>
+                <a asp-action="Lecturers" class="btn btn-outline-secondary me-2"><i class="fas fa-user-tie me-1"></i>Lecturers</a>
+                <a asp-action="Departments" class="btn btn-outline-secondary"><i class="fas fa-building me-1"></i>Departments</a>
+            }
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-chalkboard-teacher me-2"></i>Assignments</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="table1" class="table table-hover table-striped align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Course</th>
+                            <th>Code</th>
+                            <th>Lecturer</th>
+                            <th>Department</th>
+                            <th>Semester</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var a in Model)
+                        {
+                            <tr>
+                                <td><strong>@a.Course?.CourseName</strong></td>
+                                <td><span class="badge bg-secondary">@a.Course?.CourseCode</span></td>
+                                <td>@a.Lecturer?.User?.LastName @a.Lecturer?.User?.FirstName</td>
+                                <td>@a.Lecturer?.Department?.DepartmentName</td>
+                                <td>@a.AcademicSemester?.AcademicYear?.Year – @a.AcademicSemester?.SemesterName</td>
+                                <td class="text-center">
+                                    @if (User.HasClaim("Permission", "Permissions.CourseLecturer.Remove"))
+                                    {
+                                        <form asp-action="Remove" method="post" class="d-inline"
+                                              onsubmit="return confirm('Remove this assignment?')">
+                                            <input type="hidden" name="id" value="@a.Id" />
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-unlink me-1"></i>Remove
+                                            </button>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        @if (!Model.Any())
+                        {
+                            <tr><td colspan="6" class="text-center text-muted">No assignments found for the selected semester.</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

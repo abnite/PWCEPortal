@@ -1,0 +1,73 @@
+@model PWCEPortal.ViewModel.Appraisal.ConductAppraisalViewModel
+@{
+    ViewBag.Title = "Conduct Appraisal";
+    Layout = "_AdminLayout";
+    bool isCompleted = Model.Appraisal.Status == PWCEPortal.Models.Staff.AppraisalStatus.Completed;
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Teaching Appraisal</h1>
+    <p class="text-muted">Lecturer: <strong>@Model.Appraisal.Lecturer?.User?.LastName @Model.Appraisal.Lecturer?.User?.FirstName</strong> &bull; @Model.Appraisal.AcademicYear?.Year</p>
+
+    <div class="card shadow-sm">
+        <div class="card-header @(isCompleted ? "bg-success text-white" : "bg-primary text-white")">
+            <h5 class="mb-0">@Model.Appraisal.AppraisalTemplate?.TemplateName</h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="SaveScores" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="appraisalId" value="@Model.Appraisal.Id" />
+
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle">
+                        <thead class="table-light">
+                            <tr><th>#</th><th>Criterion</th><th>Description</th><th>Max Score</th><th>Score</th></tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Criteria.Count; i++)
+                            {
+                                var c = Model.Criteria[i];
+                                var score = Model.Scores.ContainsKey(c.Id) ? Model.Scores[c.Id] : 0;
+                                <tr>
+                                    <td>@(i + 1)</td>
+                                    <td><strong>@c.CriterionName</strong></td>
+                                    <td class="text-muted small">@c.Description</td>
+                                    <td>@c.MaxScore</td>
+                                    <td>
+                                        <input name="scores[@c.Id]" type="number" step="0.01" min="0" max="@c.MaxScore"
+                                               class="form-control" style="width:100px;" value="@score"
+                                               @(isCompleted ? "disabled" : "") />
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Overall Remarks</label>
+                    <textarea name="remarks" class="form-control" rows="3" @(isCompleted ? "disabled" : "")>@Model.Remarks</textarea>
+                </div>
+
+                @if (!isCompleted)
+                {
+                    <div class="d-flex gap-2">
+                        <button type="submit" name="complete" value="false" class="btn btn-outline-success">
+                            <i class="fas fa-save me-1"></i>Save Draft
+                        </button>
+                        <button type="submit" name="complete" value="true" class="btn btn-success"
+                                onclick="return confirm('Mark appraisal as complete?')">
+                            <i class="fas fa-check me-1"></i>Complete Appraisal
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-success">
+                        Appraisal completed. Total Score: <strong>@Model.Appraisal.TotalScore / @Model.Appraisal.MaxPossibleScore</strong>
+                    </div>
+                }
+            </form>
+        </div>
+    </div>
+</div>

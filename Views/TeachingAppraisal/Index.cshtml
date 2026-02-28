@@ -1,0 +1,90 @@
+@model IEnumerable<PWCEPortal.Models.Staff.TeachingAppraisal>
+@{
+    ViewBag.Title = "Teaching Appraisals";
+    Layout = "_AdminLayout";
+    var years = ViewBag.AcademicYears as IEnumerable<PWCEPortal.Models.Academic.AcademicYear>;
+    var selectedYearId = ViewBag.SelectedYearId as Guid?;
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Teaching Staff Appraisals</h1>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <form method="get">
+                <select name="academicYearId" class="form-select" onchange="this.form.submit()">
+                    <option value="">-- All Years --</option>
+                    @foreach (var y in years!)
+                    {
+                        <option value="@y.Id" selected="@(y.Id == selectedYearId)">@y.Year</option>
+                    }
+                </select>
+            </form>
+        </div>
+        <div class="col-md-auto ms-auto">
+            @if (User.HasClaim("Permission", "Permissions.TeachingAppraisal.ConductAsHOD"))
+            {
+                <a asp-action="StartAppraisal" class="btn btn-primary me-2"><i class="fas fa-plus me-1"></i>Start Appraisal</a>
+            }
+            @if (User.HasClaim("Permission", "Permissions.TeachingAppraisal.ConfigureTemplate"))
+            {
+                <a asp-action="Templates" class="btn btn-outline-secondary"><i class="fas fa-cog me-1"></i>Templates</a>
+            }
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="table1" class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Lecturer</th>
+                            <th>Template</th>
+                            <th>Academic Year</th>
+                            <th>Conducted By</th>
+                            <th>Score</th>
+                            <th>Status</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var a in Model)
+                        {
+                            <tr>
+                                <td><strong>@a.Lecturer?.User?.LastName @a.Lecturer?.User?.FirstName</strong></td>
+                                <td>@a.AppraisalTemplate?.TemplateName</td>
+                                <td>@a.AcademicYear?.Year</td>
+                                <td>@a.ConductedBy?.LastName @a.ConductedBy?.FirstName</td>
+                                <td>
+                                    @if (a.TotalScore.HasValue && a.MaxPossibleScore.HasValue)
+                                    {
+                                        <text>@a.TotalScore / @a.MaxPossibleScore</text>
+                                    }
+                                </td>
+                                <td><span class="badge @(a.Status == PWCEPortal.Models.Staff.AppraisalStatus.Completed ? "bg-success" : "bg-warning text-dark")">@a.Status</span></td>
+                                <td class="text-center">
+                                    @if (a.Status == PWCEPortal.Models.Staff.AppraisalStatus.InProgress && User.HasClaim("Permission", "Permissions.TeachingAppraisal.ConductAsHOD"))
+                                    {
+                                        <a asp-action="ConductAppraisal" asp-route-id="@a.Id" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-edit me-1"></i>Continue
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="ConductAppraisal" asp-route-id="@a.Id" class="btn btn-sm btn-outline-info">
+                                            <i class="fas fa-eye me-1"></i>View
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        @if (!Model.Any()) { <tr><td colspan="7" class="text-center text-muted">No appraisals found.</td></tr> }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

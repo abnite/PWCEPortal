@@ -1,0 +1,123 @@
+@model PWCEPortal.ViewModel.MarksEntry.MarkSheetViewModel
+@{
+    ViewBag.Title = "Enter Marks";
+    Layout = "_AdminLayout";
+    var isLocked = Model.Submission != null &&
+                   Model.Submission.Status != PWCEPortal.Models.Academic.SubmissionStatus.Draft &&
+                   Model.Submission.Status != PWCEPortal.Models.Academic.SubmissionStatus.HODRejected &&
+                   Model.Submission.Status != PWCEPortal.Models.Academic.SubmissionStatus.Unlocked;
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h1 class="mt-4">@Model.Assignment.Course?.CourseName</h1>
+            <p class="text-muted">@Model.Assignment.Course?.CourseCode &bull; Level @Model.Assignment.Course?.Level &bull; @Model.Assignment.AcademicSemester?.AcademicYear?.Year – @Model.Assignment.AcademicSemester?.SemesterName</p>
+        </div>
+        <div>
+            @if (!isLocked && User.HasClaim("Permission", "Permissions.MarksEntry.UploadBulk"))
+            {
+                <a asp-action="BulkUpload" asp-route-assignmentId="@Model.Assignment.Id" class="btn btn-outline-success me-2">
+                    <i class="fas fa-file-excel me-1"></i>Bulk Upload
+                </a>
+            }
+            <a asp-action="Index" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i>Back</a>
+        </div>
+    </div>
+
+    @if (Model.Submission != null)
+    {
+        <div class="alert alert-info">
+            Submission status: <strong>@Model.Submission.Status</strong>
+            @if (isLocked)
+            {
+                <span class="ms-2 text-danger">(Locked – marks cannot be edited until unlocked)</span>
+            }
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between">
+            <h5 class="mb-0">Mark Sheet</h5>
+            @if (Model.Components.Any())
+            {
+                <small>Components: @string.Join(" | ", Model.Components.Select(c => $"{c.ComponentName} ({c.WeightPercent}%)"))</small>
+            }
+        </div>
+        <div class="card-body">
+            @if (!Model.Components.Any())
+            {
+                <div class="alert alert-warning">No assessment components configured for this course's programme/level. Please ask the Academic Affairs Officer to set up an assessment structure.</div>
+            }
+            else
+            {
+                <form asp-action="SaveMarks" method="post" id="markForm">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="AssignmentId" value="@Model.Assignment.Id" />
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Student ID</th>
+                                    @foreach (var comp in Model.Components)
+                                    {
+                                        <th class="text-center">@comp.ComponentName<br /><small class="text-muted">/@comp.MaxScore (@comp.WeightPercent%)</small></th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.StudentRows.Count; i++)
+                                {
+                                    var row = Model.StudentRows[i];
+                                    <tr>
+                                        <td>@row.Student.Surname @row.Student.OtherNames</td>
+                                        <td>@row.Student.StudentID</td>
+                                        <input type="hidden" name="Marks[@i * @Model.Components.Count].StudentId" value="@row.Student.Id" />
+                                        @for (int j = 0; j < Model.Components.Count; j++)
+                                        {
+                                            var comp = Model.Components[j];
+                                            var idx = i * Model.Components.Count + j;
+                                            var score = row.ComponentScores.ContainsKey(comp.Id) ? row.ComponentScores[comp.Id] : null;
+                                            <td class="text-center">
+                                                <input type="hidden" name="Marks[@idx].StudentId" value="@row.Student.Id" />
+                                                <input type="hidden" name="Marks[@idx].ComponentId" value="@comp.Id" />
+                                                <input name="Marks[@idx].Score"
+                                                       type="number" step="0.01" min="0" max="@comp.MaxScore"
+                                                       class="form-control form-control-sm text-center"
+                                                       value="@(score.HasValue ? score.Value.ToString("F2") : "")"
+                                                       @(isLocked ? "disabled" : "")
+                                                       style="width:80px; display:inline-block;" />
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    @if (!isLocked)
+                    {
+                        <div class="d-flex gap-2 mt-3">
+                            <button type="submit" class="btn btn-success"><i class="fas fa-save me-1"></i>Save Marks</button>
+
+                            @if (User.HasClaim("Permission", "Permissions.MarksEntry.SubmitForReview") &&
+                                (Model.Submission == null || Model.Submission.Status == PWCEPortal.Models.Academic.SubmissionStatus.Draft || Model.Submission.Status == PWCEPortal.Models.Academic.SubmissionStatus.HODRejected))
+                            {
+                                <form asp-controller="MarksEntry" asp-action="SubmitForReview" method="post" class="d-inline"
+                                      onsubmit="return confirm('Submit marks for HOD review? Ensure all marks are entered.')">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="assignmentId" value="@Model.Assignment.Id" />
+                                    <button type="submit" class="btn btn-warning">
+                                        <i class="fas fa-paper-plane me-1"></i>Submit for Review
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    }
+                </form>
+            }
+        </div>
+    </div>
+</div>

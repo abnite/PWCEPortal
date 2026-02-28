@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using PWCEPortal.Models;
 using PWCEPortal.Models.Academic;
 using PWCEPortal.Models.Payment;
+using PWCEPortal.Models.Staff;
 using PWCEPortal.Models.StudentInfo;
 
 namespace PWCEPortal.Data;
@@ -47,6 +48,42 @@ public class PortalDbContext:IdentityDbContext<ApplicationUser,ApplicationRole,s
     public DbSet<LegacyOutstandingFee> LegacyOutstandingFees { get; set; }
     
     public DbSet<RequiredFee> RequiredFees { get; set; }
+
+    // Phase 2 – Course-Lecturer Assignment (Module A)
+    public DbSet<Department> Departments { get; set; }
+    public DbSet<Lecturer> Lecturers { get; set; }
+    public DbSet<CourseLecturerAssignment> CourseLecturerAssignments { get; set; }
+
+    // Phase 2 – Assessment Structure (Module B)
+    public DbSet<AssessmentStructure> AssessmentStructures { get; set; }
+    public DbSet<AssessmentComponent> AssessmentComponents { get; set; }
+    public DbSet<GradingScale> GradingScales { get; set; }
+    public DbSet<GradeDefinition> GradeDefinitions { get; set; }
+
+    // Phase 2 – Marks Entry (Module C)
+    public DbSet<StudentMark> StudentMarks { get; set; }
+
+    // Phase 2 – Assessment Approval Workflow (Module D)
+    public DbSet<AssessmentSubmission> AssessmentSubmissions { get; set; }
+    public DbSet<AssessmentApprovalLog> AssessmentApprovalLogs { get; set; }
+
+    // Phase 2 – Results (Module E & F)
+    public DbSet<SemesterResult> SemesterResults { get; set; }
+    public DbSet<CumulativeResult> CumulativeResults { get; set; }
+
+    // Phase 2 – Transcripts (Module G)
+    public DbSet<TranscriptRequest> TranscriptRequests { get; set; }
+
+    // Phase 2 – Teaching Appraisals (Module H)
+    public DbSet<AppraisalTemplate> AppraisalTemplates { get; set; }
+    public DbSet<AppraisalCriterion> AppraisalCriteria { get; set; }
+    public DbSet<TeachingAppraisal> TeachingAppraisals { get; set; }
+    public DbSet<TeachingAppraisalScore> TeachingAppraisalScores { get; set; }
+
+    // Phase 2 – Non-Teaching Staff (Module I)
+    public DbSet<NonTeachingStaff> NonTeachingStaffMembers { get; set; }
+    public DbSet<NonTeachingAppraisal> NonTeachingAppraisals { get; set; }
+    public DbSet<NonTeachingAppraisalScore> NonTeachingAppraisalScores { get; set; }
 
     // System Configuration & Logs
     public DbSet<Notification> Notifications { get; set; }

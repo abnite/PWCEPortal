@@ -1,0 +1,83 @@
+@model IEnumerable<PWCEPortal.Models.Academic.CourseLecturerAssignment>
+@{
+    ViewBag.Title = "My Courses";
+    Layout = "_AdminLayout";
+    var semester = ViewBag.Semester as PWCEPortal.Models.Academic.AcademicSemester;
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">My Courses – Marks Entry</h1>
+    </div>
+
+    @if (semester != null)
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-calendar-alt me-2"></i>
+            Current Semester: <strong>@semester.AcademicYear?.Year – @semester.SemesterName</strong>
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="table1" class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Course</th>
+                            <th>Code</th>
+                            <th>Level</th>
+                            <th>Semester</th>
+                            <th class="text-center">Marks Status</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var a in Model)
+                        {
+                            <tr>
+                                <td><strong>@a.Course?.CourseName</strong></td>
+                                <td><span class="badge bg-secondary">@a.Course?.CourseCode</span></td>
+                                <td>Level @a.Course?.Level</td>
+                                <td>Sem @a.Course?.Semester</td>
+                                <td class="text-center">
+                                    @{
+                                        var submission = a.Submissions?.FirstOrDefault();
+                                        if (submission != null)
+                                        {
+                                            var badgeClass = submission.Status switch
+                                            {
+                                                PWCEPortal.Models.Academic.SubmissionStatus.Draft => "bg-secondary",
+                                                PWCEPortal.Models.Academic.SubmissionStatus.SubmittedForReview => "bg-warning text-dark",
+                                                PWCEPortal.Models.Academic.SubmissionStatus.HODApproved => "bg-info text-dark",
+                                                PWCEPortal.Models.Academic.SubmissionStatus.HODRejected => "bg-danger",
+                                                PWCEPortal.Models.Academic.SubmissionStatus.QAApproved => "bg-primary",
+                                                PWCEPortal.Models.Academic.SubmissionStatus.PrincipalApproved => "bg-success",
+                                                _ => "bg-secondary"
+                                            };
+                                            <span class="badge @badgeClass">@submission.Status</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-light text-muted">Not Started</span>
+                                        }
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <a asp-action="EnterMarks" asp-route-assignmentId="@a.Id"
+                                       class="btn btn-sm btn-primary">
+                                        <i class="fas fa-pencil-alt me-1"></i>Enter Marks
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                        @if (!Model.Any())
+                        {
+                            <tr><td colspan="6" class="text-center text-muted">No courses assigned to you for the current semester.</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

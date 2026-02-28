@@ -1,0 +1,59 @@
+@model PWCEPortal.ViewModel.CourseLecturer.LecturerViewModel
+@{
+    ViewBag.Title = "Add Lecturer Profile";
+    Layout = "_AdminLayout";
+    var departments = ViewBag.Departments as IEnumerable<PWCEPortal.Models.Academic.Department>;
+    var users = ViewBag.Users as IEnumerable<PWCEPortal.Data.ApplicationUser>;
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Add Lecturer Profile</h1>
+    <div class="card shadow-sm mt-3">
+        <div class="card-header bg-primary text-white"><h5 class="mb-0">Lecturer Details</h5></div>
+        <div class="card-body">
+            <form asp-action="CreateLecturer" method="post">
+                @Html.AntiForgeryToken()
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="UserId" class="form-label">User Account</label>
+                        <select asp-for="UserId" class="form-select select2" required>
+                            <option value="">-- Select User --</option>
+                            @foreach (var u in users!)
+                            {
+                                <option value="@u.Id">@u.LastName @u.FirstName (@u.Email)</option>
+                            }
+                        </select>
+                        <span asp-validation-for="UserId" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="DepartmentId" class="form-label">Department</label>
+                        <select asp-for="DepartmentId" class="form-select">
+                            <option value="">-- Select Department --</option>
+                            @foreach (var d in departments!)
+                            {
+                                <option value="@d.Id">@d.DepartmentName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="StaffId" class="form-label">Staff ID</label>
+                        <input asp-for="StaffId" class="form-control" required />
+                        <span asp-validation-for="StaffId" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Qualification" class="form-label">Qualification</label>
+                        <input asp-for="Qualification" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Specialisation" class="form-label">Specialisation</label>
+                        <input asp-for="Specialisation" class="form-control" />
+                    </div>
+                </div>
+                <div class="d-flex gap-2 justify-content-end mt-3">
+                    <a asp-action="Lecturers" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

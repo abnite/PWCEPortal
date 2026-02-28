@@ -1,0 +1,140 @@
+@model PWCEPortal.ViewModel.Results.ResultsPublishViewModel
+@{
+    ViewBag.Title = "All Results";
+    Layout = "_AdminLayout";
+    var semesters = ViewBag.Semesters as IEnumerable<PWCEPortal.Models.Academic.AcademicSemester>;
+    var selectedId = ViewBag.SelectedSemesterId as Guid?;
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Student Results</h1>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <form method="get">
+                <select name="semesterId" class="form-select" onchange="this.form.submit()">
+                    <option value="">-- Select Semester --</option>
+                    @foreach (var s in semesters ?? new List<PWCEPortal.Models.Academic.AcademicSemester>())
+                    {
+                        <option value="@s.Id" selected="@(s.Id == selectedId)">@s.AcademicYear?.Year – @s.SemesterName</option>
+                    }
+                </select>
+            </form>
+        </div>
+
+        @if (Model.Semester != null && User.HasClaim("Permission", "Permissions.StudentResults.ViewAll"))
+        {
+            <div class="col-md-auto ms-auto d-flex gap-2">
+                <form asp-action="Compute" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="semesterId" value="@Model.Semester.Id" />
+                    <button type="submit" class="btn btn-outline-primary" onclick="return confirm('Compute GPA for all students?')">
+                        <i class="fas fa-calculator me-1"></i>Compute Results
+                    </button>
+                </form>
+                @if (User.HasClaim("Permission", "Permissions.StudentResults.Publish") && Model.Results.Any())
+                {
+                    <form asp-action="Publish" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="semesterId" value="@Model.Semester.Id" />
+                        <button type="submit" class="btn btn-success" onclick="return confirm('Publish all results for this semester?')">
+                            <i class="fas fa-bullhorn me-1"></i>Publish Results
+                        </button>
+                    </form>
+                }
+            </div>
+        }
+    </div>
+
+    @if (Model.Semester != null)
+    {
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <div class="card text-center p-3 bg-light">
+                    <h4>@Model.Results.Count</h4><p class="mb-0">Total Students</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center p-3 bg-success text-white">
+                    <h4>@Model.PublishedCount</h4><p class="mb-0">Published</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center p-3 bg-warning">
+                    <h4>@Model.WithheldCount</h4><p class="mb-0">Withheld</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="table1" class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Student</th>
+                                <th>Student ID</th>
+                                <th>GPA</th>
+                                <th>Credit Hours</th>
+                                <th>Published</th>
+                                <th>Withheld</th>
+                                @if (User.HasClaim("Permission", "Permissions.StudentResults.Withhold"))
+                                {
+                                    <th class="text-center">Actions</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var r in Model.Results)
+                            {
+                                <tr>
+                                    <td>@r.Student?.Surname @r.Student?.OtherNames</td>
+                                    <td>@r.Student?.StudentID</td>
+                                    <td><strong>@r.GPA.ToString("F2")</strong></td>
+                                    <td>@r.TotalCreditHours</td>
+                                    <td>@(r.IsPublished ? "Yes" : "No")</td>
+                                    <td>
+                                        @if (r.IsWithheld)
+                                        {
+                                            <span class="badge bg-warning text-dark">Yes – @r.WithholdReason</span>
+                                        }
+                                        else { <span>No</span> }
+                                    </td>
+                                    @if (User.HasClaim("Permission", "Permissions.StudentResults.Withhold") && !r.IsWithheld)
+                                    {
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-outline-warning"
+                                                    onclick="withholdResult('@r.StudentId','@Model.Semester.Id')">
+                                                Withhold
+                                            </button>
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+<script>
+function withholdResult(studentId, semesterId) {
+    const reason = prompt('Reason for withholding result:');
+    if (!reason) return;
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '@Url.Action("Withhold","StudentResults")';
+    form.innerHTML = `@Html.AntiForgeryToken()
+        <input name="studentId" value="${studentId}" />
+        <input name="semesterId" value="${semesterId}" />
+        <input name="reason" value="${reason}" />`;
+    document.body.appendChild(form);
+    form.submit();
+}
+</script>
+}

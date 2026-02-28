@@ -1,0 +1,37 @@
+@{
+    ViewBag.Title = "Generate Official Transcript";
+    Layout = "_AdminLayout";
+    var students = ViewBag.Students as IEnumerable<PWCEPortal.Models.StudentInfo.Student>;
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Generate Official Transcript</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white"><h5 class="mb-0">Official Transcript</h5></div>
+        <div class="card-body">
+            <form asp-action="Generate" method="post">
+                @Html.AntiForgeryToken()
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Student</label>
+                        <select name="studentId" class="form-select select2" required>
+                            <option value="">-- Select Student --</option>
+                            @foreach (var s in students!)
+                            {
+                                <option value="@s.Id">@s.Surname @s.OtherNames (@s.StudentID)</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Purpose</label>
+                        <input name="purpose" class="form-control" placeholder="Purpose of transcript" />
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-file-download me-1"></i>Generate & Download</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
