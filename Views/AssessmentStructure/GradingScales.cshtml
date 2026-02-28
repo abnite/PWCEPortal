@@ -58,16 +58,16 @@
                             <tr><th>Grade</th><th>Min %</th><th>Max %</th><th>Grade Point</th><th>Remark</th></tr>
                         </thead>
                         <tbody>
-                            @foreach (var g in scale.Grades?.OrderByDescending(g => g.MinScore) ?? new List<PWCEPortal.Models.Academic.GradeDefinition>())
-                            {
-                                <tr>
-                                    <td><strong>@g.GradeLetter</strong></td>
-                                    <td>@g.MinScore</td>
-                                    <td>@g.MaxScore</td>
-                                    <td><span class="badge bg-primary">@g.GradePoint</span></td>
-                                    <td>@g.Remark</td>
-                                </tr>
-                            }
+                        @foreach (var g in scale.Grades?.OrderByDescending(g => g.MinScore) ?? Enumerable.Empty<PWCEPortal.Models.Academic.GradeDefinition>())
+                        {
+                            <tr>
+                                <td><strong>@g.GradeLetter</strong></td>
+                                <td>@g.MinScore</td>
+                                <td>@g.MaxScore</td>
+                                <td><span class="badge bg-primary">@g.GradePoint</span></td>
+                                <td>@g.Remark</td>
+                            </tr>
+                        }
                         </tbody>
                     </table>
                 </div>

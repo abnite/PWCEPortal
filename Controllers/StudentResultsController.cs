@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using PWCEPortal.ApplicationClass;
 using PWCEPortal.Data;
 using PWCEPortal.Interfaces;
+using PWCEPortal.Models.Academic;
 using PWCEPortal.ViewModel.Results;
 
 namespace PWCEPortal.Controllers;

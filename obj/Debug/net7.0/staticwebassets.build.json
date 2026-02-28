@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "24H1m8lkE64DVCIUyX84fMo4tF6Tm8BBNL86jqQZefI=",
+  "Hash": "jZVVpr7gEUGUf3ES5wafZQbuEz1B7CcK4OFfTQ6MhkU=",
   "Source": "PWCEPortal",
   "BasePath": "_content/PWCEPortal",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "PWCEPortal/wwwroot",
       "Source": "PWCEPortal",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/obj/Debug/net7.0/scopedcss/bundle/PWCEPortal.styles.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/obj/Debug/net7.0/scopedcss/bundle/PWCEPortal.styles.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Computed",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/obj/Debug/net7.0/scopedcss/bundle/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/obj/Debug/net7.0/scopedcss/bundle/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "PWCEPortal.styles.css",
       "AssetKind": "All",
@@ -33,13 +33,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/obj/Debug/net7.0/scopedcss/bundle/PWCEPortal.styles.css"
+      "OriginalItemSpec": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/obj/Debug/net7.0/scopedcss/bundle/PWCEPortal.styles.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/obj/Debug/net7.0/scopedcss/projectbundle/PWCEPortal.bundle.scp.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/obj/Debug/net7.0/scopedcss/projectbundle/PWCEPortal.bundle.scp.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Computed",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/obj/Debug/net7.0/scopedcss/projectbundle/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/obj/Debug/net7.0/scopedcss/projectbundle/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "PWCEPortal.bundle.scp.css",
       "AssetKind": "All",
@@ -52,13 +52,13 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/obj/Debug/net7.0/scopedcss/projectbundle/PWCEPortal.bundle.scp.css"
+      "OriginalItemSpec": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/obj/Debug/net7.0/scopedcss/projectbundle/PWCEPortal.bundle.scp.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/Certificates/APP123456_Certificate_20250415_175317.pdf",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/Certificates/APP123456_Certificate_20250415_175317.pdf",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "Certificates/APP123456_Certificate_20250415_175317.pdf",
       "AssetKind": "All",
@@ -74,10 +74,10 @@
       "OriginalItemSpec": "wwwroot/Certificates/APP123456_Certificate_20250415_175317.pdf"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/Certificates/APP12345612354_Certificate_20250415_172257.pdf",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/Certificates/APP12345612354_Certificate_20250415_172257.pdf",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "Certificates/APP12345612354_Certificate_20250415_172257.pdf",
       "AssetKind": "All",
@@ -93,10 +93,10 @@
       "OriginalItemSpec": "wwwroot/Certificates/APP12345612354_Certificate_20250415_172257.pdf"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/Certificates/APP12345678_Certificate_20250415_171948.pdf",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/Certificates/APP12345678_Certificate_20250415_171948.pdf",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "Certificates/APP12345678_Certificate_20250415_171948.pdf",
       "AssetKind": "All",
@@ -112,10 +112,10 @@
       "OriginalItemSpec": "wwwroot/Certificates/APP12345678_Certificate_20250415_171948.pdf"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/css/site.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/css/site.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "css/site.css",
       "AssetKind": "All",
@@ -131,10 +131,10 @@
       "OriginalItemSpec": "wwwroot/css/site.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/css/styles_OLD.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/css/styles_OLD.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "css/styles_OLD.css",
       "AssetKind": "All",
@@ -150,10 +150,10 @@
       "OriginalItemSpec": "wwwroot/css/styles_OLD.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/css/styles.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/css/styles.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "css/styles.css",
       "AssetKind": "All",
@@ -169,10 +169,10 @@
       "OriginalItemSpec": "wwwroot/css/styles.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/favicon.ico",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/favicon.ico",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "favicon.ico",
       "AssetKind": "All",
@@ -188,10 +188,10 @@
       "OriginalItemSpec": "wwwroot/favicon.ico"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/images/background.jpeg",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/images/background.jpeg",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "images/background.jpeg",
       "AssetKind": "All",
@@ -207,10 +207,10 @@
       "OriginalItemSpec": "wwwroot/images/background.jpeg"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/images/PWCELogo.png",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/images/PWCELogo.png",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "images/PWCELogo.png",
       "AssetKind": "All",
@@ -226,10 +226,10 @@
       "OriginalItemSpec": "wwwroot/images/PWCELogo.png"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/images/user.png",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/images/user.png",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "images/user.png",
       "AssetKind": "All",
@@ -245,10 +245,10 @@
       "OriginalItemSpec": "wwwroot/images/user.png"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/js/script.js",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/js/script.js",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "js/script.js",
       "AssetKind": "All",
@@ -264,10 +264,10 @@
       "OriginalItemSpec": "wwwroot/js/script.js"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/js/site.js",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/js/site.js",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "js/site.js",
       "AssetKind": "All",
@@ -283,10 +283,10 @@
       "OriginalItemSpec": "wwwroot/js/site.js"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.css",
       "AssetKind": "All",
@@ -302,10 +302,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.css.map",
       "AssetKind": "All",
@@ -321,10 +321,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.min.css",
       "AssetKind": "All",
@@ -340,10 +340,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.min.css.map",
       "AssetKind": "All",
@@ -359,10 +359,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.css",
       "AssetKind": "All",
@@ -378,10 +378,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map",
       "AssetKind": "All",
@@ -397,10 +397,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css",
       "AssetKind": "All",
@@ -416,10 +416,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map",
       "AssetKind": "All",
@@ -435,10 +435,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.css",
       "AssetKind": "All",
@@ -454,10 +454,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.css.map",
       "AssetKind": "All",
@@ -473,10 +473,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.min.css",
       "AssetKind": "All",
@@ -492,10 +492,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.min.css.map",
       "AssetKind": "All",
@@ -511,10 +511,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.css",
       "AssetKind": "All",
@@ -530,10 +530,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map",
       "AssetKind": "All",
@@ -549,10 +549,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css",
       "AssetKind": "All",
@@ -568,10 +568,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map",
       "AssetKind": "All",
@@ -587,10 +587,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.css",
       "AssetKind": "All",
@@ -606,10 +606,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.css.map",
       "AssetKind": "All",
@@ -625,10 +625,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.min.css",
       "AssetKind": "All",
@@ -644,10 +644,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.min.css.map",
       "AssetKind": "All",
@@ -663,10 +663,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.css",
       "AssetKind": "All",
@@ -682,10 +682,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map",
       "AssetKind": "All",
@@ -701,10 +701,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css",
       "AssetKind": "All",
@@ -720,10 +720,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map",
       "AssetKind": "All",
@@ -739,10 +739,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.css",
       "AssetKind": "All",
@@ -758,10 +758,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.css.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.css.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.css.map",
       "AssetKind": "All",
@@ -777,10 +777,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap.css.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.min.css",
       "AssetKind": "All",
@@ -796,10 +796,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -815,10 +815,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.css",
       "AssetKind": "All",
@@ -834,10 +834,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.css.map",
       "AssetKind": "All",
@@ -853,10 +853,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.min.css",
       "AssetKind": "All",
@@ -872,10 +872,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.min.css.map",
       "AssetKind": "All",
@@ -891,10 +891,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.js",
       "AssetKind": "All",
@@ -910,10 +910,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.js.map",
       "AssetKind": "All",
@@ -929,10 +929,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.min.js",
       "AssetKind": "All",
@@ -948,10 +948,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
       "AssetKind": "All",
@@ -967,10 +967,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.js",
       "AssetKind": "All",
@@ -986,10 +986,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.js.map",
       "AssetKind": "All",
@@ -1005,10 +1005,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.min.js",
       "AssetKind": "All",
@@ -1024,10 +1024,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.min.js.map",
       "AssetKind": "All",
@@ -1043,10 +1043,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.js",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.js",
       "AssetKind": "All",
@@ -1062,10 +1062,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.js"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.js.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.js.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.js.map",
       "AssetKind": "All",
@@ -1081,10 +1081,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.js.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.min.js",
       "AssetKind": "All",
@@ -1100,10 +1100,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.min.js"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.min.js.map",
       "AssetKind": "All",
@@ -1119,10 +1119,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/LICENSE",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/bootstrap/LICENSE",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/bootstrap/LICENSE",
       "AssetKind": "All",
@@ -1138,10 +1138,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/LICENSE"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
       "AssetKind": "All",
@@ -1157,10 +1157,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
       "AssetKind": "All",
@@ -1176,10 +1176,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/jquery-validation-unobtrusive/LICENSE.txt",
       "AssetKind": "All",
@@ -1195,10 +1195,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery-validation/dist/additional-methods.js",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/jquery-validation/dist/additional-methods.js",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/jquery-validation/dist/additional-methods.js",
       "AssetKind": "All",
@@ -1214,10 +1214,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery-validation/dist/additional-methods.js"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery-validation/dist/additional-methods.min.js",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/jquery-validation/dist/additional-methods.min.js",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/jquery-validation/dist/additional-methods.min.js",
       "AssetKind": "All",
@@ -1233,10 +1233,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery-validation/dist/additional-methods.min.js"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/jquery-validation/dist/jquery.validate.js",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/jquery-validation/dist/jquery.validate.js",
       "AssetKind": "All",
@@ -1252,10 +1252,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery-validation/dist/jquery.validate.js"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/jquery-validation/dist/jquery.validate.min.js",
       "AssetKind": "All",
@@ -1271,10 +1271,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery-validation/LICENSE.md",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/jquery-validation/LICENSE.md",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/jquery-validation/LICENSE.md",
       "AssetKind": "All",
@@ -1290,10 +1290,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery-validation/LICENSE.md"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery/dist/jquery.js",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/jquery/dist/jquery.js",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/jquery/dist/jquery.js",
       "AssetKind": "All",
@@ -1309,10 +1309,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery/dist/jquery.js"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery/dist/jquery.min.js",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/jquery/dist/jquery.min.js",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/jquery/dist/jquery.min.js",
       "AssetKind": "All",
@@ -1328,10 +1328,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery/dist/jquery.min.js"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery/dist/jquery.min.map",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/jquery/dist/jquery.min.map",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/jquery/dist/jquery.min.map",
       "AssetKind": "All",
@@ -1347,10 +1347,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery/dist/jquery.min.map"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery/LICENSE.txt",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/lib/jquery/LICENSE.txt",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "lib/jquery/LICENSE.txt",
       "AssetKind": "All",
@@ -1366,10 +1366,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery/LICENSE.txt"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP1234_20252026_20251118211152.pdf",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP1234_20252026_20251118211152.pdf",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP1234_20252026_20251118211152.pdf",
       "AssetKind": "All",
@@ -1385,10 +1385,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP1234_20252026_20251118211152.pdf"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250322222601.pdf",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250322222601.pdf",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20242025_20250322222601.pdf",
       "AssetKind": "All",
@@ -1404,10 +1404,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20242025_20250322222601.pdf"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250322222715.pdf",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250322222715.pdf",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20242025_20250322222715.pdf",
       "AssetKind": "All",
@@ -1423,10 +1423,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20242025_20250322222715.pdf"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250322222759.pdf",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250322222759.pdf",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20242025_20250322222759.pdf",
       "AssetKind": "All",
@@ -1442,10 +1442,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20242025_20250322222759.pdf"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250322224906.pdf",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250322224906.pdf",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20242025_20250322224906.pdf",
       "AssetKind": "All",
@@ -1461,10 +1461,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20242025_20250322224906.pdf"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250322225918.png",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250322225918.png",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20242025_20250322225918.png",
       "AssetKind": "All",
@@ -1480,10 +1480,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20242025_20250322225918.png"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250322225942.png",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250322225942.png",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20242025_20250322225942.png",
       "AssetKind": "All",
@@ -1499,10 +1499,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20242025_20250322225942.png"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250327150929.pdf",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250327150929.pdf",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20242025_20250327150929.pdf",
       "AssetKind": "All",
@@ -1518,10 +1518,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20242025_20250327150929.pdf"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250330220928.pdf",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250330220928.pdf",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20252026_20250330220928.pdf",
       "AssetKind": "All",
@@ -1537,10 +1537,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20252026_20250330220928.pdf"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401121000.webp",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401121000.webp",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20252026_20250401121000.webp",
       "AssetKind": "All",
@@ -1556,10 +1556,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20252026_20250401121000.webp"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401121335.jpeg",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401121335.jpeg",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20252026_20250401121335.jpeg",
       "AssetKind": "All",
@@ -1575,10 +1575,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20252026_20250401121335.jpeg"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401141000.pdf",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401141000.pdf",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20252026_20250401141000.pdf",
       "AssetKind": "All",
@@ -1594,10 +1594,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20252026_20250401141000.pdf"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401141348.pdf",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401141348.pdf",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20252026_20250401141348.pdf",
       "AssetKind": "All",
@@ -1613,10 +1613,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20252026_20250401141348.pdf"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401151507.pdf",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401151507.pdf",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20252026_20250401151507.pdf",
       "AssetKind": "All",
@@ -1632,10 +1632,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20252026_20250401151507.pdf"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401151911.pdf",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401151911.pdf",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20252026_20250401151911.pdf",
       "AssetKind": "All",
@@ -1651,10 +1651,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20252026_20250401151911.pdf"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401155044.pdf",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401155044.pdf",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20252026_20250401155044.pdf",
       "AssetKind": "All",
@@ -1670,10 +1670,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20252026_20250401155044.pdf"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250411055640.txt",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250411055640.txt",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20252026_20250411055640.txt",
       "AssetKind": "All",
@@ -1689,10 +1689,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20252026_20250411055640.txt"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250415134419.png",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250415134419.png",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20252026_20250415134419.png",
       "AssetKind": "All",
@@ -1708,10 +1708,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20252026_20250415134419.png"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20262027_20250415134014.jpeg",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20262027_20250415134014.jpeg",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20262027_20250415134014.jpeg",
       "AssetKind": "All",
@@ -1727,10 +1727,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20262027_20250415134014.jpeg"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20272028_20250420194851.jpeg",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP123456_20272028_20250420194851.jpeg",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "receipts/APP123456_20272028_20250420194851.jpeg",
       "AssetKind": "All",
@@ -1746,10 +1746,10 @@
       "OriginalItemSpec": "wwwroot/receipts/APP123456_20272028_20250420194851.jpeg"
     },
     {
-      "Identity": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/uploads/passports/205e80cd-02eb-4f6c-93df-866b627ac470_background.jpeg",
+      "Identity": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/uploads/passports/205e80cd-02eb-4f6c-93df-866b627ac470_background.jpeg",
       "SourceId": "PWCEPortal",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/",
+      "ContentRoot": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/",
       "BasePath": "_content/PWCEPortal",
       "RelativePath": "uploads/passports/205e80cd-02eb-4f6c-93df-866b627ac470_background.jpeg",
       "AssetKind": "All",

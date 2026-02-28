@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PWCEPortal")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b48f51cd067a975e82e34852aec2d1eb5aedc755")]
 [assembly: System.Reflection.AssemblyProductAttribute("PWCEPortal")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PWCEPortal")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

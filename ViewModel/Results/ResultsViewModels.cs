@@ -5,7 +5,7 @@ namespace PWCEPortal.ViewModel.Results;
 
 public class StudentResultsViewModel
 {
-    public Student Student { get; set; } = null!;
+    public Models.StudentInfo.Student Student { get; set; } = null!;
     public List<SemesterResult> SemesterResults { get; set; } = new();
     public CumulativeResult? CumulativeResult { get; set; }
 }

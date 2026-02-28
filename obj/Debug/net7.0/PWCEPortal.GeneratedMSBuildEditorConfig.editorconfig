@@ -9,527 +9,687 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = PWCEPortal
 build_property.RootNamespace = PWCEPortal
-build_property.ProjectDir = /Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/
+build_property.ProjectDir = /Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /Users/abraham/RiderProjects/PWCEPortal/PWCEPortal
+build_property.MSBuildProjectDirectory = /Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal
 build_property._RazorSourceGeneratorDebug = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Academic/RegisterCourses.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Academic/RegisterCourses.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNhZGVtaWMvUmVnaXN0ZXJDb3Vyc2VzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Academic/ViewAllRegistrations.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Academic/ViewAllRegistrations.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNhZGVtaWMvVmlld0FsbFJlZ2lzdHJhdGlvbnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Academic/ViewRegisteredCourses.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Academic/ViewRegisteredCourses.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNhZGVtaWMvVmlld1JlZ2lzdGVyZWRDb3Vyc2VzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Account/AddUser.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Account/AddUser.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9BZGRVc2VyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Account/ChangePassword.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Account/ChangePassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9DaGFuZ2VQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Account/CheckYourEmail.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Account/CheckYourEmail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9DaGVja1lvdXJFbWFpbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Account/ConfirmEmail.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Account/ConfirmEmail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Db25maXJtRW1haWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Account/CreateAccount.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Account/CreateAccount.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9DcmVhdGVBY2NvdW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Account/EditUser.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Account/EditUser.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9FZGl0VXNlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Account/Login.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Mb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Account/ResetPassword.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Account/ResetPassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZXNldFBhc3N3b3JkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Account/SetPassword.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Account/SetPassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9TZXRQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Account/ValidateStudent.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Account/ValidateStudent.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9WYWxpZGF0ZVN0dWRlbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/AcademicYears.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/AcademicYears.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvQWNhZGVtaWNZZWFycy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/BulkUploadStudents.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/BulkUploadStudents.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvQnVsa1VwbG9hZFN0dWRlbnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/CollegeClass.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/CollegeClass.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvQ29sbGVnZUNsYXNzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/CollegeHalls.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/CollegeHalls.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvQ29sbGVnZUhhbGxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/CreateAcademicSemester.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/CreateAcademicSemester.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvQ3JlYXRlQWNhZGVtaWNTZW1lc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/CreateAcademicYear.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/CreateAcademicYear.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvQ3JlYXRlQWNhZGVtaWNZZWFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/CreateBackup.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/CreateBackup.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvQ3JlYXRlQmFja3VwLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/CreateCourse.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/CreateCourse.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvQ3JlYXRlQ291cnNlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/CreateCourseCopy.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/CreateCourseCopy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvQ3JlYXRlQ291cnNlQ29weS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/CreateFeeStructure.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/CreateFeeStructure.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvQ3JlYXRlRmVlU3RydWN0dXJlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/CreatePartPaymentConfig.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/CreatePartPaymentConfig.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvQ3JlYXRlUGFydFBheW1lbnRDb25maWcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/CreateProgram.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/CreateProgram.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvQ3JlYXRlUHJvZ3JhbS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/CreateRequiredFee.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/CreateRequiredFee.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvQ3JlYXRlUmVxdWlyZWRGZWUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/DeleteAcademicSemester.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/DeleteAcademicSemester.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvRGVsZXRlQWNhZGVtaWNTZW1lc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/DeleteAcademicYear.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/DeleteAcademicYear.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvRGVsZXRlQWNhZGVtaWNZZWFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/DeleteCourse.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/DeleteCourse.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvRGVsZXRlQ291cnNlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/DeleteFeeStructure.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/DeleteFeeStructure.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvRGVsZXRlRmVlU3RydWN0dXJlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/DeleteProgram.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/DeleteProgram.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvRGVsZXRlUHJvZ3JhbS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/EditAcademicSemester.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/EditAcademicSemester.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvRWRpdEFjYWRlbWljU2VtZXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/EditAcademicYear.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/EditAcademicYear.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvRWRpdEFjYWRlbWljWWVhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/EditCourse.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/EditCourse.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvRWRpdENvdXJzZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/EditCourseold.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/EditCourseold.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvRWRpdENvdXJzZW9sZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/EditFeeStructure.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/EditFeeStructure.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvRWRpdEZlZVN0cnVjdHVyZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/EditPartPaymentConfig.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/EditPartPaymentConfig.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvRWRpdFBhcnRQYXltZW50Q29uZmlnLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/EditProgram.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/EditProgram.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvRWRpdFByb2dyYW0uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/EditRequiredFee.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/EditRequiredFee.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvRWRpdFJlcXVpcmVkRmVlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/index.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvaW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/index_Old.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/index_Old.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvaW5kZXhfT2xkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/ManageAcademicSemesters.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/ManageAcademicSemesters.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvTWFuYWdlQWNhZGVtaWNTZW1lc3RlcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/ManageCourses.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/ManageCourses.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvTWFuYWdlQ291cnNlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/ManageFeeStructures.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/ManageFeeStructures.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvTWFuYWdlRmVlU3RydWN0dXJlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/ManagePartPaymentConfigs.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/ManagePartPaymentConfigs.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvTWFuYWdlUGFydFBheW1lbnRDb25maWdzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/ManagePrograms.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/ManagePrograms.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvTWFuYWdlUHJvZ3JhbXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/ManageRequiredFees.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/ManageRequiredFees.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvTWFuYWdlUmVxdWlyZWRGZWVzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/PromoteStudents.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/PromoteStudents.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvUHJvbW90ZVN0dWRlbnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/PromoteStudents_old.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/PromoteStudents_old.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvUHJvbW90ZVN0dWRlbnRzX29sZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/AdminDashboard/UploadCourses.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AdminDashboard/UploadCourses.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5EYXNoYm9hcmQvVXBsb2FkQ291cnNlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/FinanceDashboard/DeleteLegacyOutstandingFee.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AssessmentApproval/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXNzbWVudEFwcHJvdmFsL0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AssessmentApproval/Pending.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXNzbWVudEFwcHJvdmFsL1BlbmRpbmcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AssessmentStructure/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXNzbWVudFN0cnVjdHVyZS9DcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AssessmentStructure/CreateGradingScale.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXNzbWVudFN0cnVjdHVyZS9DcmVhdGVHcmFkaW5nU2NhbGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AssessmentStructure/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXNzbWVudFN0cnVjdHVyZS9EZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AssessmentStructure/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXNzbWVudFN0cnVjdHVyZS9FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AssessmentStructure/EditGradingScale.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXNzbWVudFN0cnVjdHVyZS9FZGl0R3JhZGluZ1NjYWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AssessmentStructure/GradingScales.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXNzbWVudFN0cnVjdHVyZS9HcmFkaW5nU2NhbGVzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/AssessmentStructure/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXNzZXNzbWVudFN0cnVjdHVyZS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/CourseLecturer/Assign.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ291cnNlTGVjdHVyZXIvQXNzaWduLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/CourseLecturer/CreateDepartment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ291cnNlTGVjdHVyZXIvQ3JlYXRlRGVwYXJ0bWVudC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/CourseLecturer/CreateLecturer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ291cnNlTGVjdHVyZXIvQ3JlYXRlTGVjdHVyZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/CourseLecturer/Departments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ291cnNlTGVjdHVyZXIvRGVwYXJ0bWVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/CourseLecturer/EditDepartment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ291cnNlTGVjdHVyZXIvRWRpdERlcGFydG1lbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/CourseLecturer/EditLecturer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ291cnNlTGVjdHVyZXIvRWRpdExlY3R1cmVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/CourseLecturer/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ291cnNlTGVjdHVyZXIvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/CourseLecturer/Lecturers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ291cnNlTGVjdHVyZXIvTGVjdHVyZXJzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/FinanceDashboard/DeleteLegacyOutstandingFee.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmluYW5jZURhc2hib2FyZC9EZWxldGVMZWdhY3lPdXRzdGFuZGluZ0ZlZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/FinanceDashboard/FeesCollected.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/FinanceDashboard/FeesCollected.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmluYW5jZURhc2hib2FyZC9GZWVzQ29sbGVjdGVkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/FinanceDashboard/Index.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/FinanceDashboard/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmluYW5jZURhc2hib2FyZC9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/FinanceDashboard/LegacyOutstandingFeesList.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/FinanceDashboard/LegacyOutstandingFeesList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmluYW5jZURhc2hib2FyZC9MZWdhY3lPdXRzdGFuZGluZ0ZlZXNMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/FinanceDashboard/OutstandingFees.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/FinanceDashboard/OutstandingFees.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmluYW5jZURhc2hib2FyZC9PdXRzdGFuZGluZ0ZlZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/FinanceDashboard/PendingPayments.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/FinanceDashboard/PendingPayments.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmluYW5jZURhc2hib2FyZC9QZW5kaW5nUGF5bWVudHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/FinanceDashboard/PendingPayments2.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/FinanceDashboard/PendingPayments2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmluYW5jZURhc2hib2FyZC9QZW5kaW5nUGF5bWVudHMyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/FinanceDashboard/PendingPaymentsNoUpload.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/FinanceDashboard/PendingPaymentsNoUpload.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmluYW5jZURhc2hib2FyZC9QZW5kaW5nUGF5bWVudHNOb1VwbG9hZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/FinanceDashboard/UploadPreviousOutstandingFees.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/FinanceDashboard/UploadPreviousOutstandingFees.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmluYW5jZURhc2hib2FyZC9VcGxvYWRQcmV2aW91c091dHN0YW5kaW5nRmVlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Home/Index.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Home/Privacy.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Reports/AllActiveStudents.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/MarksEntry/BulkUpload.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFya3NFbnRyeS9CdWxrVXBsb2FkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/MarksEntry/EnterMarks.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFya3NFbnRyeS9FbnRlck1hcmtzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/MarksEntry/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFya3NFbnRyeS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/NonTeachingStaff/Appraisals.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTm9uVGVhY2hpbmdTdGFmZi9BcHByYWlzYWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/NonTeachingStaff/ConductAppraisal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTm9uVGVhY2hpbmdTdGFmZi9Db25kdWN0QXBwcmFpc2FsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/NonTeachingStaff/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTm9uVGVhY2hpbmdTdGFmZi9DcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/NonTeachingStaff/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTm9uVGVhY2hpbmdTdGFmZi9FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/NonTeachingStaff/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTm9uVGVhY2hpbmdTdGFmZi9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/NonTeachingStaff/StartAppraisal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTm9uVGVhY2hpbmdTdGFmZi9TdGFydEFwcHJhaXNhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Permissions/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGVybWlzc2lvbnMvRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Permissions/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGVybWlzc2lvbnMvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Reports/AllActiveStudents.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9BbGxBY3RpdmVTdHVkZW50cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Reports/AllFinancialInfoStudents.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Reports/AllFinancialInfoStudents.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9BbGxGaW5hbmNpYWxJbmZvU3R1ZGVudHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Reports/AuditLogReport.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Reports/AuditLogReport.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9BdWRpdExvZ1JlcG9ydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Reports/CourseStudents.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Reports/CourseStudents.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9Db3Vyc2VTdHVkZW50cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Reports/DeferredStudents.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Reports/DeferredStudents.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9EZWZlcnJlZFN0dWRlbnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Reports/DroppedOutStudents.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Reports/DroppedOutStudents.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9Ecm9wcGVkT3V0U3R1ZGVudHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Reports/GraduatedStudents.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Reports/GraduatedStudents.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9HcmFkdWF0ZWRTdHVkZW50cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Reports/Index.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Reports/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Reports/LegacyOutstandingFeesReport.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Reports/LegacyOutstandingFeesReport.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9MZWdhY3lPdXRzdGFuZGluZ0ZlZXNSZXBvcnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Reports/NoStudentsByCourse.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Reports/NoStudentsByCourse.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9Ob1N0dWRlbnRzQnlDb3Vyc2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Reports/OutstandingBalancesReport.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Reports/OutstandingBalancesReport.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9PdXRzdGFuZGluZ0JhbGFuY2VzUmVwb3J0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Reports/OverPaymentFees.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Reports/OverPaymentFees.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9PdmVyUGF5bWVudEZlZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Reports/PaymentReport.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Reports/PaymentReport.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9QYXltZW50UmVwb3J0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Reports/PaymentSummaryReport.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Reports/PaymentSummaryReport.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9QYXltZW50U3VtbWFyeVJlcG9ydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Reports/RevenueReport.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Reports/RevenueReport.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9SZXZlbnVlUmVwb3J0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Reports/StudentCourseList.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Reports/StudentCourseList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9TdHVkZW50Q291cnNlTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Reports/TransferredStudents.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Reports/TransferredStudents.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0cy9UcmFuc2ZlcnJlZFN0dWRlbnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Shared/Error.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Shared/ErrorTwo.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Shared/ErrorTwo.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yVHdvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Shared/SideMenu.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Shared/SideMenu.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL1NpZGVNZW51LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Shared/_AdminLayout.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Shared/_AdminLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19BZG1pbkxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Shared/_LoginLayout.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Shared/_LoginLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19Mb2dpbkxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Shared/_PaginationPartial.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Shared/_PaginationPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19QYWdpbmF0aW9uUGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Shared/_PaginationPartial1.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Shared/_PaginationPartial1.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19QYWdpbmF0aW9uUGFydGlhbDEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Shared/_ValidationScriptsPartial.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/AddEducationHistory.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/AddEducationHistory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9BZGRFZHVjYXRpb25IaXN0b3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/AddFinancialInfo.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/AddFinancialInfo.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9BZGRGaW5hbmNpYWxJbmZvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/AddParentGuardian.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/AddParentGuardian.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9BZGRQYXJlbnRHdWFyZGlhbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/Create.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9DcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/Delete.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9EZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/DeleteEducationHistory.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/DeleteEducationHistory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9EZWxldGVFZHVjYXRpb25IaXN0b3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/DeleteFinancialInfo.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/DeleteFinancialInfo.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9EZWxldGVGaW5hbmNpYWxJbmZvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/DeleteParentGuardian.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/DeleteParentGuardian.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9EZWxldGVQYXJlbnRHdWFyZGlhbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/Details.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9EZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/Details_new.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/Details_new.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9EZXRhaWxzX25ldy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/Edit.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9FZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/EditEducationHistory.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/EditEducationHistory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9FZGl0RWR1Y2F0aW9uSGlzdG9yeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/EditFinancialInfo.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/EditFinancialInfo.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9FZGl0RmluYW5jaWFsSW5mby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/EditParentGuardian.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/EditParentGuardian.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9FZGl0UGFyZW50R3VhcmRpYW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/EducationHistories.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/EducationHistories.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9FZHVjYXRpb25IaXN0b3JpZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/FinancialInfo.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/FinancialInfo.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9GaW5hbmNpYWxJbmZvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/Index.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/ParentGuardians.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/ParentGuardians.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9QYXJlbnRHdWFyZGlhbnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Student/UploadStudents.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Student/UploadStudents.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9VcGxvYWRTdHVkZW50cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/AddEducationHistory.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/AddEducationHistory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9BZGRFZHVjYXRpb25IaXN0b3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/AddFinancialInfo.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/AddFinancialInfo.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9BZGRGaW5hbmNpYWxJbmZvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/AddParentGuardian.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/AddParentGuardian.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9BZGRQYXJlbnRHdWFyZGlhbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/DeleteEducationHistory.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/DeleteEducationHistory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9EZWxldGVFZHVjYXRpb25IaXN0b3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/DeleteFinancialInfo.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/DeleteFinancialInfo.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9EZWxldGVGaW5hbmNpYWxJbmZvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/DeleteParentGuardian.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/DeleteParentGuardian.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9EZWxldGVQYXJlbnRHdWFyZGlhbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/EditEducationHistory.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/EditEducationHistory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9FZGl0RWR1Y2F0aW9uSGlzdG9yeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/EditFinancialInfo.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/EditFinancialInfo.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9FZGl0RmluYW5jaWFsSW5mby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/EditParentGuardian.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/EditParentGuardian.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9FZGl0UGFyZW50R3VhcmRpYW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/EditProfile.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/EditProfile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9FZGl0UHJvZmlsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/EditStudent.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/EditStudent.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9FZGl0U3R1ZGVudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/Index.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/Index_Old.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/Index_Old.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9JbmRleF9PbGQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/Index_old2.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/Index_old2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9JbmRleF9vbGQyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/Index_old3.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/Index_old3.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9JbmRleF9vbGQzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/MakePayment.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/MakePayment.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9NYWtlUGF5bWVudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/PaymentReceipt.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/PaymentReceipt.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9QYXltZW50UmVjZWlwdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/Payments.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/Payments.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9QYXltZW50cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/Payments1.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/Payments1.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9QYXltZW50czEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/PaymentSlip.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/PaymentSlip.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9QYXltZW50U2xpcC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/StudentDashboard/UploadReceipt.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentDashboard/UploadReceipt.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudERhc2hib2FyZC9VcGxvYWRSZWNlaXB0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/_ViewImports.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentResults/AllResults.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudFJlc3VsdHMvQWxsUmVzdWx0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/StudentResults/MyResults.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudFJlc3VsdHMvTXlSZXN1bHRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/TeachingAppraisal/ConductAppraisal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGVhY2hpbmdBcHByYWlzYWwvQ29uZHVjdEFwcHJhaXNhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/TeachingAppraisal/CreateTemplate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGVhY2hpbmdBcHByYWlzYWwvQ3JlYXRlVGVtcGxhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/TeachingAppraisal/EditTemplate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGVhY2hpbmdBcHByYWlzYWwvRWRpdFRlbXBsYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/TeachingAppraisal/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGVhY2hpbmdBcHByYWlzYWwvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/TeachingAppraisal/MyAppraisals.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGVhY2hpbmdBcHByYWlzYWwvTXlBcHByYWlzYWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/TeachingAppraisal/StartAppraisal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGVhY2hpbmdBcHByYWlzYWwvU3RhcnRBcHByYWlzYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/TeachingAppraisal/Templates.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGVhY2hpbmdBcHByYWlzYWwvVGVtcGxhdGVzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Transcript/Generate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVHJhbnNjcmlwdC9HZW5lcmF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Transcript/Log.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVHJhbnNjcmlwdC9Mb2cuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Transcript/MyTranscript.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVHJhbnNjcmlwdC9NeVRyYW5zY3JpcHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/_ViewStart.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/Views/Shared/_Layout.cshtml]
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-soe1muqxm5
