@@ -87,6 +87,7 @@ builder.Services.AddScoped<IGPAService, GPAService>();
 builder.Services.AddScoped<ITranscriptService, TranscriptService>();
 builder.Services.AddScoped<ITeachingAppraisalService, TeachingAppraisalService>();
 builder.Services.AddScoped<INonTeachingStaffService, NonTeachingStaffService>();
+builder.Services.AddScoped<IStudentAppraisalService, StudentAppraisalService>();
 
 var cultureInfo = new CultureInfo("en-GH");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;

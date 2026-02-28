@@ -12,7 +12,13 @@ public class ApplicationUser: IdentityUser
     public DateTime? LastLoginTime { get; set; }
     
     public string? AccountType { get; set; }
-    
+
+    /// <summary>
+    /// For HOD and Unit Head users: the department/unit they oversee.
+    /// Used to scope course assignments and non-teaching staff appraisals.
+    /// </summary>
+    public Guid? DepartmentId { get; set; }
+
     public ApplicationUser()
     {
         //IsConfirmed = false;

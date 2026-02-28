@@ -22,6 +22,11 @@ public class NonTeachingStaff : EntityHelper
 
     public string? Department { get; set; }
 
+    /// <summary>FK to the Department model for scoping by Unit Head.</summary>
+    [ForeignKey("DepartmentEntity")]
+    public Guid? DepartmentId { get; set; }
+    public PWCEPortal.Models.Academic.Department? DepartmentEntity { get; set; }
+
     public string? Email { get; set; }
 
     public string? PhoneNo { get; set; }

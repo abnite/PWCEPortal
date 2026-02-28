@@ -20,6 +20,12 @@ public class NonTeachingStaffService : INonTeachingStaffService
             .OrderBy(s => s.FullName)
             .ToListAsync();
 
+    public async Task<List<NonTeachingStaff>> GetStaffByDepartmentAsync(Guid departmentId) =>
+        await _context.NonTeachingStaffMembers
+            .Where(s => s.IsDeleted != true && s.DepartmentId == departmentId)
+            .OrderBy(s => s.FullName)
+            .ToListAsync();
+
     public async Task<NonTeachingStaff?> GetStaffByIdAsync(Guid id) =>
         await _context.NonTeachingStaffMembers
             .FirstOrDefaultAsync(s => s.Id == id && s.IsDeleted != true);

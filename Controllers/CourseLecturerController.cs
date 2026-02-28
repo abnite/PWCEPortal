@@ -82,7 +82,14 @@ public class CourseLecturerController : Controller
     [Authorize(Policy = Permissions.CourseLecturer.View)]
     public async Task<IActionResult> Lecturers()
     {
-        var lecturers = await _service.GetAllLecturersAsync();
+        var user = await _userManager.GetUserAsync(User);
+        List<Lecturer> lecturers;
+        // HOD sees only their own department; System Admin sees all
+        if (user!.DepartmentId.HasValue && !User.IsInRole(RoleNames.SystemAdmin))
+            lecturers = await _service.GetLecturersByDepartmentAsync(user.DepartmentId.Value);
+        else
+            lecturers = await _service.GetAllLecturersAsync();
+
         return View(lecturers);
     }
 
@@ -170,6 +177,8 @@ public class CourseLecturerController : Controller
     [Authorize(Policy = Permissions.CourseLecturer.View)]
     public async Task<IActionResult> Index(Guid? semesterId, Guid? departmentId)
     {
+        var user = await _userManager.GetUserAsync(User);
+
         var semesters = await _context.AcademicSemesters
             .Include(s => s.AcademicYear)
             .Where(s => s.IsDeleted != true)
@@ -181,21 +190,33 @@ public class CourseLecturerController : Controller
 
         var selectedSemesterId = semesterId ?? activeSemester?.Id;
 
+        // HOD is locked to their own department
+        Guid? effectiveDeptId = user!.DepartmentId.HasValue && !User.IsInRole(RoleNames.SystemAdmin)
+            ? user.DepartmentId
+            : departmentId;
+
         ViewBag.Semesters = semesters;
         ViewBag.SelectedSemesterId = selectedSemesterId;
         ViewBag.Departments = await _service.GetAllDepartmentsAsync();
-        ViewBag.SelectedDepartmentId = departmentId;
+        ViewBag.SelectedDepartmentId = effectiveDeptId;
+        ViewBag.IsHODScoped = user.DepartmentId.HasValue && !User.IsInRole(RoleNames.SystemAdmin);
 
-        var assignments = await _service.GetAssignmentsAsync(selectedSemesterId, departmentId);
+        var assignments = await _service.GetAssignmentsAsync(selectedSemesterId, effectiveDeptId);
         return View(assignments);
     }
 
     [Authorize(Policy = Permissions.CourseLecturer.Assign)]
     public async Task<IActionResult> Assign()
     {
+        var user = await _userManager.GetUserAsync(User);
+        bool isHODScoped = user!.DepartmentId.HasValue && !User.IsInRole(RoleNames.SystemAdmin);
+
         var vm = new AssignLecturerViewModel
         {
-            Lecturers = await _service.GetAllLecturersAsync(),
+            // HOD only sees lecturers in their department
+            Lecturers = isHODScoped
+                ? await _service.GetLecturersByDepartmentAsync(user.DepartmentId!.Value)
+                : await _service.GetAllLecturersAsync(),
             Courses = await _context.Courses.Where(c => c.IsDeleted != true).OrderBy(c => c.CourseName).ToListAsync(),
             Semesters = await _context.AcademicSemesters
                 .Include(s => s.AcademicYear)
@@ -210,12 +231,28 @@ public class CourseLecturerController : Controller
     [Authorize(Policy = Permissions.CourseLecturer.Assign)]
     public async Task<IActionResult> Assign(AssignLecturerViewModel model)
     {
+        var user = await _userManager.GetUserAsync(User);
+        bool isHODScoped = user!.DepartmentId.HasValue && !User.IsInRole(RoleNames.SystemAdmin);
+
         if (!ModelState.IsValid)
         {
-            model.Lecturers = await _service.GetAllLecturersAsync();
+            model.Lecturers = isHODScoped
+                ? await _service.GetLecturersByDepartmentAsync(user.DepartmentId!.Value)
+                : await _service.GetAllLecturersAsync();
             model.Courses = await _context.Courses.Where(c => c.IsDeleted != true).OrderBy(c => c.CourseName).ToListAsync();
             model.Semesters = await _context.AcademicSemesters.Include(s => s.AcademicYear).Where(s => s.IsDeleted != true).ToListAsync();
             return View(model);
+        }
+
+        // HOD scoping: ensure the lecturer belongs to the HOD's department
+        if (isHODScoped)
+        {
+            var lecturer = await _service.GetLecturerByIdAsync(model.LecturerId);
+            if (lecturer?.DepartmentId != user.DepartmentId)
+            {
+                TempData["ErrorMessage"] = "You can only assign lecturers from your own department.";
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         if (await _service.AssignmentExistsAsync(model.CourseId, model.AcademicSemesterId))

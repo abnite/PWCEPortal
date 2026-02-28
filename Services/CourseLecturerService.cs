@@ -53,6 +53,14 @@ public class CourseLecturerService : ICourseLecturerService
             .OrderBy(l => l.User!.LastName)
             .ToListAsync();
 
+    public async Task<List<Lecturer>> GetLecturersByDepartmentAsync(Guid departmentId) =>
+        await _context.Lecturers
+            .Include(l => l.User)
+            .Include(l => l.Department)
+            .Where(l => l.IsDeleted != true && l.DepartmentId == departmentId)
+            .OrderBy(l => l.User!.LastName)
+            .ToListAsync();
+
     public async Task<Lecturer?> GetLecturerByIdAsync(Guid id) =>
         await _context.Lecturers
             .Include(l => l.User)

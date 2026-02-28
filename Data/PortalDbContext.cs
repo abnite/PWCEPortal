@@ -80,6 +80,11 @@ public class PortalDbContext:IdentityDbContext<ApplicationUser,ApplicationRole,s
     public DbSet<TeachingAppraisal> TeachingAppraisals { get; set; }
     public DbSet<TeachingAppraisalScore> TeachingAppraisalScores { get; set; }
 
+    // Phase 2 – Student-Conducted Appraisal (Module H — student feedback)
+    public DbSet<TeachingAppraisalSession> TeachingAppraisalSessions { get; set; }
+    public DbSet<StudentAppraisalSubmission> StudentAppraisalSubmissions { get; set; }
+    public DbSet<StudentAppraisalScore> StudentAppraisalScores { get; set; }
+
     // Phase 2 – Non-Teaching Staff (Module I)
     public DbSet<NonTeachingStaff> NonTeachingStaffMembers { get; set; }
     public DbSet<NonTeachingAppraisal> NonTeachingAppraisals { get; set; }

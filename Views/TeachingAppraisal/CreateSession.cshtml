@@ -1,0 +1,93 @@
+@using PWCEPortal.Models.Academic
+@{
+    ViewBag.Title = "Create Appraisal Session";
+    Layout = "_AdminLayout";
+    var assignments = (List<CourseLecturerAssignment>)ViewBag.Assignments;
+    var templates = (List<PWCEPortal.Models.Staff.AppraisalTemplate>)ViewBag.Templates;
+    var years = (List<AcademicYear>)ViewBag.AcademicYears;
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Create Appraisal Session</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Sessions" asp-controller="TeachingAppraisal">Appraisal Sessions</a></li>
+                <li class="breadcrumb-item active">New Session</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i>New Appraisal Session</h5>
+        </div>
+        <div class="card-body">
+            <p class="text-muted mb-4">
+                Create a session to collect student feedback for a specific course-lecturer assignment.
+                Once created, students registered to that course will see it in their "Course Appraisals" menu.
+            </p>
+
+            <form asp-action="CreateSession" asp-controller="TeachingAppraisal" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Course-Lecturer Assignment <span class="text-danger">*</span></label>
+                    <select name="assignmentId" class="form-select select2" required>
+                        <option value="">— Select assignment —</option>
+                        @foreach (var a in assignments)
+                        {
+                            <option value="@a.Id">
+                                @a.Course?.CourseName — @(a.Lecturer?.User?.FirstName + " " + a.Lecturer?.User?.LastName)
+                                (@a.AcademicSemester?.Name @a.AcademicSemester?.AcademicYear?.Year)
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Appraisal Template <span class="text-danger">*</span></label>
+                    <select name="templateId" class="form-select select2" required>
+                        <option value="">— Select template —</option>
+                        @foreach (var t in templates)
+                        {
+                            <option value="@t.Id">@t.TemplateName</option>
+                        }
+                    </select>
+                    <div class="form-text">
+                        Templates define the criteria students will rate. Configure templates in
+                        <a asp-action="Templates" asp-controller="TeachingAppraisal">Appraisal Templates</a>.
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Academic Year <span class="text-danger">*</span></label>
+                    <select name="academicYearId" class="form-select" required>
+                        <option value="">— Select year —</option>
+                        @foreach (var y in years)
+                        {
+                            <option value="@y.Id" @(y.IsActive ? "selected" : "")>@y.Year</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <a asp-action="Sessions" asp-controller="TeachingAppraisal" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i>Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-clipboard-check me-1"></i>Create Session
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2({ theme: 'bootstrap-5', width: '100%' });
+        });
+    </script>
+}

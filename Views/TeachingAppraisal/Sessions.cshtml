@@ -1,0 +1,135 @@
+@using PWCEPortal.Models.Staff
+@model List<TeachingAppraisalSession>
+@{
+    ViewBag.Title = "Appraisal Sessions";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Appraisal Sessions</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdminDashboard">Dashboard</a></li>
+                <li class="breadcrumb-item active">Appraisal Sessions</li>
+            </ol>
+        </nav>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-triangle me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fas fa-clipboard-check me-2"></i>My Appraisal Sessions</h5>
+            <a asp-action="CreateSession" asp-controller="TeachingAppraisal" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus me-1"></i>New Session
+            </a>
+        </div>
+        <div class="card-body">
+            @if (!Model.Any())
+            {
+                <div class="text-center text-muted py-5">
+                    <i class="fas fa-clipboard fa-3x mb-3 d-block"></i>
+                    <p>No appraisal sessions created yet.</p>
+                    <a asp-action="CreateSession" asp-controller="TeachingAppraisal" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i>Create First Session
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table id="sessionsTable" class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Course</th>
+                                <th>Lecturer</th>
+                                <th>Semester</th>
+                                <th>Template</th>
+                                <th class="text-center">Responses</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var s in Model)
+                            {
+                                var responseCount = s.Submissions?.Count ?? 0;
+                                <tr>
+                                    <td><strong>@s.Assignment?.Course?.CourseName</strong></td>
+                                    <td>@(s.Assignment?.Lecturer?.User?.FirstName + " " + s.Assignment?.Lecturer?.User?.LastName)</td>
+                                    <td>@s.Assignment?.AcademicSemester?.Name</td>
+                                    <td>@s.AppraisalTemplate?.TemplateName</td>
+                                    <td class="text-center">
+                                        <span class="badge bg-primary">@responseCount</span>
+                                    </td>
+                                    <td class="text-center">
+                                        @if (s.IsOpen)
+                                        {
+                                            <span class="badge bg-success"><i class="fas fa-circle me-1"></i>Open</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary"><i class="fas fa-lock me-1"></i>Closed</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <a asp-action="SessionResults" asp-controller="TeachingAppraisal"
+                                           asp-route-id="@s.Id"
+                                           class="btn btn-sm btn-outline-primary me-1" title="View Results">
+                                            <i class="fas fa-chart-bar"></i>
+                                        </a>
+                                        @if (s.IsOpen)
+                                        {
+                                            <form asp-action="CloseSession" asp-controller="TeachingAppraisal"
+                                                  method="post" class="d-inline"
+                                                  onsubmit="return confirm('Close this session? Students will no longer be able to submit.')">
+                                                <input type="hidden" name="id" value="@s.Id" />
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-sm btn-outline-warning" title="Close Session">
+                                                    <i class="fas fa-lock"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <form asp-action="ReopenSession" asp-controller="TeachingAppraisal"
+                                                  method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@s.Id" />
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-sm btn-outline-success" title="Reopen Session">
+                                                    <i class="fas fa-lock-open"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#sessionsTable').DataTable({ order: [[2, 'desc']] });
+        });
+    </script>
+}

@@ -77,10 +77,12 @@ public static class Permissions
     // ── Module H: Teaching Staff Appraisal ──────────────────────────────────
     public static class TeachingAppraisal
     {
-        public const string ViewOwn        = "Permissions.TeachingAppraisal.ViewOwn";
-        public const string ConductAsHOD   = "Permissions.TeachingAppraisal.ConductAsHOD";
-        public const string ViewDepartment = "Permissions.TeachingAppraisal.ViewDepartment";
-        public const string ViewAll        = "Permissions.TeachingAppraisal.ViewAll";
+        public const string ViewOwn           = "Permissions.TeachingAppraisal.ViewOwn";
+        public const string StudentAppraise   = "Permissions.TeachingAppraisal.StudentAppraise";
+        public const string ConductAsHOD      = "Permissions.TeachingAppraisal.ConductAsHOD";
+        public const string ManageSessions    = "Permissions.TeachingAppraisal.ManageSessions";
+        public const string ViewDepartment    = "Permissions.TeachingAppraisal.ViewDepartment";
+        public const string ViewAll           = "Permissions.TeachingAppraisal.ViewAll";
         public const string ConfigureTemplate = "Permissions.TeachingAppraisal.ConfigureTemplate";
     }
 
@@ -137,6 +139,7 @@ public static class Permissions
         RoleNames.VicePrincipal => PrincipalPermissions,
         RoleNames.Student => StudentPermissions,
         RoleNames.HROfficer => HROfficerPermissions,
+        RoleNames.UnitHead => UnitHeadPermissions,
         RoleNames.SystemAdmin => SystemAdminPermissions,
         RoleNames.FinanceOfficer => FinanceOfficerPermissions,
         RoleNames.Registrar => RegistrarPermissions,
@@ -166,9 +169,11 @@ public static class Permissions
         AssessmentApproval.HODApprove,
         AssessmentApproval.HODReject,
         TeachingAppraisal.ConductAsHOD,
+        TeachingAppraisal.ManageSessions,
         TeachingAppraisal.ViewDepartment,
         Reports.ViewAcademicReports,
         StudentResults.ViewByDepartment,
+        StudentResults.ViewAll,
     };
 
     public static readonly IReadOnlyList<string> QAOfficerPermissions = new[]
@@ -217,6 +222,16 @@ public static class Permissions
     {
         StudentResults.ViewOwn,
         Transcripts.GenerateOwn,
+        TeachingAppraisal.StudentAppraise,
+    };
+
+    public static readonly IReadOnlyList<string> UnitHeadPermissions = new[]
+    {
+        NonTeachingStaff.View,
+        NonTeachingStaff.Manage,
+        NonTeachingStaff.Appraise,
+        NonTeachingStaff.ViewReports,
+        NonTeachingStaff.ConfigureTemplate,
     };
 
     public static readonly IReadOnlyList<string> HROfficerPermissions = new[]
@@ -294,4 +309,5 @@ public static class RoleNames
     public const string Principal            = "Principal";
     public const string VicePrincipal        = "Vice Principal";
     public const string HROfficer            = "HR Officer";
+    public const string UnitHead             = "Unit Head";
 }

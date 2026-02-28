@@ -6,6 +6,7 @@ public interface INonTeachingStaffService
 {
     // Staff records
     Task<List<NonTeachingStaff>> GetAllStaffAsync();
+    Task<List<NonTeachingStaff>> GetStaffByDepartmentAsync(Guid departmentId);
     Task<NonTeachingStaff?> GetStaffByIdAsync(Guid id);
     Task<bool> CreateStaffAsync(NonTeachingStaff staff);
     Task<bool> UpdateStaffAsync(NonTeachingStaff staff);

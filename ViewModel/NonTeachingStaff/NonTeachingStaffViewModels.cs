@@ -21,6 +21,9 @@ public class NonTeachingStaffFormViewModel
 
     public string? Department { get; set; }
 
+    [Display(Name = "Department")]
+    public Guid? DepartmentId { get; set; }
+
     [EmailAddress]
     public string? Email { get; set; }
 

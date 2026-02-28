@@ -1,0 +1,143 @@
+@using PWCEPortal.Models.Staff
+@model List<AppraisalCriterion>
+@{
+    var session = (TeachingAppraisalSession)ViewBag.Session;
+    var studentId = (Guid)ViewBag.StudentId;
+    var existing = (Dictionary<Guid, decimal>)ViewBag.ExistingScores;
+    var alreadySubmitted = (bool)ViewBag.AlreadySubmitted;
+    ViewBag.Title = "Fill In Appraisal";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Course Appraisal</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="StudentDashboard">Dashboard</a></li>
+                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="StudentAppraisal">Course Appraisals</a></li>
+                <li class="breadcrumb-item active">Fill In</li>
+            </ol>
+        </nav>
+    </div>
+
+    @if (alreadySubmitted)
+    {
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle me-2"></i>You have already submitted your appraisal for this session.
+        </div>
+        <a asp-action="Index" asp-controller="StudentAppraisal" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i>Back to Appraisals
+        </a>
+    }
+    else
+    {
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-book me-2"></i>@session.Assignment?.Course?.CourseName</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Lecturer:</strong> @(session.Assignment?.Lecturer?.User?.FirstName + " " + session.Assignment?.Lecturer?.User?.LastName)</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Semester:</strong> @session.Assignment?.AcademicSemester?.Name</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Template:</strong> @session.AppraisalTemplate?.TemplateName</p>
+                    </div>
+                </div>
+                <div class="alert alert-info mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Rate each criterion honestly. Your response is anonymous and will only be seen in aggregate.
+                    You can save a draft and return to complete it before the session closes.
+                </div>
+            </div>
+        </div>
+
+        <form asp-action="Submit" asp-controller="StudentAppraisal" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="sessionId" value="@session.Id" />
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-star me-2"></i>Rating Criteria</h5>
+                </div>
+                <div class="card-body">
+                    @foreach (var criterion in Model)
+                    {
+                        var currentScore = existing.ContainsKey(criterion.Id) ? existing[criterion.Id] : 0m;
+                        <div class="mb-4 border rounded p-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <h6 class="mb-1">@criterion.CriterionName</h6>
+                                    @if (!string.IsNullOrEmpty(criterion.Description))
+                                    {
+                                        <p class="text-muted small mb-0">@criterion.Description</p>
+                                    }
+                                </div>
+                                <span class="badge bg-secondary">Max: @criterion.MaxScore</span>
+                            </div>
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <input type="range"
+                                           class="form-range score-slider"
+                                           name="scores[@criterion.Id]"
+                                           id="slider_@criterion.Id"
+                                           min="0" max="@criterion.MaxScore" step="1"
+                                           value="@currentScore"
+                                           data-display="display_@criterion.Id" />
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input type="number"
+                                               class="form-control score-input"
+                                               id="display_@criterion.Id"
+                                               min="0" max="@criterion.MaxScore" step="1"
+                                               value="@currentScore"
+                                               data-slider="slider_@criterion.Id"
+                                               readonly />
+                                        <span class="input-group-text">/ @criterion.MaxScore</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Overall Remarks <span class="text-muted fw-normal">(optional)</span></label>
+                        <textarea class="form-control" name="remarks" rows="3"
+                                  placeholder="Any additional comments about the lecturer or course...">@ViewBag.ExistingRemarks</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 justify-content-end">
+                <a asp-action="Index" asp-controller="StudentAppraisal" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i>Back
+                </a>
+                <button type="submit" name="submitFinal" value="false" class="btn btn-outline-warning">
+                    <i class="fas fa-save me-1"></i>Save Draft
+                </button>
+                <button type="submit" name="submitFinal" value="true" class="btn btn-success"
+                        onclick="return confirm('Submit your appraisal? You will not be able to change it afterwards.')">
+                    <i class="fas fa-paper-plane me-1"></i>Submit Appraisal
+                </button>
+            </div>
+        </form>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.score-slider').forEach(function (slider) {
+            var displayId = slider.dataset.display;
+            var display = document.getElementById(displayId);
+
+            slider.addEventListener('input', function () {
+                display.value = this.value;
+            });
+        });
+    </script>
+}

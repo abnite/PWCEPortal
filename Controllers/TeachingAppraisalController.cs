@@ -14,17 +14,20 @@ namespace PWCEPortal.Controllers;
 public class TeachingAppraisalController : Controller
 {
     private readonly ITeachingAppraisalService _service;
+    private readonly IStudentAppraisalService _sessionService;
     private readonly ICourseLecturerService _lecturerService;
     private readonly PortalDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
 
     public TeachingAppraisalController(
         ITeachingAppraisalService service,
+        IStudentAppraisalService sessionService,
         ICourseLecturerService lecturerService,
         PortalDbContext context,
         UserManager<ApplicationUser> userManager)
     {
         _service = service;
+        _sessionService = sessionService;
         _lecturerService = lecturerService;
         _context = context;
         _userManager = userManager;
@@ -236,4 +239,93 @@ public class TeachingAppraisalController : Controller
         new() { CriterionName = "Assessment & Feedback",              MaxScore = 15, DisplayOrder = 5 },
         new() { CriterionName = "Punctuality & Professionalism",      MaxScore = 15, DisplayOrder = 6 },
     };
+
+    // ── HOD: Student Appraisal Sessions ──────────────────────────────────────
+
+    /// <summary>Lists appraisal sessions the HOD has created.</summary>
+    [Authorize(Policy = Permissions.TeachingAppraisal.ConductAsHOD)]
+    public async Task<IActionResult> Sessions()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        var sessions = await _sessionService.GetSessionsByHODAsync(user!.Id);
+        return View(sessions);
+    }
+
+    /// <summary>HOD creates a new student appraisal session for one of their courses.</summary>
+    [Authorize(Policy = Permissions.TeachingAppraisal.ConductAsHOD)]
+    public async Task<IActionResult> CreateSession()
+    {
+        var user = await _userManager.GetUserAsync(User);
+
+        // Get assignments for courses in the HOD's department
+        var assignments = await _context.CourseLecturerAssignments
+            .Include(a => a.Course)
+            .Include(a => a.Lecturer).ThenInclude(l => l!.User)
+            .Include(a => a.AcademicSemester).ThenInclude(s => s!.AcademicYear)
+            .Where(a => a.IsDeleted != true
+                     && (user!.DepartmentId == null || a.Lecturer!.DepartmentId == user.DepartmentId))
+            .OrderByDescending(a => a.AcademicSemester!.AcademicYear!.Year)
+            .ToListAsync();
+
+        ViewBag.Assignments = assignments;
+        ViewBag.Templates = await _service.GetTeachingTemplatesAsync();
+        ViewBag.AcademicYears = await _context.AcademicYears.Where(y => y.IsDeleted != true).OrderByDescending(y => y.Year).ToListAsync();
+        return View();
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    [Authorize(Policy = Permissions.TeachingAppraisal.ConductAsHOD)]
+    public async Task<IActionResult> CreateSession(Guid templateId, Guid assignmentId, Guid academicYearId)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        await _sessionService.CreateSessionAsync(templateId, assignmentId, academicYearId, user!.Id);
+        TempData["SuccessMessage"] = "Appraisal session created. Students can now fill in their feedback.";
+        return RedirectToAction(nameof(Sessions));
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    [Authorize(Policy = Permissions.TeachingAppraisal.ConductAsHOD)]
+    public async Task<IActionResult> CloseSession(Guid id)
+    {
+        await _sessionService.CloseSessionAsync(id);
+        TempData["SuccessMessage"] = "Session closed. No more submissions will be accepted.";
+        return RedirectToAction(nameof(Sessions));
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    [Authorize(Policy = Permissions.TeachingAppraisal.ConductAsHOD)]
+    public async Task<IActionResult> ReopenSession(Guid id)
+    {
+        await _sessionService.ReopenSessionAsync(id);
+        TempData["SuccessMessage"] = "Session reopened.";
+        return RedirectToAction(nameof(Sessions));
+    }
+
+    /// <summary>HOD views aggregate submission results for a session.</summary>
+    [Authorize(Policy = Permissions.TeachingAppraisal.ConductAsHOD)]
+    public async Task<IActionResult> SessionResults(Guid id)
+    {
+        var session = await _sessionService.GetSessionByIdAsync(id);
+        if (session is null) return NotFound();
+
+        var submissions = await _sessionService.GetSessionSubmissionsAsync(id);
+        ViewBag.Session = session;
+        ViewBag.Submissions = submissions;
+
+        // Compute average per criterion
+        var criteria = session.AppraisalTemplate?.Criteria?.Where(c => c.IsDeleted != true).OrderBy(c => c.DisplayOrder).ToList() ?? new();
+        var averages = criteria.ToDictionary(
+            c => c.Id,
+            c => submissions.Any()
+                ? submissions.SelectMany(s => s.Scores ?? new List<Models.Staff.StudentAppraisalScore>())
+                             .Where(sc => sc.AppraisalCriterionId == c.Id)
+                             .Select(sc => sc.Score)
+                             .DefaultIfEmpty(0)
+                             .Average()
+                : 0m);
+
+        ViewBag.Criteria = criteria;
+        ViewBag.Averages = averages;
+        return View();
+    }
 }

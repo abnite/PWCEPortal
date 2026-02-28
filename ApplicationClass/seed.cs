@@ -51,7 +51,8 @@ public class seed
             { RoleNames.AcademicAffairsOfficer, "Configure assessment structures and grading scales; validate and publish approved results." },
             { RoleNames.Principal,              "Provide final institutional approval on assessments; authorise post-approval corrections; access executive dashboards." },
             { RoleNames.VicePrincipal,          "Provide final institutional approval on assessments; access executive dashboards." },
-            { RoleNames.HROfficer,              "Manage non-teaching staff records; conduct and record annual appraisals." },
+            { RoleNames.HROfficer,              "Manage non-teaching staff records; configure appraisal templates." },
+            { RoleNames.UnitHead,               "Conduct and manage annual appraisals for non-teaching staff in the unit." },
         };
 
         foreach (var role in rolesWithDescriptions)
@@ -112,6 +113,7 @@ public class seed
             { RoleNames.Principal,             Permissions.PrincipalPermissions },
             { RoleNames.VicePrincipal,         Permissions.PrincipalPermissions },
             { RoleNames.HROfficer,             Permissions.HROfficerPermissions },
+            { RoleNames.UnitHead,              Permissions.UnitHeadPermissions },
         };
 
         foreach (var (roleName, defaultPerms) in roleDefaults)

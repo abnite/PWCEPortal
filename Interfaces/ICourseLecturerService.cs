@@ -14,6 +14,7 @@ public interface ICourseLecturerService
 
     // Lecturers
     Task<List<Lecturer>> GetAllLecturersAsync();
+    Task<List<Lecturer>> GetLecturersByDepartmentAsync(Guid departmentId);
     Task<Lecturer?> GetLecturerByIdAsync(Guid id);
     Task<Lecturer?> GetLecturerByUserIdAsync(string userId);
     Task<bool> CreateLecturerAsync(Lecturer lecturer);

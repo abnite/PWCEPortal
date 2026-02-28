@@ -35,18 +35,34 @@ public class NonTeachingStaffController : Controller
     [Authorize(Policy = Permissions.NonTeachingStaff.View)]
     public async Task<IActionResult> Index()
     {
-        var staff = await _service.GetAllStaffAsync();
+        var user = await _userManager.GetUserAsync(User);
+        List<Models.Staff.NonTeachingStaff> staff;
+
+        // Unit Head sees only their own department's staff; HR/System Admin sees all
+        if (user!.DepartmentId.HasValue && !User.IsInRole(RoleNames.SystemAdmin) && !User.IsInRole(RoleNames.HROfficer))
+            staff = await _service.GetStaffByDepartmentAsync(user.DepartmentId.Value);
+        else
+            staff = await _service.GetAllStaffAsync();
+
         return View(staff);
     }
 
     [Authorize(Policy = Permissions.NonTeachingStaff.Manage)]
-    public IActionResult Create() => View(new NonTeachingStaffFormViewModel());
+    public async Task<IActionResult> Create()
+    {
+        ViewBag.Departments = await _context.Departments.Where(d => d.IsDeleted != true).OrderBy(d => d.DepartmentName).ToListAsync();
+        return View(new NonTeachingStaffFormViewModel());
+    }
 
     [HttpPost, ValidateAntiForgeryToken]
     [Authorize(Policy = Permissions.NonTeachingStaff.Manage)]
     public async Task<IActionResult> Create(NonTeachingStaffFormViewModel model)
     {
-        if (!ModelState.IsValid) return View(model);
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Departments = await _context.Departments.Where(d => d.IsDeleted != true).OrderBy(d => d.DepartmentName).ToListAsync();
+            return View(model);
+        }
 
         await _service.CreateStaffAsync(new Models.Staff.NonTeachingStaff
         {
@@ -54,6 +70,7 @@ public class NonTeachingStaffController : Controller
             FullName = model.FullName,
             Position = model.Position,
             Department = model.Department,
+            DepartmentId = model.DepartmentId,
             Email = model.Email,
             PhoneNo = model.PhoneNo,
             Gender = model.Gender,
@@ -73,6 +90,7 @@ public class NonTeachingStaffController : Controller
         var staff = await _service.GetStaffByIdAsync(id);
         if (staff is null) return NotFound();
 
+        ViewBag.Departments = await _context.Departments.Where(d => d.IsDeleted != true).OrderBy(d => d.DepartmentName).ToListAsync();
         return View(new NonTeachingStaffFormViewModel
         {
             Id = staff.Id,
@@ -80,6 +98,7 @@ public class NonTeachingStaffController : Controller
             FullName = staff.FullName,
             Position = staff.Position,
             Department = staff.Department,
+            DepartmentId = staff.DepartmentId,
             Email = staff.Email,
             PhoneNo = staff.PhoneNo,
             Gender = staff.Gender,
@@ -94,7 +113,11 @@ public class NonTeachingStaffController : Controller
     [Authorize(Policy = Permissions.NonTeachingStaff.Manage)]
     public async Task<IActionResult> Edit(Guid id, NonTeachingStaffFormViewModel model)
     {
-        if (!ModelState.IsValid) return View(model);
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Departments = await _context.Departments.Where(d => d.IsDeleted != true).OrderBy(d => d.DepartmentName).ToListAsync();
+            return View(model);
+        }
 
         var staff = await _service.GetStaffByIdAsync(id);
         if (staff is null) return NotFound();
@@ -103,6 +126,7 @@ public class NonTeachingStaffController : Controller
         staff.FullName = model.FullName;
         staff.Position = model.Position;
         staff.Department = model.Department;
+        staff.DepartmentId = model.DepartmentId;
         staff.Email = model.Email;
         staff.PhoneNo = model.PhoneNo;
         staff.Gender = model.Gender;
@@ -130,26 +154,47 @@ public class NonTeachingStaffController : Controller
     [Authorize(Policy = Permissions.NonTeachingStaff.ViewReports)]
     public async Task<IActionResult> Appraisals(Guid? staffId, Guid? academicYearId)
     {
-        ViewBag.StaffList = await _service.GetAllStaffAsync();
+        var user = await _userManager.GetUserAsync(User);
+        bool isUnitHeadScoped = user!.DepartmentId.HasValue && !User.IsInRole(RoleNames.SystemAdmin) && !User.IsInRole(RoleNames.HROfficer);
+
+        // Unit Head sees only staff in their department
+        var staffList = isUnitHeadScoped
+            ? await _service.GetStaffByDepartmentAsync(user.DepartmentId!.Value)
+            : await _service.GetAllStaffAsync();
+
+        ViewBag.StaffList = staffList;
         ViewBag.AcademicYears = await _context.AcademicYears.Where(y => y.IsDeleted != true).OrderByDescending(y => y.Year).ToListAsync();
         ViewBag.SelectedStaffId = staffId;
         ViewBag.SelectedYearId = academicYearId;
 
-        var appraisals = await _service.GetAppraisalsAsync(staffId, academicYearId);
+        // If scoped and a staffId was given, verify it belongs to the dept
+        Guid? effectiveStaffId = staffId;
+        if (isUnitHeadScoped && staffId.HasValue && !staffList.Any(s => s.Id == staffId.Value))
+            effectiveStaffId = null;
+
+        var appraisals = await _service.GetAppraisalsAsync(effectiveStaffId, academicYearId);
         return View(appraisals);
     }
 
     [Authorize(Policy = Permissions.NonTeachingStaff.Appraise)]
     public async Task<IActionResult> StartAppraisal()
     {
+        var user = await _userManager.GetUserAsync(User);
+        bool isUnitHeadScoped = user!.DepartmentId.HasValue && !User.IsInRole(RoleNames.SystemAdmin) && !User.IsInRole(RoleNames.HROfficer);
+
         var ntTemplates = await _context.AppraisalTemplates
             .Where(t => t.TemplateType == AppraisalTemplateType.NonTeaching && t.IsActive && t.IsDeleted != true)
             .ToListAsync();
 
+        // Unit Head only appraises staff in their department
+        var staffList = isUnitHeadScoped
+            ? await _service.GetStaffByDepartmentAsync(user.DepartmentId!.Value)
+            : await _service.GetAllStaffAsync();
+
         var vm = new StartNonTeachingAppraisalViewModel
         {
             Templates = ntTemplates,
-            StaffList = await _service.GetAllStaffAsync(),
+            StaffList = staffList,
             AcademicYears = await _context.AcademicYears.Where(y => y.IsDeleted != true).OrderByDescending(y => y.Year).ToListAsync()
         };
         return View(vm);
