@@ -4234,11 +4234,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/PWCEPortal.csproj",
+      "projectUniqueName": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/PWCEPortal.csproj",
       "projectName": "PWCEPortal",
-      "projectPath": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/PWCEPortal.csproj",
+      "projectPath": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/PWCEPortal.csproj",
       "packagesPath": "/Users/abraham/.nuget/packages/",
-      "outputPath": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/obj/",
+      "outputPath": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"

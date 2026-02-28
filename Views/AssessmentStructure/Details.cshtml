@@ -34,15 +34,15 @@
                         <tr><th>#</th><th>Component</th><th>Weight %</th><th>Max Score</th></tr>
                     </thead>
                     <tbody>
-                        @foreach (var c in Model.Components?.OrderBy(c => c.DisplayOrder) ?? new List<PWCEPortal.Models.Academic.AssessmentComponent>())
-                        {
-                            <tr>
-                                <td>@c.DisplayOrder</td>
-                                <td>@c.ComponentName</td>
-                                <td><span class="badge bg-primary">@c.WeightPercent%</span></td>
-                                <td>@c.MaxScore</td>
-                            </tr>
-                        }
+                    @foreach (var c in (Model.Components?.OrderBy(c => c.DisplayOrder) ?? Enumerable.Empty<PWCEPortal.Models.Academic.AssessmentComponent>()))
+                    {
+                        <tr>
+                            <td>@c.DisplayOrder</td>
+                            <td>@c.ComponentName</td>
+                            <td><span class="badge bg-primary">@c.WeightPercent%</span></td>
+                            <td>@c.MaxScore</td>
+                        </tr>
+                    }
                     </tbody>
                     <tfoot>
                         <tr>

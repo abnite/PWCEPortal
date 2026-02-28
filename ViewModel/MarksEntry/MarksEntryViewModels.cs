@@ -14,7 +14,7 @@ public class MarkSheetViewModel
 
 public class StudentMarkRowViewModel
 {
-    public Student Student { get; set; } = null!;
+    public Models.StudentInfo.Student Student { get; set; } = null!;
     public Dictionary<Guid, decimal?> ComponentScores { get; set; } = new(); // ComponentId -> Score
     public decimal? TotalWeightedScore { get; set; }
     public string? Grade { get; set; }
