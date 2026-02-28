@@ -1,0 +1,148 @@
+@model IEnumerable<PWCEPortal.Models.Payment.FeeStructure>
+@{
+    ViewBag.Title = "Fee Structure Management";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Fee Structure Management</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Fee Structures</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">
+                <i class="fas fa-money-bill-wave me-2"></i>Fee Structures
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-4">
+                <a class="btn btn-success" href="@Url.Action("CreateFeeStructure", "AdminDashboard")">
+                    <i class="fas fa-plus-circle me-2"></i>Add New Fee Structure
+                </a>
+            </div>
+
+            <div class="table-responsive">
+                <table id="feeStructureTable" class="table table-hover table-striped">
+                    <thead class="table-light">
+                    <tr>
+                        <th width="30%">Academic Year</th>
+                        <th width="20%">Level</th>
+                        <th width="20%">Full Fee</th>
+                        <th width="30%" class="text-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var fee in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@fee.AcademicYear.Year</strong>
+                            </td>
+                            <td>
+                                <span class="custom-badge bg-primary">Level @fee.Level</span>
+                            </td>
+                            <td>
+                                @fee.FullFee.ToString("C")
+                            </td>
+                            <td class="text-center">
+                                @if (fee.AcademicYear.IsActive)
+                                {
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a class="btn btn-outline-primary" href="@Url.Action("EditFeeStructure", "AdminDashboard", new { id = fee.Id })" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-outline-danger btn-delete" href="@Url.Action("DeleteFeeStructure", "AdminDashboard", new { id = fee.Id })" title="Delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="custom-badge bg-danger">Academic Year Not Active</span>
+                                }
+                                
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-4">
+                                <i class="fas fa-money-bill-alt fa-2x mb-3"></i>
+                                <p>No fee structures found. Add your first fee structure.</p>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable with search functionality
+            $('#feeStructureTable').DataTable({
+                responsive: true,
+                dom: '<"top"f>rt<"bottom"lip><"clear">',
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search fee structures..."
+                },
+                columnDefs: [
+                    { orderable: false, targets: [3] } // Disable sorting on actions column
+                ],
+                order: [], // Disable initial sorting to preserve server-side order
+                paging: true,
+                pageLength: 10
+            });
+            
+        });
+    </script>
+
+    <style>
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            border-bottom: none;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+
+        .btn-outline-primary:hover, .btn-outline-danger:hover {
+            color: white;
+        }
+
+        .badge {
+            font-size: 0.85em;
+            font-weight: 500;
+            padding: 0.35em 0.65em;
+        }
+
+        .empty-state {
+            opacity: 0.7;
+        }
+
+        .modal-header {
+            border-bottom: none;
+        }
+    </style>
+}

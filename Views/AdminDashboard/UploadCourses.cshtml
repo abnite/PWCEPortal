@@ -1,0 +1,109 @@
+@{
+    ViewBag.Title = "Upload Courses (Excel)";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Upload Courses from Excel</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "AdminDashboard")">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("ManageCourses", "AdminDashboard")">Courses</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Upload</li>
+            </ol>
+        </nav>
+    </div>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @Html.Raw(TempData["ErrorMessage"])
+        </div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">
+                <i class="fas fa-file-excel me-2"></i>Upload Excel File
+            </h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="UploadCourses" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="file" class="form-label fw-semibold">Select Excel File (.xlsx / .xls)</label>
+                    <input type="file" class="form-control" id="file" name="file" accept=".xlsx,.xls" required />
+                    <div class="form-text">
+                        Ensure the first row contains the following column headers:
+                        <ul class="mb-0">
+                            <li><strong>CourseName</strong></li>
+                            <li><strong>CourseCode</strong></li>
+                            <li><strong>ProgrammeName</strong> (leave blank if <strong>IsCommon</strong> = Yes)</li>
+                            <li><strong>Level</strong> (e.g., 100, 200, 300)</li>
+                            <li><strong>Semester</strong> (1 or 2)</li>
+                            <li><strong>CourseType</strong> (Core / Elective)</li>
+                            <li><strong>IsCommon</strong> (Yes/No, True/False, 1/0)</li>
+                        </ul>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please select an Excel file to upload.
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <a href="@Url.Action("ManageCourses", "AdminDashboard")" class="btn btn-outline-secondary me-md-2">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Courses
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-upload me-1"></i> Upload & Import
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            'use strict';
+
+            const forms = document.querySelectorAll('.needs-validation');
+
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+        })();
+    </script>
+
+    <style>
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,.05);
+        }
+        .card-header {
+            border-bottom: none;
+            padding: 1.25rem 1.5rem;
+        }
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0;
+            font-size: .9rem;
+        }
+    </style>
+}

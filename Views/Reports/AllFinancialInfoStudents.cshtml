@@ -1,0 +1,195 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using PWCEPortal.ViewModel.Reports
+@model PWCEPortal.ApplicationClass.PaginatedList<PWCEPortal.Models.StudentInfo.FinancialInfo>
+
+@{
+    Layout = "_AdminLayout";
+    var getStudentLevels = Enumerable.Range(100, 4).Select(l => $"Level {l}").ToList();
+}
+<div class="container-fluid px-4">
+    <div class="card shadow-lg rounded-lg">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4><i class="fas fa-money-bill-wave me-2"></i>Student Financial Details</h4>
+            <div>
+               <a asp-action="ExportFinancialInfoToExcel"
+                   asp-all-route-data="@Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString())"
+                   class="btn btn-light btn-sm">
+                    <i class="fas fa-file-excel me-1"></i> Export to Excel
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- Filter Panel -->
+            <form method="get" class="mb-4 p-3 bg-light rounded">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label></label>
+                        <input type="text" class="form-control" name="searchString"
+                               value="@ViewData["CurrentFilter"]" placeholder="Search students...">
+                    </div>
+                    <div class="col-md-3">
+                        <label></label>
+                        <select class="form-select" name="programFilter">
+                            <option value="">All Programs</option>
+                            @foreach (var program in ViewBag.Programs)
+                            {
+                                <option value="@program" selected="@(program == ViewData["ProgramFilter"])">
+                                    @program
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label></label>
+                        <select class="form-select" name="level">
+                            <option value="">All Levels</option>
+                            @foreach (var level in ViewBag.Levels)
+                            {
+                                <option value="@level.Value" selected="@(level.Value == ViewData["Level"]?.ToString())">
+                                    @level.Text
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label></label>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-filter me-1"></i> Filter
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Students Table -->
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>SSNIT</th>
+                        <th>Name</th>
+                        <th>E-zwich Account</th>
+                        <th>Enrolment Year</th>
+                        <th>Current Level</th>
+                        <th>Program</th>
+                        <th>Phone No/Email</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @{
+                        int count = ((Model.PageIndex - 1) * Model.PageSize) + 1;
+                    }
+                    @foreach (var student in Model)
+                    {
+                        <tr>
+                            <td>@count</td>
+                            <td>@student.SSNITNumber</td>
+                            <td>
+                                <div> @student.Student.Surname, @student.Student.OtherNames</div>
+                                <small class="text-muted">@student.Student.ApplicationNumber</small>
+                            </td>
+                            <td>
+                                <div> @student.EZwichAccountName</div>
+                                <small class="text-muted">@student.EZwichAccountNumber</small>
+                            </td>
+                            <td>Level @student.Student.EnrolmentYear</td>
+                            <td>Level @student.Student.CurrentLevel</td>
+                            <td>@student.Student.CollegeProgram.ProgramName</td>
+                           
+                            <td>
+                                <div>@student.Student.PhoneNo</div>
+                                <small class="text-muted">@student.Student.Email</small>
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-controller="Student" asp-route-id="@student.Student.Id"
+                                   class="btn btn-sm btn-info" title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            @{
+                var start = ((Model.PageIndex - 1) * Model.PageSize) + 1;
+                var end = Math.Min(start + Model.Count - 1, Model.TotalItems);
+            }
+            <p class="text-muted">
+                Showing @start to @end of @Model.TotalItems records
+            </p>
+
+            <!-- Pagination -->
+            @await Html.PartialAsync("_PaginationPartial", new PaginationViewModel
+            {
+                PageIndex = Model.PageIndex,
+                TotalPages = Model.TotalPages,
+                TotalItems = Model.TotalItems,
+                HasPreviousPage = Model.HasPreviousPage,
+                HasNextPage = Model.HasNextPage,
+               // PageSize = Model.PageSize
+            })
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Filter classes based on selected program
+            $('select[name="programFilter"]').change(function() {
+                const program = $(this).val();
+                const classSelect = $('select[name="collegeClass"]');
+
+                classSelect.val('').trigger('change');
+
+                if (program) {
+                    classSelect.find('option').each(function() {
+                        const option = $(this);
+                        if (option.val() && option.data('program') !== program) {
+                            option.hide();
+                        } else {
+                            option.show();
+                        }
+                    });
+                } else {
+                    classSelect.find('option').show();
+                }
+            });
+
+            // Initialize with current program filter if any
+            const currentProgram = $('select[name="programFilter"]').val();
+            if (currentProgram) {
+                $('select[name="programFilter"]').trigger('change');
+            }
+});
+    </script>
+    
+    <style>
+        .table th {
+            white-space: nowrap;
+            position: relative;
+            background-color: #f8f9fa;
+        }
+        .table th:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.1) 100%);
+        }
+        .select2-container--bootstrap-5 .select2-selection {
+            min-height: 38px;
+            padding: 5px;
+        }
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+    </style>
+}

@@ -1,0 +1,162 @@
+@model PWCEPortal.Models.Academic.AcademicSemester
+@{
+    ViewBag.Title = "Create Academic Semester";
+    Layout = "_AdminLayout";
+    
+    var academicYear = ViewBag.AcademicYear;
+    var academicYearId = ViewBag.AcademicYearId;
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Create Academic Semester</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("AcademicYears", "AdminDashboard")">Academic Years</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Create Semester</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">
+                <i class="fas fa-calendar-plus me-2"></i>New Semester Configuration
+            </h3>
+            <div class="custom-badge bg-white text-primary fs-6">
+                Year: @academicYear
+            </div>
+        </div>
+        <div class="card-body">
+            <form asp-action="CreateAcademicSemester" method="post" class="needs-validation" novalidate>
+                <input asp-for="AcademicYearId" value="@academicYearId" type="hidden"/>
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <select class="form-select" required="required" asp-for="SemesterName">
+                                <option value="">Select Semester</option>
+                                <option value="Semester 1">Semester 1</option>
+                                <option value="Semester 2">Semester 2</option>
+                            </select>
+                            <label asp-for="SemesterName">Academic Semester</label>
+                            <span asp-validation-for="SemesterName" class="text-danger small"></span>
+                            <div class="form-text">Select the semester period</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <!-- Empty column for better spacing -->
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input type="date" asp-for="RegistrationStartDate" class="form-control" 
+                                   min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                            <label asp-for="RegistrationStartDate">Registration Start Date</label>
+                            <span asp-validation-for="RegistrationStartDate" class="text-danger small"></span>
+                            <div class="form-text">First day of registration</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input type="date" asp-for="RegistrationEndDate" class="form-control" 
+                                   min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                            <label asp-for="RegistrationEndDate">Registration End Date</label>
+                            <span asp-validation-for="RegistrationEndDate" class="text-danger small"></span>
+                            <div class="form-text">Last day of registration</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <a href="@Url.Action("AcademicYears", "AdminDashboard")" class="btn btn-outline-secondary me-md-2">
+                        <i class="fas fa-times me-1"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Create Semester
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Client-side validation
+        (function () {
+            'use strict'
+            
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+            
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+        
+        // Date validation
+        document.getElementById('RegistrationStartDate').addEventListener('change', function() {
+            const endDate = document.getElementById('RegistrationEndDate');
+            endDate.min = this.value;
+            
+            if (endDate.value && new Date(endDate.value) < new Date(this.value)) {
+                endDate.value = this.value;
+            }
+        });
+    </script>
+    
+    <style>
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-header {
+            border-bottom: none;
+            padding: 1.25rem 1.5rem;
+        }
+        
+        .form-floating label {
+            color: #6c757d;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+        }
+        
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.9rem;
+        }
+        
+        .form-text {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        .was-validated .form-control:invalid, .was-validated .form-select:invalid {
+            border-color: #dc3545;
+        }
+        
+        .was-validated .form-control:valid, .was-validated .form-select:valid {
+            border-color: #198754;
+        }
+    </style>
+}

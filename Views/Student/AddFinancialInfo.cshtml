@@ -1,0 +1,114 @@
+@model PWCEPortal.ViewModel.Student.FinancialInfoViewModel
+@{
+    ViewBag.Title = "Add Financial Information";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Add Financial Information</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item"><a asp-action="Index">Students</a></li>
+                <li class="breadcrumb-item"><a asp-action="FinancialInfo" asp-route-studentId="@Model.StudentId">Financial Info</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Add</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">
+                <i class="fas fa-wallet me-2"></i>Financial Details
+            </h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="AddFinancialInfo" method="post" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                <input type="hidden" asp-for="StudentId" />
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input asp-for="SSNITNumber" class="form-control" placeholder="Enter SSNIT number" />
+                            <label asp-for="SSNITNumber">SSNIT Number</label>
+                            <span asp-validation-for="SSNITNumber" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input asp-for="EZwichAccountName" class="form-control" placeholder="Enter account name" />
+                            <label asp-for="EZwichAccountName">EZwich Account Name</label>
+                            <span asp-validation-for="EZwichAccountName" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-floating mb-4">
+                            <input asp-for="EZwichAccountNumber" class="form-control" placeholder="Enter account number" />
+                            <label asp-for="EZwichAccountNumber">EZwich Account Number</label>
+                            <span asp-validation-for="EZwichAccountNumber" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <a asp-action="FinancialInfo" asp-route-studentId="@Model.StudentId" class="btn btn-outline-secondary me-md-2">
+                        <i class="fas fa-arrow-left me-1"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Save Information
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Client-side validation
+        (function () {
+            'use strict'
+
+            var forms = document.querySelectorAll('.needs-validation')
+
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+
+    <style>
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            border-bottom: none;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .form-floating label {
+            color: #6c757d;
+        }
+
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+        }
+    </style>
+}

@@ -1,0 +1,66 @@
+@{
+    ViewBag.Title = "Login";
+    Layout = "_LoginLayout";
+}
+
+    <div class="login-header">
+        <h2>Welcome Back!</h2>
+        <p>Please log in to access your account.</p>
+    </div>
+  
+        <form id="loginForm"asp-action="Login" asp-controller="Account" method="post">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn-login">Log In</button>
+            </div>
+        </form>
+        <div class="login-footer">
+            <a href="#" id="forgotPassword">Forgot Password?</a>
+            <a asp-action="ValidateStudent" asp-controller="Account">Validate Student Account</a>
+        </div>
+  
+
+<!-- Forgot Password Modal -->
+<div id="forgotPasswordModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Forgot Password</h2>
+        <form asp-action="passwordRecovery" method="post">
+            <div class="form-group">
+                <label for="resetEmail">Email</label>
+                <input type="email" id="resetEmail" name="resetEmail" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn-reset">Reset Password</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Create Account Modal -->
+<div id="createAccountModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Validate Student Account</h2>
+        <form  asp-action="ValidateStudent" method="post" asp-controller="Account">
+            <div class="form-group">
+                <label for="applicationNumber">School Application No/School ID No</label>
+                <input type="text" id="applicationNumber" name="applicationNumber" placeholder="Enter your School Application Number" required>
+            </div>
+            <div class="form-group">
+                <label for="dateOfBirth">Date of Birth</label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth" placeholder="Enter your Date Of Birth" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn-create">Validate Account</button>
+            </div>
+        </form>
+    </div>
+</div>

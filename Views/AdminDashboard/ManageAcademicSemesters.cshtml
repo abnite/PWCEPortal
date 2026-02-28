@@ -1,0 +1,200 @@
+@model IEnumerable<PWCEPortal.Models.Academic.AcademicSemester>
+@{
+    ViewBag.Title = "Academic Semester Management";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Academic Semester Management</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Semester Configurations</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">
+                <i class="fas fa-calendar-alt me-2"></i>Semester Configurations
+            </h3>
+            <div class="d-flex">
+                <div class="input-group me-3" style="width: 250px;">
+                    <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search semesters...">
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-4">
+                <a class="btn btn-success" href="@Url.Action("CreateAcademicSemester", "AdminDashboard")">
+                    <i class="fas fa-plus-circle me-2"></i>Create New Configuration
+                </a>
+                
+                <!-- Optional: Add filter dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown">
+                        <i class="fas fa-filter me-2"></i>Filter
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#" data-filter="all">All Semesters</a></li>
+                        <li><a class="dropdown-item" href="#" data-filter="active">Active Only</a></li>
+                        <li><a class="dropdown-item" href="#" data-filter="inactive">Inactive Only</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table id="semesterTable" class="table table-hover table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Academic Year</th>
+                            <th>Semester</th>
+                            <th>Begins</th>
+                            <th>Ends</th>
+                            <th>Status</th>
+                            <th>Date Added</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var semester in Model)
+                        {
+                            <tr data-status="@(semester.IsRegistrationActive ? "active" : "inactive")">
+                                <td>
+                                    <strong>@semester.AcademicYear?.Year</strong>
+                                </td>
+                                <td>
+                                    <span class="custom-badge bg-info">@semester.SemesterName</span>
+                                </td>
+                                <td>@semester.RegistrationStartDate.ToString("MMM dd, yyyy")</td>
+                                <td>@semester.RegistrationEndDate.ToString("MMM dd, yyyy")</td>
+                                <td>
+                                    @if (semester.IsRegistrationActive)
+                                    {
+                                        <span class="custom-badge bg-success">
+                                            <i class="fas fa-check-circle me-1"></i> Active
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="custom-badge bg-secondary">
+                                            <i class="fas fa-times-circle me-1"></i> Inactive
+                                        </span>
+                                    }
+                                </td>
+                                <td>@semester.DateAdded?.ToString("MMM dd, yyyy")</td>
+                                <td class="text-center">
+                                    @if (semester.IsRegistrationActive)
+                                    {
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a class="btn btn-outline-primary" href="@Url.Action("EditAcademicSemester", "AdminDashboard", new { id = semester.Id })" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a class="btn btn-outline-danger" href="@Url.Action("DeleteAcademicSemester", "AdminDashboard", new { id = semester.Id })" title="Deactivate" onclick="return confirm('Are you sure you want to deactivate this semester?');">
+                                                <i class="fas fa-power-off"></i>
+                                            </a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-outline-success btn-sm" href="@Url.Action("ActivateSemester", "AdminDashboard", new { id = semester.Id })" title="Activate" onclick="return confirm('Are you sure you want to activate this semester?');">
+                                            <i class="fas fa-check"></i> Activate
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    <i class="fas fa-calendar-times fa-2x mb-3"></i>
+                                    <p>No semester configurations found. Create your first configuration.</p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable
+            var table = $('#semesterTable').DataTable({
+                responsive: true,
+                dom: '<"top"f>rt<"bottom"lip><"clear">',
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search semesters..."
+                },
+                columnDefs: [
+                    { orderable: false, targets: [6] }, // Disable sorting on actions column
+                    { type: 'date', targets: [2, 3, 5] } // Proper date sorting
+                ],
+                pageLength: 10
+            });
+
+            // Filter functionality
+            $('[data-filter]').on('click', function(e) {
+                e.preventDefault();
+                var filter = $(this).data('filter');
+                
+                if (filter === 'all') {
+                    table.search('').columns().search('').draw();
+                } else {
+                    table.column(4).search(filter === 'active' ? '^Active$' : '^Inactive$', true, false).draw();
+                }
+                
+                // Update dropdown text
+                $('#filterDropdown').html('<i class="fas fa-filter me-2"></i>' + $(this).text());
+            });
+        });
+    </script>
+    
+    <style>
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-header {
+            border-bottom: none;
+            padding: 1.25rem 1.5rem;
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+        
+        .btn-outline-primary:hover, 
+        .btn-outline-danger:hover, 
+        .btn-outline-success:hover {
+            color: white;
+        }
+        
+        .badge {
+            font-size: 0.85em;
+            font-weight: 500;
+            padding: 0.35em 0.65em;
+        }
+        
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.9rem;
+        }
+        
+        .empty-state {
+            opacity: 0.7;
+        }
+    </style>
+}

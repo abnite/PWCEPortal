@@ -1,0 +1,125 @@
+@{
+    ViewBag.Title = "Upload Receipt";
+    Layout = "_AdminLayout";
+    var StudentId = ViewBag.studentId;
+}
+
+<div class="container py-4">
+    <div class="card shadow-lg border-primary">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3">
+            <h3 class="card-title mb-0">
+                <i class="fas fa-file-upload me-2"></i>Upload Payment Receipt
+            </h3>
+            <a asp-action="Payments" asp-route-studentId="@StudentId" class="btn btn-outline-light btn-sm">
+                <i class="fas fa-arrow-left me-1"></i> Back to Payments
+            </a>
+        </div>
+        
+        <div class="card-body">
+            <div class="alert alert-info">
+                <h5 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Important Instructions</h5>
+                <hr>
+                <ul class="mb-0">
+                    <li>Select your <strong>Bank Receipt</strong> file (PDF, JPG, or PNG)</li>
+                    <li>Ensure the receipt is clear and all details are legible</li>
+                    <li>The file will be automatically renamed using your Application Number</li>
+                    <li>Include the correct Bank Reference Number from your receipt</li>
+                </ul>
+            </div>
+
+            <form asp-action="UploadReceipt" method="post" enctype="multipart/form-data" class="mt-4">
+                <input type="hidden" name="paymentId" value="@ViewBag.PaymentId" />
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-4">
+                            <label for="receiptFile" class="form-label fw-bold">
+                                <i class="fas fa-file-invoice me-2"></i>Receipt File
+                            </label>
+                            <div class="file-upload-wrapper">
+                                <input type="file" id="receiptFile" name="receiptFile" 
+                                       class="form-control form-control-lg" 
+                                       accept=".pdf,.jpg,.jpeg,.png" required>
+                                <div class="form-text">Accepted formats: PDF, JPG, PNG (Max 5MB)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="mb-4">
+                            <label for="bankReferenceNo" class="form-label fw-bold">
+                                <i class="fas fa-hashtag me-2"></i>Bank Reference Number
+                            </label>
+                            <input type="text" id="bankReferenceNo" name="bankReferenceNo" 
+                                   class="form-control form-control-lg" 
+                                   placeholder="Enter reference from your bank receipt" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <a asp-action="Payments" asp-route-studentId="@StudentId" class="btn btn-secondary me-md-2">
+                        <i class="fas fa-times me-1"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-upload me-1"></i> Upload Receipt
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    .card-header {
+        border-radius: 0.5rem 0.5rem 0 0 !important;
+    }
+    .form-control-lg {
+        padding: 0.75rem 1rem;
+        font-size: 1.1rem;
+    }
+    .file-upload-wrapper {
+        position: relative;
+    }
+    .alert-info {
+        border-left: 4px solid #0dcaf0;
+    }
+    .border-primary {
+        border-color: #0d6efd !important;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#receiptFile').change(function() {
+                const file = this.files[0];
+                if (!file) return;
+
+                // Validate file size (5MB max)
+                const fileSize = file.size / 1024 / 1024; // in MB
+                if (fileSize > 5) {
+                    alert('File size exceeds 5MB limit');
+                    $(this).val('');
+                    return;
+                }
+
+                // Validate file type
+                const validExtensions = ['pdf', 'jpg', 'jpeg', 'png'];
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                const isValidExtension = validExtensions.includes(fileExtension);
+
+                if (!isValidExtension) {
+                    alert('Only PDF, JPG, JPEG, and PNG files are allowed.');
+                    $(this).val('');
+                }
+            });
+        });
+    </script>
+}

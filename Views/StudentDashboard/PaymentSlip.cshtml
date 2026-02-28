@@ -1,0 +1,164 @@
+@model PWCEPortal.Models.Payment.Payment
+@{
+    ViewBag.Title = "Payment Initiation Slip";
+    Layout = "_AdminLayout";
+}
+
+<div class="container mt-4">
+    <div class="card border-primary">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="card-title mb-0">
+                <i class="fas fa-receipt me-2"></i>Payment Initiation Slip
+            </h3>
+            <div>
+                <button class="btn btn-light btn-sm" onclick="printDiv('printableArea')">
+                    <i class="fas fa-print me-1"></i>Print
+                </button>
+                <a class="btn btn-outline-light btn-sm" href="@Url.Action("Index", "StudentDashboard")">
+                    <i class="fas fa-arrow-left me-1"></i>Dashboard
+                </a>
+            </div>
+        </div>
+        
+        <div class="card-body" id="printableArea">
+            <div class="text-center mb-4">
+                <h2 class="text-primary">
+                    <i class="fas fa-university me-2"></i>PWCE
+                </h2>
+                <h4>Fees Payment Initiation Slip</h4>
+                <div class="border-top border-bottom py-2 my-3">
+                    <h5 class="mb-0">OFFICIAL PAYMENT RECEIPT</h5>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <h5 class="border-bottom pb-2">Student Information</h5>
+                        <div class="ps-3">
+                            <p class="mb-1"><strong>Name:</strong> @Model.Student.Surname @Model.Student.OtherNames</p>
+                            <p class="mb-1"><strong>ID Number:</strong> @Model.Student.ApplicationNumber</p>
+                            <p class="mb-1"><strong>Level:</strong> @Model.Student.CurrentLevel</p>
+                            <p class="mb-1"><strong>Program:</strong> @Model.Student.CollegeProgram.ProgramName</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <h5 class="border-bottom pb-2">Payment Details</h5>
+                        <div class="ps-3">
+                            <p class="mb-1"><strong>Reference:</strong> @Model.PaymentReference</p>
+                            <p class="mb-1"><strong>Date:</strong> @Model.PaymentDate.ToString("dd MMM yyyy hh:mm tt")</p>
+                            <p class="mb-1"><strong>Method:</strong> @Model.PaymentMethod</p>
+                            <p class="mb-1"><strong>Amount:</strong> GHS @Model.AmountPaid.ToString("N2")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-4">
+                <h5 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Important Instructions</h5>
+                <hr>
+                <ol class="mb-0">
+                    <li>
+                        Use the Payment Reference above to pay your fees at the bank.<br>
+                        <strong>Payment should be made to:</strong><br>
+                        PRESBYTERIAN WOMEN’S COLLEGE OF EDUCATION, ABURI<br>
+                        GCB Bank Account Number: <strong>2221130000837</strong><br>
+                        Branch: <strong>Aburi</strong>
+                    </li>
+                    <li>Submit your bank payment receipt to the Accounts Office.</li>
+                    <li>Receive your official <strong>Accountant General’s Receipt</strong> from the Accounts Office.</li>
+                    <li>Upload the <strong>Accountant General’s Receipt</strong> to the system for confirmation.</li>
+                    <li>Keep this slip for your records and future reference.</li>
+                </ol>
+
+            </div>
+
+
+            <!--<div class="alert alert-info mt-4">
+                <h5 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Important Instructions</h5>
+                <hr>
+                <p class="mb-2">1. Please use the above Payment Reference at the bank for your fee payment.</p>
+                <p class="mb-2">2. After payment, upload your <strong>Bank Receipt</strong> for verification.</p>
+                <p class="mb-0">3. Keep this slip for your records.</p>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+                <div class="text-center">
+                    <p class="mb-1">_________________________</p>
+                    <p class="mb-0"><small>Student Signature</small></p>
+                </div>
+                <div class="text-center">
+                    <p class="mb-1">_________________________</p>
+                    <p class="mb-0"><small>Finance Officer</small></p>
+                </div>
+            </div>-->
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .card {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        border-radius: 0.5rem;
+    }
+    .card-header {
+        border-radius: 0.5rem 0.5rem 0 0 !important;
+    }
+    .border-primary {
+        border-color: #0d6efd !important;
+    }
+    /* Print-specific styles */
+    @@media print {
+        body * {
+            visibility: hidden;
+        }
+        #printableArea, #printableArea * {
+            visibility: visible;
+        }
+        #printableArea {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            padding: 20px;
+            margin: 0;
+            background: white;
+        }
+        .btn {
+            display: none !important;
+        }
+        .alert {
+            border: 1px solid #000;
+        }
+    }
+</style>
+
+<script>
+    function printDiv(divId) {
+        let printContents = document.getElementById(divId).innerHTML;
+        let originalContents = document.body.innerHTML;
+        
+        // Create a print-specific stylesheet
+        let printStyles = `
+            <style>
+                body { font-family: Arial, sans-serif; }
+                .card { border: none; box-shadow: none; }
+                .card-header { background: white !important; color: black !important; border-bottom: 2px solid #000; }
+                .text-primary { color: #000 !important; }
+                .border-bottom { border-color: #000 !important; }
+                .alert { border: 1px solid #000; }
+            </style>
+        `;
+        
+        document.body.innerHTML = printStyles + printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+        window.location.reload();
+    }
+</script>

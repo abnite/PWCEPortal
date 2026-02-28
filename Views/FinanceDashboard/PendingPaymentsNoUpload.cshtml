@@ -1,0 +1,338 @@
+@model PWCEPortal.ViewModel.Dashboard.PendingPaymentsViewModel
+@{
+    ViewData["Title"] = "Pending Payments";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">
+            <i class="fas fa-clock me-2 text-info"></i>Pending Payments
+        </h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="FinanceDashboard" asp-action="Index">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Pending Payments</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm border-info">
+        <div class="card-header bg-info text-white">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h3 class="mb-0">Payments Awaiting Verification</h3>
+                </div>
+                <div class="col-md-6">
+                    <form method="get" asp-action="PendingPaymentsNoUpload" class="input-group">
+                        <input type="text" name="searchQuery" value="@Model.SearchQuery"
+                               class="form-control" placeholder="Search payments..." />
+                        <button type="submit" class="btn btn-light">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Reference</th>
+                        <th>Student</th>
+                        <th>App No</th>
+                        <th class="text-end">Amount</th>
+                        <th>Payment Date</th>
+                        <th>Bank Ref</th>
+                        <th>Receipt</th>
+                        <th>Uploaded</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var payment in Model.Payments)
+                    {
+                        <tr>
+                            <td>
+                                <span class="custom-badge bg-info">@payment.PaymentReference</span>
+                            </td>
+                            <td>@payment.Student.Surname @payment.Student.OtherNames</td>
+                            <td>@payment.Student.ApplicationNumber</td>
+                            <td class="text-end">GHS @payment.AmountPaid.ToString("N2")</td>
+                            <td>@payment.PaymentDate.ToString("dd MMM yyyy")</td>
+                            <td>@payment.BankReferenceNumber</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(payment.ReceiptFilePath))
+                                {
+                                    <a href="@payment.ReceiptFilePath" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-receipt"></i> View
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">None</span>
+                                }
+                            </td>
+                            <td>
+                                @(payment.uploadReceiptDate?.ToString("dd MMM yyyy") ?? "N/A")
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button type="button" class="btn btn-outline-success"
+                                            data-bs-toggle="modal" data-bs-target="#verifyModal-@payment.Id">
+                                        <i class="fas fa-check"></i> Verify
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger"
+                                            data-bs-toggle="modal" data-bs-target="#rejectModal-@payment.Id">
+                                        <i class="fas fa-times"></i> Reject
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.Payments.Any())
+                    {
+                        <tr>
+                            <td colspan="9" class="text-center text-muted py-4">
+                                <i class="fas fa-check-circle fa-2x mb-3 text-success"></i>
+                                <p>No pending payments found</p>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+            @{
+                int currentPage1 = Model.Page.Value;
+                int pageSize = Model.PageSize.Value;
+                int totalCount = Model.TotalCount;
+                int startRecord = ((currentPage1 - 1) * pageSize) + 1;
+                int endRecord = Math.Min(currentPage1 * pageSize, totalCount);
+            }
+           
+
+            <div class="card-footer">
+                <div class="table-footer-info">
+                    Showing @startRecord to @endRecord of @totalCount records
+                </div>
+            </div>
+
+            @if (Model.TotalCount > Model.PageSize)
+            {
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item @(Model.Page == 1 ? "disabled" : "")">
+                            <a class="page-link"
+                               href="@Url.Action("PendingPaymentsNoUpload", new { searchQuery = Model.SearchQuery, page = Model.Page - 1, pageSize = Model.PageSize })">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        </li>
+
+                        @{
+                            int totalPages = (Model.TotalCount + Model.PageSize.Value - 1) / Model.PageSize.Value;
+                            int startPage = Math.Max(1, Model.Page.Value - 2);
+                            int endPage = Math.Min(totalPages, Model.Page.Value + 2);
+
+                            // Always show first page
+                            if (startPage > 1)
+                            {
+                                <li class="page-item @(1 == Model.Page ? "active" : "")">
+                                    <a class="page-link"
+                                       href="@Url.Action("PendingPaymentsNoUpload", new { searchQuery = Model.SearchQuery, page = 1, pageSize = Model.PageSize })">1</a>
+                                </li>
+                                if (startPage > 2)
+                                {
+                                    <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                }
+                            }
+
+                            // Show middle pages
+                            for (int i = startPage; i <= endPage; i++)
+                            {
+                                <li class="page-item @(i == Model.Page ? "active" : "")">
+                                    <a class="page-link"
+                                       href="@Url.Action("PendingPaymentsNoUpload", new { searchQuery = Model.SearchQuery, page = i, pageSize = Model.PageSize })">@i</a>
+                                </li>
+                            }
+
+                            // Always show last page
+                            if (endPage < totalPages)
+                            {
+                                if (endPage < totalPages - 1)
+                                {
+                                    <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                }
+                                <li class="page-item @(totalPages == Model.Page ? "active" : "")">
+                                    <a class="page-link"
+                                       href="@Url.Action("PendingPaymentsNoUpload", new { searchQuery = Model.SearchQuery, page = totalPages, pageSize = Model.PageSize })">@totalPages</a>
+                                </li>
+                            }
+                        }
+
+                        <li class="page-item @(Model.Page == totalPages ? "disabled" : "")">
+                            <a class="page-link"
+                               href="@Url.Action("PendingPaymentsNoUpload", new { searchQuery = Model.SearchQuery, page = Model.Page + 1, pageSize = Model.PageSize })">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Verification Modals -->
+@foreach (var payment in Model.Payments)
+{
+   <!-- Verify Modal -->
+   <div class="modal fade" id="verifyModal-@payment.Id" tabindex="-1" aria-labelledby="verifyModalLabel-@payment.Id" aria-hidden="true">
+       <div class="modal-dialog">
+           <div class="modal-content">
+               <div class="modal-header bg-success text-white">
+                   <h5 class="modal-title" id="verifyModalLabel-@payment.Id">
+                       <i class="fas fa-check-circle me-2"></i>Verify Payment
+                   </h5>
+                   <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                   <p>Please confirm payment details before verification:</p>
+                   <div class="alert alert-success">
+                       <i class="fas fa-info-circle me-2"></i>
+                       This will mark the payment as completed and update the student's financial records.
+                   </div>
+                   <dl class="row">
+                       <dt class="col-sm-4">Student:</dt>
+                       <dd class="col-sm-8">@payment.Student.Surname @payment.Student.OtherNames</dd>
+                       <dt class="col-sm-4">Amount:</dt>
+                       <dd class="col-sm-8">GHS @payment.AmountPaid.ToString("N2")</dd>
+                       <dt class="col-sm-4">Current Bank Ref:</dt>
+                       <dd class="col-sm-8">@payment.BankReferenceNumber</dd>
+                   </dl>
+                
+                   <div class="mb-3">
+                       <label for="bankReference-@payment.Id" class="form-label">Bank Reference Number *</label>
+                       <input type="text" class="form-control" id="bankReference-@payment.Id" 
+                              name="bankReference" required value="@payment.BankReferenceNumber">
+                   </div>
+                
+                   <div class="mb-3">
+                       <label for="accountantReceipt-@payment.Id" class="form-label">Accountant General Receipt Number *</label>
+                       <input type="text" class="form-control" id="accountantReceipt-@payment.Id" 
+                              name="accountantReceipt" required>
+                   </div>
+               </div>
+               <div class="modal-footer">
+                   <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                       <i class="fas fa-times me-1"></i> Cancel
+                   </button>
+                   <form asp-action="VerifyPaymentNoUpload" method="post" class="mb-0">
+                       <input type="hidden" name="paymentId" value="@payment.Id" />
+                       <input type="hidden" name="bankReference" id="bankReferenceInput-@payment.Id" />
+                       <input type="hidden" name="accountantReceipt" id="accountantReceiptInput-@payment.Id" />
+                       <button type="submit" class="btn btn-success" 
+                               onclick="
+                                document.getElementById('bankReferenceInput-@payment.Id').value = document.getElementById('bankReference-@payment.Id').value;
+                                document.getElementById('accountantReceiptInput-@payment.Id').value = document.getElementById('accountantReceipt-@payment.Id').value;
+                            ">
+                           <i class="fas fa-check me-1"></i> Confirm Verify
+                       </button>
+                   </form>
+               </div>
+           </div>
+       </div>
+   </div>
+   
+    <!-- Reject Modal -->
+    <div class="modal fade" id="rejectModal-@payment.Id" tabindex="-1" aria-labelledby="rejectModalLabel-@payment.Id" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="rejectModalLabel-@payment.Id">
+                        <i class="fas fa-times-circle me-2"></i>Reject Payment
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to reject this payment?</p>
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        This will mark the payment as rejected and notify the student.
+                    </div>
+                    <dl class="row">
+                        <dt class="col-sm-4">Student:</dt>
+                        <dd class="col-sm-8">@payment.Student.Surname @payment.Student.OtherNames</dd>
+                        <dt class="col-sm-4">Amount:</dt>
+                        <dd class="col-sm-8">GHS @payment.AmountPaid.ToString("N2")</dd>
+                        <dt class="col-sm-4">Bank Ref:</dt>
+                        <dd class="col-sm-8">@payment.BankReferenceNumber</dd>
+                    </dl>
+                    <div class="mb-3">
+                        <label for="rejectionReason-@payment.Id" class="form-label">Reason for Rejection</label>
+                        <textarea class="form-control" id="rejectionReason-@payment.Id" name="rejectionReason"
+                                  rows="3" required placeholder="Please specify the reason for rejection..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> Cancel
+                    </button>
+                    <form asp-action="RejectPaymentNoUpload" asp-controller="FinanceDashboard" method="post" class="mb-0">
+                        <input type="hidden" name="paymentId" value="@payment.Id" />
+                        <input type="hidden" name="rejectionReason" id="rejectionReasonInput-@payment.Id" />
+                        <button type="submit" class="btn btn-danger" onclick="document.getElementById('rejectionReasonInput-@payment.Id').value = document.getElementById('rejectionReason-@payment.Id').value">
+                            <i class="fas fa-times me-1"></i> Confirm Reject
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+    <style>
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            border-bottom: none;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+
+        .badge {
+            font-size: 0.85em;
+            font-weight: 500;
+            padding: 0.35em 0.65em;
+        }
+
+        .page-item.active .page-link {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+
+        .border-warning {
+            border-left: 4px solid #ffc107;
+        }
+
+        .border-info {
+            border-left: 4px solid #0dcaf0;
+        }
+    </style>
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+}

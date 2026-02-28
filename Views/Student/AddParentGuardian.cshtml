@@ -1,0 +1,163 @@
+@model PWCEPortal.ViewModel.Student.ParentGuardianViewModel
+@{
+    ViewBag.Title = "Add Parent/Guardian";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Add Parent/Guardian</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item"><a asp-action="Index">Students</a></li>
+                <li class="breadcrumb-item"><a asp-action="ParentGuardians" asp-route-studentId="@Model.StudentId">Guardians</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Add New</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">
+                <i class="fas fa-user-friends me-2"></i>New Parent/Guardian Information
+            </h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="AddParentGuardian" method="post" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                <input type="hidden" asp-for="StudentId" />
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input asp-for="FullName" class="form-control" placeholder="Enter full name" required />
+                            <label asp-for="FullName">Full Name</label>
+                            <span asp-validation-for="FullName" class="text-danger small"></span>
+                            <div class="form-text">Legal name of parent/guardian</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input asp-for="Relationship" class="form-control" placeholder="Enter relationship" required />
+                            <label asp-for="Relationship">Relationship</label>
+                            <span asp-validation-for="Relationship" class="text-danger small"></span>
+                            <div class="form-text">(e.g., Father, Mother, Guardian)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input asp-for="Email" type="email" class="form-control" placeholder="Enter email address" />
+                            <label asp-for="Email">Email Address</label>
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input asp-for="Telephone" class="form-control" placeholder="Enter phone number" required />
+                            <label asp-for="Telephone">Phone Number</label>
+                            <span asp-validation-for="Telephone" class="text-danger small"></span>
+                            <div class="form-text">Primary contact number</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input asp-for="Occupation" class="form-control" placeholder="Enter occupation" />
+                            <label asp-for="Occupation">Occupation</label>
+                            <span asp-validation-for="Occupation" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input asp-for="ContactAddress" class="form-control" placeholder="Enter contact address" required />
+                            <label asp-for="ContactAddress">Contact Address</label>
+                            <span asp-validation-for="ContactAddress" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <a asp-action="ParentGuardians" asp-route-studentId="@Model.StudentId" class="btn btn-outline-secondary me-md-2">
+                        <i class="fas fa-arrow-left me-1"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus me-1"></i> Add Parent/Guardian
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Client-side validation
+        (function () {
+            'use strict'
+            
+            var forms = document.querySelectorAll('.needs-validation')
+            
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+    
+    <style>
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-header {
+            border-bottom: none;
+            padding: 1.25rem 1.5rem;
+        }
+        
+        .form-floating label {
+            color: #6c757d;
+        }
+        
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+        }
+        
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.9rem;
+        }
+        
+        .was-validated .form-control:invalid {
+            border-color: #dc3545;
+        }
+        
+        .was-validated .form-control:valid {
+            border-color: #198754;
+        }
+        
+        .badge {
+            font-weight: 500;
+            padding: 0.5em 0.75em;
+        }
+    </style>
+}

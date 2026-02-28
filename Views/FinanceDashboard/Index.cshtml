@@ -1,0 +1,533 @@
+@model PWCEPortal.ViewModel.Dashboard.FinanceDashboardViewModel
+@{
+    ViewData["Title"] = "Finance Dashboard";
+    Layout = "_AdminLayout";
+}
+<style>
+    .custom-badge {
+        padding: .25em .6em;
+        border-radius: .25rem;
+        color: darkgreen;
+        font-size: .75em;
+    }
+</style>
+
+<div class="container-fluid">
+    <!-- Dashboard Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">Finance Dashboard</h1>
+            <p class="mb-0 text-muted">Overview of financial activities and transactions</p>
+        </div>
+        <div class="alert alert-info mb-0 shadow-sm">
+            <strong>Active Academic Year:</strong> @Model.ActiveAcademicYear
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row">
+        <!-- Pending Payments Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2 hover-scale">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                Pending Payments
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.PendingPaymentsCount</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clock fa-2x text-danger-300"></i>
+                        </div>
+                    </div>
+                    <a href="@Url.Action("PendingPaymentsNoUpload", "FinanceDashboard")" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fees Collected Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2 hover-scale">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Fees Collected
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">GHS @Model.TotalFeesCollected.ToString("N2")</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-money-bill-wave fa-2x text-success-300"></i>
+                        </div>
+                    </div>
+                    <a href="@Url.Action("FeesCollected", "FinanceDashboard")" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Outstanding Fees Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2 hover-scale">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Outstanding Fees
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">GHS @Model.TotalOutstanding.ToString("N2")</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-exclamation-triangle fa-2x text-warning-300"></i>
+                        </div>
+                    </div>
+                    <a href="@Url.Action("OutstandingFees", "FinanceDashboard")" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Students With Arrears Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2 hover-scale">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Students With Arrears
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.StudentsWithArrearsCount</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-primary-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-gradient-primary text-white py-3">
+            <h5 class="card-title mb-0"><i class="fas fa-bolt mr-2"></i>Quick Actions</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="container-fluid">
+                <div class="row no-gutters">
+                    <div class="col-md-4 p-2 border-right">
+                        <a href="@Url.Action("PendingPaymentsNoUpload", "FinanceDashboard")" class="btn btn-block btn-light btn-hover-actions text-left p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-circle bg-danger mr-3">
+                                    <i class="fas fa-clock text-white"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Pending Payments</h6>
+                                    <p class="mb-0 text-muted small">Review and approve pending transactions</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 p-2 border-right">
+                        <a href="@Url.Action("FeesCollected", "FinanceDashboard")" class="btn btn-block btn-light btn-hover-actions text-left p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-circle bg-success mr-3">
+                                    <i class="fas fa-check-circle text-white"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Fees Collected</h6>
+                                    <p class="mb-0 text-muted small">View verified payments and receipts</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 p-2">
+                        <a href="@Url.Action("OutstandingFees", "FinanceDashboard")" class="btn btn-block btn-light btn-hover-actions text-left p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-circle bg-warning mr-3">
+                                    <i class="fas fa-exclamation-triangle text-white"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Outstanding Fees</h6>
+                                    <p class="mb-0 text-muted small">Track unpaid fees and arrears</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+        <!-- Monthly Fee Collection Chart -->
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-white">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-chart-bar mr-2"></i>Monthly Fee Collection (@Model.ActiveAcademicYear)
+                    </h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Chart Options:</div>
+                            <a class="dropdown-item" href="#" id="exportChart"><i class="fas fa-download mr-2"></i>Export as Image</a>
+                            <a class="dropdown-item" href="#" id="toggleDataLabels"><i class="fas fa-tag mr-2"></i>Toggle Data Labels</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="monthlyFeeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Payments and Outstanding by Level -->
+        <div class="col-xl-4 col-lg-5">
+            <!-- Recent Payments -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-white">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-history mr-2"></i>Recent Payments
+                    </h6>
+                    <a href="@Url.Action("FeesCollected", "FinanceDashboard")" class="btn btn-sm btn-primary">
+                        <i class="fas fa-list mr-1"></i>View All
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="activity-feed">
+                        @foreach (var payment in Model.RecentPayments)
+                        {
+                            <div class="d-flex align-items-start mb-3 payment-item">
+                                <div class="icon-circle bg-success">
+                                    <i class="fas fa-money-bill-wave text-white"></i>
+                                </div>
+                                <div class="ml-3 flex-grow-1">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="font-weight-bold">@payment.Student.Surname @payment.Student.OtherNames</span>
+                                        <span class="text-success font-weight-bold">GHS @payment.AmountPaid.ToString("N2")</span>
+                                    </div>
+                                    <div class="small text-gray-500">@payment.PaymentDate.ToString("dd MMM yyyy HH:mm")</div>
+                                    <div class="mt-1">
+                                        <span class="custom-badge badge-primary border">Ref: @payment.PaymentReference</span>
+                                        @if (payment.IsVerified)
+                                        {
+                                            <span class="custom-badge badge-success ml-1"><i class="fas fa-check-circle mr-1"></i>Verified</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="custom-badge badge-warning ml-1"><i class="fas fa-clock mr-1"></i>Pending</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (!Model.RecentPayments.Any())
+                        {
+                            <div class="text-center text-muted py-4">
+                                <i class="fas fa-money-bill-wave fa-3x mb-3"></i>
+                                <p class="mb-0">No recent payments found</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Outstanding by Level -->
+            <div class="card shadow">
+                <div class="card-header py-3 bg-white">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-chart-pie mr-2"></i>Outstanding Fees by Level
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2">
+                        <canvas id="outstandingByLevelChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center small">
+                        @foreach (var level in Model.OutstandingByLevel.OrderBy(x => x.Key))
+                        {
+                            <span class="mr-3">
+                                <i class="fas fa-circle @(level.Key == 100 ? "text-primary" : level.Key == 200 ? "text-success" : level.Key == 300 ? "text-info" : "text-secondary")"></i>
+                                Level @level.Key (GHS @level.Value.ToString("N2"))
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Base Styles */
+    .icon-circle {
+        height: 2.5rem;
+        width: 2.5rem;
+        border-radius: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .activity-feed {
+        max-height: 350px;
+        overflow-y: auto;
+        padding-right: 5px;
+    }
+
+    .chart-area {
+        position: relative;
+        height: 300px;
+    }
+
+    .chart-pie {
+        position: relative;
+        height: 250px;
+    }
+
+    /* Enhanced Styles */
+    .hover-scale {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .hover-scale:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .btn-hover-actions {
+        transition: all 0.2s ease;
+        border-radius: 0.35rem;
+    }
+
+    .btn-hover-actions:hover {
+        background-color: #f8f9fa;
+        transform: translateX(3px);
+    }
+
+    .payment-item {
+        padding: 10px;
+        border-radius: 0.35rem;
+        transition: background-color 0.2s ease;
+    }
+
+    .payment-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+    }
+
+    /* Custom scrollbar */
+    .activity-feed::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .activity-feed::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .activity-feed::-webkit-scrollbar-thumb {
+        background: #d1d3e2;
+        border-radius: 10px;
+    }
+
+    .activity-feed::-webkit-scrollbar-thumb:hover {
+        background: #b7b9cc;
+    }
+
+    /* Icon colors */
+    .text-danger-300 {
+        color: #f8b7bd;
+    }
+
+    .text-success-300 {
+        color: #b8e0c6;
+    }
+
+    .text-warning-300 {
+        color: #fce5b3;
+    }
+
+    .text-primary-300 {
+        color: #c2d5f3;
+    }
+</style>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script>
+        // Register the plugin globally
+        Chart.register(ChartDataLabels);
+
+        // Monthly Fee Collection Chart
+        var ctx = document.getElementById('monthlyFeeChart').getContext('2d');
+        var monthlyFeeChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.MonthlyLabels)),
+                datasets: [{
+                    label: 'Fees Collected (GHS)',
+                    data: @Html.Raw(Json.Serialize(Model.MonthlyData)),
+                    backgroundColor: 'rgba(78, 115, 223, 0.7)',
+                    borderColor: 'rgba(78, 115, 223, 1)',
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    hoverBackgroundColor: 'rgba(78, 115, 223, 0.9)'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'GHS ' + context.parsed.y.toLocaleString('en-US', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                });
+                            }
+                        }
+                    },
+                    datalabels: {
+                        display: false,
+                        color: '#fff',
+                        anchor: 'end',
+                        align: 'top',
+                        formatter: function(value) {
+                            return 'GHS ' + value.toLocaleString('en-US', {
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0
+                            });
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            drawBorder: false
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return 'GHS ' + value.toLocaleString('en-US', {
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 0
+                                });
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            },
+            plugins: [ChartDataLabels]
+        });
+
+        // Outstanding by Level Chart
+        var ctx2 = document.getElementById('outstandingByLevelChart').getContext('2d');
+        var outstandingByLevelChart = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.OutstandingByLevel.OrderBy(x => x.Key).Select(x => "Level " + x.Key))),
+                datasets: [{
+                    data: @Html.Raw(Json.Serialize(Model.OutstandingByLevel.OrderBy(x => x.Key).Select(x => x.Value))),
+                    backgroundColor: [
+                        'rgba(78, 115, 223, 0.7)',
+                        'rgba(28, 200, 138, 0.7)',
+                        'rgba(54, 185, 204, 0.7)',
+                        'rgba(108, 117, 125, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(78, 115, 223, 1)',
+                        'rgba(28, 200, 138, 1)',
+                        'rgba(54, 185, 204, 1)',
+                        'rgba(108, 117, 125, 1)'
+                    ],
+                    borderWidth: 1,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'GHS ' + context.parsed.toLocaleString('en-US', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                });
+                            }
+                        }
+                    },
+                    datalabels: {
+                        color: '#fff',
+                        font: {
+                            weight: 'bold'
+                        },
+                        formatter: function(value) {
+                            if (value > 0) {
+                                return 'GHS ' + value.toLocaleString('en-US', {
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 0
+                                });
+                            }
+                            return '';
+                        }
+                    }
+                },
+                cutout: '70%'
+            },
+            plugins: [ChartDataLabels]
+        });
+
+        // Export chart as image
+        document.getElementById('exportChart').addEventListener('click', function(e) {
+            e.preventDefault();
+            var canvas = document.getElementById('monthlyFeeChart');
+            var dataURL = canvas.toDataURL('image/png');
+            var link = document.createElement('a');
+            link.download = 'monthly-fee-collection-' + new Date().toISOString().slice(0,10) + '.png';
+            link.href = dataURL;
+            link.click();
+        });
+
+        // Toggle data labels
+        document.getElementById('toggleDataLabels').addEventListener('click', function(e) {
+            e.preventDefault();
+            var current = monthlyFeeChart.options.plugins.datalabels.display;
+            monthlyFeeChart.options.plugins.datalabels.display = !current;
+            monthlyFeeChart.update();
+        });
+
+        // Add hover effects to cards
+        document.querySelectorAll('.hover-scale').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px)';
+                this.style.boxShadow = '0 0.5rem 1rem rgba(0, 0, 0, 0.15)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+                this.style.boxShadow = '';
+            });
+        });
+    </script>
+}

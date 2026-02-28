@@ -1,0 +1,36 @@
+@model IEnumerable<PWCEPortal.ViewModel.Reports.OutstandingReportViewModel>
+@{
+    ViewBag.Title = "Outstanding Balances Report";
+    Layout = "_AdminLayout";
+}
+<div class="container-fluid px-4">
+    <h2 class="mt-4">Outstanding Balances (Student Debtors)</h2>
+    <table class="table table-bordered mt-3">
+        <thead class="table-light">
+        <tr>
+            <th>Student Name</th>
+            <th>Application Number</th>
+            <th>Academic Year</th>
+            <th>Outstanding Amount (GHS)</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.StudentName</td>
+                <td>@item.ApplicationNumber</td>
+                <td>@(item.StudentID??"N/A")</td>
+                <td>@item.AcademicYear</td>
+                <td>@item.OutstandingAmount.ToString("N2")</td>
+            </tr>
+        }
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="4" class="text-center text-muted">No outstanding balances found.</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

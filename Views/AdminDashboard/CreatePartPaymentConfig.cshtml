@@ -1,0 +1,25 @@
+@model PWCEPortal.Models.Payment.PartPaymentConfig
+@{
+    ViewBag.Title = "Create Part Payment Configuration";
+    Layout = "_AdminLayout";
+    
+    var academicYear = ViewBag.AcademicYear;
+    var academicYearId = ViewBag.AcademicYearId;
+}
+}
+<div class="card mt-4">
+    <div class="card-header">
+        <h3>Create Part Payment Configuration for @academicYear Academic Year</h3>
+    </div>
+    <div class="card-body">
+        <form asp-action="CreatePartPaymentConfig" method="post">
+            <input asp-for="AcademicYearId" value="@academicYearId" type="hidden"/>
+            <div class="mb-3">
+                <label asp-for="PartPaymentPercentage" class="form-label">Part Payment Percentage (%)</label>
+                <input asp-for="PartPaymentPercentage" type="number" class="form-control" required/>
+                <span asp-validation-for="PartPaymentPercentage" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Configuration</button>
+        </form>
+    </div>
+</div>

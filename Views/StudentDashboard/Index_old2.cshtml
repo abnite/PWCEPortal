@@ -1,0 +1,316 @@
+@model PWCEPortal.ViewModel.Dashboard.StudentDashboardViewModel
+@{
+    ViewData["Title"] = "Student Dashboard";
+    Layout = "_AdminLayout";
+    
+    // Calculate payment compliance status
+    bool canRegisterCourses = Model.PaymentMade >= Model.RequiredFeeAmount;
+    string paymentStatusClass = canRegisterCourses ? "success" : "danger";
+    string paymentStatusText = canRegisterCourses ? "Complete" : "Incomplete";
+}
+
+<div class="container-fluid mt-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2>Welcome, @Model.Student.Surname @Model.Student.OtherNames!</h2>
+            <p class="lead">
+                @(Model.Program?.ProgramName ?? "Program not set") | 
+                Level: @(Model.Student?.CurrentLevel.ToString() ?? "N/A") | 
+                Academic Year: @(Model.CurrentAcademicYear?.Year?? "N/A") | 
+                @(Model.CurrentSemester?.SemesterName?? "Semester not set")
+            </p>
+        </div>
+    </div>
+
+    <!-- Payment Compliance Alert -->
+    <div class="alert alert-@paymentStatusClass">
+        <h5><i class="fas fa-@(canRegisterCourses ? "check-circle" : "exclamation-circle")"></i>
+            Payment Compliance: @paymentStatusText
+        </h5>
+        @if (canRegisterCourses)
+        {
+            <p>You've met the minimum payment requirement (GHS @Model.RequiredFeeAmount.ToString("N2")). You may now register for courses.</p>
+        }
+        else
+        {
+            <p>You need to pay at least GHS @Model.RequiredFeeAmount.ToString("N2") to register for courses.
+                Current payment: GHS @Model.PaymentMade.ToString("N2")</p>
+        }
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <a href="@Url.Action("EditProfile", "StudentDashboard", new { studentId = Model.Student.Id })" 
+               class="btn btn-primary btn-block">
+               <i class="fas fa-user-edit"></i> Update Profile
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="@Url.Action("MakePayment", "StudentDashboard", new{studentId = Model.Student.Id})" 
+               class="btn btn-success btn-block">
+               <i class="fas fa-money-bill-wave"></i> Pay Fees
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="@Url.Action("Payments", "StudentDashboard",new{studentId = Model.Student.Id})" 
+               class="btn btn-info btn-block">
+               <i class="fas fa-receipt"></i> View Payment History
+            </a>
+        </div>
+        <div class="col-md-3">
+            @if (canRegisterCourses)
+            {
+                <a href="@Url.Action("RegisterCourses", "Academic",new{studentId = Model.Student.Id})"
+                   class="btn btn-warning btn-block">
+                    <i class="fas fa-book"></i> Register Courses
+                </a>
+            }
+            else
+            {
+                <button class="btn btn-warning btn-block" disabled
+                        title="Complete minimum payment requirement to register courses">
+                    <i class="fas fa-book"></i> Register Courses
+                </button>
+            }
+        </div>
+    </div>
+
+    <!-- Profile Overview Card -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title"><i class="fas fa-id-card"></i> Profile Overview</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Application Number</dt>
+                        <dd class="col-sm-8">@Model.Student.ApplicationNumber</dd>
+
+                        <dt class="col-sm-4">Email</dt>
+                        <dd class="col-sm-8">@Model.Student.Email</dd>
+
+                        <dt class="col-sm-4">Phone</dt>
+                        <dd class="col-sm-8">@Model.Student.PhoneNo</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Academic Year</dt>
+                        <dd class="col-sm-8">@Model.CurrentAcademicYear?.Year</dd>
+
+                        <dt class="col-sm-4">Enrollment Year</dt>
+                        <dd class="col-sm-8">@Model.Student.EnrolmentYear</dd>
+
+                        <dt class="col-sm-4">Expected Graduation</dt>
+                        <dd class="col-sm-8">@Model.Student.ExpectedCompletionYear</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Academic Information Card -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title"><i class="fas fa-graduation-cap"></i> Academic Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Registered Courses</h6>
+                    <ul class="list-group">
+                        @foreach (var course in Model.RegisteredCourses)
+                        {
+                            <li class="list-group-item">
+                                @course.CourseName (Level @course.Level, Semester @course.Semester)
+                            </li>
+                        }
+                        @if (!Model.RegisteredCourses.Any())
+                        {
+                            <li class="list-group-item text-muted">No courses registered yet.</li>
+                        }
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h6>Academic Status</h6>
+                    <div class="alert alert-info">
+                        <strong>Current Level:</strong> @Model.Student.CurrentLevel<br>
+                        @if (Model.CurrentSemester != null)
+                        {
+                            <strong>Current Semester:</strong> @Model.CurrentSemester.SemesterName<br>
+                            <strong>Registration Period:</strong>
+                            @Model.CurrentSemester.RegistrationStartDate.ToString("dd MMM yyyy") <strong>-</strong>
+                            @Model.CurrentSemester.RegistrationEndDate.ToString("dd MMM yyyy")
+                            <br>
+
+                            @if (DateTime.Now >= Model.CurrentSemester.RegistrationStartDate &&
+                                 DateTime.Now <= Model.CurrentSemester.RegistrationEndDate)
+                            {
+                                <span class="badge bg-success mt-2">Registration Open</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger mt-2">Registration Closed</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="text-warning">No active semester found</span>
+                        }
+                    </div>
+
+                    <!-- Registration Status Alert -->
+                    @if (Model.CurrentSemester != null)
+                    {
+                        <div class="alert @(DateTime.Now >= Model.CurrentSemester.RegistrationStartDate &&
+                                            DateTime.Now <= Model.CurrentSemester.RegistrationEndDate ? "alert-success" : "alert-danger")">
+                            @if (DateTime.Now < Model.CurrentSemester.RegistrationStartDate)
+                            {
+                                <p>
+                                    <i class="fas fa-clock"></i> Registration will open on
+                                    @Model.CurrentSemester.RegistrationStartDate.ToString("dd MMM yyyy")
+                                </p>
+                            }
+                            else if (DateTime.Now > Model.CurrentSemester.RegistrationEndDate)
+                            {
+                                <p>
+                                    <i class="fas fa-times-circle"></i> Registration closed on
+                                    @Model.CurrentSemester.RegistrationEndDate.ToString("dd MMM yyyy")
+                                </p>
+                            }
+                            else
+                            {
+                                <p>
+                                    <i class="fas fa-check-circle"></i> Registration is open until
+                                    @Model.CurrentSemester.RegistrationEndDate.ToString("dd MMM yyyy")
+                                </p>
+                                <p class="mb-0">
+                                    <i class="fas fa-hourglass-half"></i>
+                                    @((Model.CurrentSemester.RegistrationEndDate - DateTime.Now).Days) days remaining
+                                </p>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fee/Payment Information Card -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title"><i class="fas fa-wallet"></i> Fee Summary</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Total Fee</th>
+                                <td>GHS @Model.TotalFee.ToString("N2")</td>
+                            </tr>
+                            <tr>
+                                <th>Amount Paid</th>
+                                <td>GHS @Model.PaymentMade.ToString("N2")</td>
+                            </tr>
+                            <tr class="@(Model.OutstandingFee > 0 ? "table-danger" : "table-success")">
+                                <th>Outstanding Balance</th>
+                                <td>GHS @Model.OutstandingFee.ToString("N2")</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="alert alert-warning">
+                        <h6>Payment Status</h6>
+                        @if (Model.OutstandingFee <= 0)
+                        {
+                            <span class="badge bg-success">Fully Paid</span>
+                            <p class="mt-2">No outstanding fees. You're all set!</p>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Outstanding Balance</span>
+                            <p class="mt-2">Please pay your outstanding balance to avoid penalties.</p>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="progress mb-3" style="height: 30px;">
+                        @{
+                            decimal paymentPercentage = 0;
+                            if (Model.RequiredFeeAmount != 0)
+                            {
+                                paymentPercentage = (Model.PaymentMade / Model.RequiredFeeAmount) * 100;
+                                paymentPercentage = Math.Min(paymentPercentage, 100); // Cap at 100%
+                            }
+                        }
+                        <div class="progress-bar bg-@(canRegisterCourses ? "success" : "warning")"
+                             role="progressbar"
+                             style="width: @paymentPercentage%"
+                             aria-valuenow="@paymentPercentage"
+                             aria-valuemin="0"
+                             aria-valuemax="100">
+                            @paymentPercentage.ToString("N0")%
+                        </div>
+                    </div>
+                    <div class="alert alert-@(canRegisterCourses ? "success" : "warning")">
+                        @if (canRegisterCourses)
+                        {
+                            <p><i class="fas fa-check-circle"></i> You've met the minimum payment requirement.</p>
+                        }
+                        else
+                        {
+                            <p><i class="fas fa-exclamation-triangle"></i>
+                                You need to pay GHS @((Model.RequiredFeeAmount - Model.PaymentMade).ToString("N2")) more to register for courses.
+                            </p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Card -->
+    @if (Model.Notifications.Any())
+    {
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="card-title"><i class="fas fa-bell"></i> Notifications</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    @foreach (var notification in Model.Notifications)
+                    {
+                        <li class="list-group-item">
+                            <i class="fas fa-exclamation-circle text-warning"></i> @notification
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Font Awesome for Icons -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+
+<!-- Responsive Table JS -->
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.table-responsive').on('show.bs.dropdown', function () {
+                $('.table-responsive').css("overflow", "inherit");
+            });
+            $('.table-responsive').on('hide.bs.dropdown', function () {
+                $('.table-responsive').css("overflow", "auto");
+            });
+        });
+    </script>
+}

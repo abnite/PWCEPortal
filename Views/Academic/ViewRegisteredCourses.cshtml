@@ -1,0 +1,171 @@
+@model PWCEPortal.ViewModel.Academic.RegisteredCoursesViewModel
+@{
+    ViewData["Title"] = "Registered Courses";
+    Layout = "_AdminLayout";
+    
+    var CurrentYear = await _Context.AcademicYears.Where(i => i.IsActive).FirstOrDefaultAsync();
+    var verifiedPaymentHistory=await _Context.Payments.Where(p => p.StudentId == Model.StudentId  && p.IsVerified && p.CurrentAcademicYearId==CurrentYear.Id).ToListAsync();
+     var PaymentMade = verifiedPaymentHistory.Sum(p => p.AmountPaid);
+     var requiredFee = await _Context.RequiredFees.Where(r => r.IsActive).FirstOrDefaultAsync();
+     var RequiredFeeAmount = requiredFee != null ? requiredFee.RequiredAmount : 0;
+     bool canRegisterCourses = PaymentMade >= RequiredFeeAmount;
+}
+
+<div class="container-fluid px-4">
+    <div class="card border-0 shadow-lg rounded-lg overflow-hidden">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-book-open fa-2x me-3"></i>
+                <h4 class="mb-0">My Registered Courses</h4>
+            </div>
+            <a href="@Url.Action("Index", "StudentDashboard")" class="btn btn-light btn-sm">
+                <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+            </a>
+        </div>
+        
+        <div class="card-body p-4">
+            <div class="row mb-4 g-4">
+                <div class="col-md-6">
+                    <div class="bg-light p-3 rounded-3 h-100">
+                        <h5 class="border-bottom pb-2 mb-3">
+                            <i class="fas fa-user-graduate me-2"></i>Student Information
+                        </h5>
+                        <div class="ps-2">
+                            <p class="mb-2"><strong>Name:</strong> @Model.StudentName</p>
+                            <p class="mb-2"><strong>Program:</strong> @Model.ProgramName</p>
+                            <p class="mb-0"><strong>Level:</strong> <span class="custom-badge bg-primary">@Model.CurrentLevel</span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                @if (!string.IsNullOrEmpty(Model.Semester))
+                {
+                    <div class="col-md-6">
+                        <div class="bg-light p-3 rounded-3 h-100">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-calendar-alt me-2"></i>Academic Period
+                            </h5>
+                            <div class="ps-2">
+                                <p class="mb-0"><strong>Current Semester:</strong> <span class="custom-badge bg-info">@Model.Semester</span></p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            @if (Model.Courses.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered" id="coursesTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th><i class="fas fa-hashtag me-1"></i>Code</th>
+                                <th><i class="fas fa-book me-1"></i>Course Name</th>
+                                <th><i class="fas fa-tag me-1"></i>Type</th>
+                                @if (string.IsNullOrEmpty(Model.Semester))
+                                {
+                                    <th><i class="fas fa-calendar me-1"></i>Semester</th>
+                                }
+                                <th><i class="fas fa-calendar-check me-1"></i>Registered On</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var course in Model.Courses)
+                            {
+                                <tr>
+                                    <td class="fw-bold">@course.CourseCode</td>
+                                    <td>@course.CourseName</td>
+                                    <td>
+                                        <span class="custom-badge @(course.CourseType == "Core" ? "bg-primary" : "bg-secondary")">
+                                            @course.CourseType
+                                        </span>
+                                    </td>
+                                    @if (string.IsNullOrEmpty(Model.Semester))
+                                    {
+                                        <td>@course.Semester</td>
+                                    }
+                                    <td>@course.RegistrationDate.ToString("dd MMM yyyy")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-3 text-end">
+                    <span class="text-muted">
+                        <i class="fas fa-info-circle me-1"></i>Showing @Model.Courses.Count registered courses
+                    </span>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning text-center py-4">
+                    <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                    <h4>No Courses Registered</h4>
+                    <p class="mb-0">You haven't registered for any courses yet.</p>
+                    @if (canRegisterCourses)
+                    {
+                        <a href="@Url.Action("RegisterCourses", "Academic", new { studentId = Model.StudentId })" class="btn btn-primary mt-3">
+                            <i class="fas fa-plus me-1"></i> Register Courses
+                        </a>
+                    }
+                    else
+                    {
+                        <div class="quick-action-btn text-muted" style="cursor: not-allowed;" title="Complete minimum payment requirement to register courses">
+                            <i class="fas fa-plus me-1"></i>
+                            <span class="btn-text">Register Courses</span>
+                        </div>
+                    }
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    .card-header {
+        border-radius: 0 !important;
+    }
+    .table th {
+        white-space: nowrap;
+        border-top: none;
+        background-color: #f8f9fa;
+    }
+    .table td {
+        vertical-align: middle;
+    }
+    .badge {
+        font-weight: 500;
+        padding: 0.35em 0.65em;
+    }
+    .table-hover tbody tr:hover {
+        background-color: rgba(13, 110, 253, 0.05) !important;
+    }
+    .bg-light {
+        background-color: #f8f9fa !important;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable if needed
+            $('#coursesTable').DataTable({
+                responsive: true,
+                order: [[4, 'desc']], // Sort by registration date descending
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search courses...",
+                },
+                dom: '<"top"f>rt<"bottom"lip><"clear">'
+            });
+        });
+    </script>
+}

@@ -1,0 +1,715 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model PWCEPortal.ApplicationClass.PaginatedList<PWCEPortal.Models.StudentInfo.Student>
+@{
+    ViewData["Title"] = "Student Promotion";
+    Layout = "_AdminLayout";
+
+    // Calculate page range for pagination
+    int currentPage = Model.PageIndex;
+    int totalPages = Model.TotalPages;
+    int startPage = Math.Max(1, currentPage - 3);
+    int endPage = Math.Min(totalPages, currentPage + 3);
+    int pageSize = Model.PageSize;
+}
+
+<div class="container-fluid px-4">
+    <div class="card border-0 shadow-lg rounded-lg">
+        <div class="card-header bg-gradient-primary text-white d-flex justify-content-between align-items-center py-3">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-user-graduate me-3 fs-4"></i>
+                <h4 class="mb-0">Student Promotion/Demotion Management</h4>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-light btn-demote-all" data-bs-toggle="modal" data-bs-target="#demotionConfirmationModal">
+                    <i class="fas fa-arrow-down me-2"></i> Demote Students
+                </button>
+                <button type="button" class="btn btn-light btn-promote-all" data-bs-toggle="modal" data-bs-target="#promotionConfirmationModal">
+                    <i class="fas fa-arrow-up me-2"></i> Promote Eligible Students
+                </button>
+            </div>
+        </div>
+        <div class="card-body p-4">
+            <!-- Status Messages -->
+            <div class="message-container">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show d-flex align-items-center">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <div>@TempData["SuccessMessage"]</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        <div>@TempData["ErrorMessage"]</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+            </div>
+
+            <!-- Control Panel -->
+            <div class="control-panel bg-light p-4 rounded-3 mb-4">
+                <div class="row g-3">
+                    <!-- Search Box -->
+                    <div class="col-md-5">
+                        <form asp-action="PromoteStudents" method="get">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+                                <input type="text" class="form-control border-start-0" 
+                                       name="searchString" value="@ViewData["CurrentFilter"]"
+                                       placeholder="Search students...">
+                                <button class="btn btn-primary" type="submit">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Level Filter -->
+                    <div class="col-md-3">
+                        <form asp-action="PromoteStudents" method="get" id="levelFilterForm">
+                            <select class="form-select" name="levelFilter" onchange="this.form.submit()">
+                                <option value="">All Academic Levels</option>
+                                <option value="100" selected="@(ViewData["CurrentLevelFilter"]?.ToString() == "100")">Level 100</option>
+                                <option value="200" selected="@(ViewData["CurrentLevelFilter"]?.ToString() == "200")">Level 200</option>
+                                <option value="300" selected="@(ViewData["CurrentLevelFilter"]?.ToString() == "300")">Level 300</option>
+                                <option value="400" selected="@(ViewData["CurrentLevelFilter"]?.ToString() == "400")">Level 400</option>
+                            </select>
+                        </form>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="col-md-4">
+                        <div class="d-flex gap-2">
+                            <a asp-action="PromoteStudents" class="btn btn-outline-secondary flex-grow-1">
+                                <i class="fas fa-sync-alt me-1"></i> Reset
+                            </a>
+                            <button class="btn btn-info flex-grow-1" id="btnToggleCurrentPage">
+                                <i class="fas fa-exchange-alt me-1"></i> Toggle Page
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bulk Actions Panel -->
+                <div class="row mt-3">
+                    <div class="col-md-8">
+                        <div class="d-flex align-items-center">
+                            <span class="me-3 fw-bold">Bulk Actions:</span>
+                            <select class="form-select me-2" id="bulkLevelSelect" style="max-width: 120px;">
+                                <option value="">All Levels</option>
+                                <option value="100">Level 100</option>
+                                <option value="200">Level 200</option>
+                                <option value="300">Level 300</option>
+                                <option value="400">Level 400</option>
+                            </select>
+                            <button class="btn btn-success me-2" id="btnBulkInclude">
+                                <i class="fas fa-check-circle me-1"></i> Include All
+                            </button>
+                            <button class="btn btn-danger" id="btnBulkExclude">
+                                <i class="fas fa-times-circle me-1"></i> Exclude All
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <div class="stats-badge bg-light text-dark p-2 rounded">
+                            <i class="fas fa-users me-1"></i>
+                            <span class="fw-bold">@Model.Count</span> students displayed | 
+                            <span class="text-success fw-bold">@Model.Count(s => s.IsPromotionEligible)</span> eligible
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Students Table -->
+            <div class="table-responsive rounded-3 border">
+                <table class="table table-hover mb-0" id="promotionTable">
+                    <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Application No</th>
+                        <th class="ps-4">Student ID</th>
+                        <th>Name</th>
+                        <th>Level</th>
+                        <th>Program</th>
+                        <th>Status</th>
+                        <th class="text-end pe-4">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @{
+                        int count = Model.FirstItemOnPage;
+                    }
+                        @foreach (var student in Model)
+                        {
+                            <tr class="@(student.IsPromotionEligible ? "table-row-eligible" : "table-row-ineligible")">
+                                <td>@count</td>
+                                <td class="ps-4 fw-bold">@student.ApplicationNumber</td>
+                                <td class="ps-4 fw-bold">@(student.StudentID??"N/A")</td>
+                                <td>@student.Surname, @student.OtherNames</td>
+                                <td>
+                                    <span class="level-badge">Level @student.CurrentLevel</span>
+                                </td>
+                                <td>@student.CollegeProgram?.ProgramName</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        @if (student.IsPromotionEligible)
+                                        {
+                                            <i class="fas fa-check-circle text-success me-2"></i>
+                                            <span class="status-text">Ready for Promotion</span>
+                                        }
+                                        else
+                                        {
+                                            <i class="fas fa-exclamation-circle text-warning me-2"></i>
+                                            <span class="status-text">Not Eligible</span>
+                                        }
+                                    </div>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <button class="btn btn-sm btn-toggle-eligibility @(student.IsPromotionEligible ? "btn-outline-warning" : "btn-outline-primary")"
+                                            data-student-id="@student.Id">
+                                        @if (student.IsPromotionEligible)
+                                        {
+                                            <i class="fas fa-user-minus me-1"></i><span>Exclude</span>
+                                            
+                                        }
+                                        else
+                                        {
+                                            <i class="fas fa-user-plus me-1"></i><span>Include</span>
+                                            
+                                        }
+                                    </button>
+                                </td>
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Enhanced Pagination -->
+            @if (Model.TotalPages > 1)
+            {
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <div class="text-muted">
+                        Showing page @Model.PageIndex of @Model.TotalPages (@Model.TotalItems total students)
+                    </div>
+                    
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination mb-0">
+                            <!-- First Page -->
+                            <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                                <a asp-action="PromoteStudents"
+                                   asp-route-pageNumber="1"
+                                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                                   asp-route-levelFilter="@ViewData["CurrentLevelFilter"]"
+                                   class="page-link" aria-label="First">
+                                    <span aria-hidden="true">&laquo;&laquo;</span>
+                                </a>
+                            </li>
+
+                            <!-- Previous Page -->
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a asp-action="PromoteStudents"
+                                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                                   asp-route-levelFilter="@ViewData["CurrentLevelFilter"]"
+                                   class="page-link" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+
+                            <!-- Page Numbers -->
+                            @for (int i = startPage; i <= endPage; i++)
+                            {
+                                <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                                    <a asp-action="PromoteStudents"
+                                       asp-route-pageNumber="@i"
+                                       asp-route-searchString="@ViewData["CurrentFilter"]"
+                                       asp-route-levelFilter="@ViewData["CurrentLevelFilter"]"
+                                       class="page-link">
+                                        @i
+                                    </a>
+                                </li>
+                            }
+
+                            <!-- Next Page -->
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a asp-action="PromoteStudents"
+                                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                                   asp-route-levelFilter="@ViewData["CurrentLevelFilter"]"
+                                   class="page-link" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+
+                            <!-- Last Page -->
+                            <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                                <a asp-action="PromoteStudents"
+                                   asp-route-pageNumber="@Model.TotalPages"
+                                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                                   asp-route-levelFilter="@ViewData["CurrentLevelFilter"]"
+                                   class="page-link" aria-label="Last">
+                                    <span aria-hidden="true">&raquo;&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Demotion Confirmation Modal -->
+<div class="modal fade" id="demotionConfirmationModal" tabindex="-1" aria-labelledby="demotionModalLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-gradient-danger text-white">
+                <h5 class="modal-title" id="demotionModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Confirm Demotion
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning d-flex align-items-center mb-4">
+                    <i class="fas fa-exclamation-triangle me-3 fs-4"></i>
+                    <div>
+                        <h5 class="alert-heading mb-1">Warning!</h5>
+                        <p class="mb-0">This action will demote selected students to the previous academic level.</p>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="fw-bold mb-2">Select Level to Demote:</label>
+                    <select class="form-select" id="demotionLevelSelect">
+                        <option value="200">Level 200</option>
+                        <option value="300">Level 300</option>
+                        <option value="400">Level 400</option>
+                    </select>
+                </div>
+
+                <div class="promotion-summary p-3 bg-light rounded">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-bold">Affected Level:</span>
+                        <span class="custom-badge bg-primary" id="demotionLevelBadge">Level 200</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-bold">Action:</span>
+                        <span class="custom-badge bg-danger">Demote to previous level</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmDemotionBtn">
+                    <i class="fas fa-arrow-down me-1"></i> Confirm Demotion
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Promotion Confirmation Modal -->
+<div class="modal fade" id="promotionConfirmationModal" tabindex="-1" aria-labelledby="promotionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-gradient-warning text-white">
+                <h5 class="modal-title" id="promotionModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Confirm Promotion
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info d-flex align-items-center mb-4">
+                    <i class="fas fa-info-circle me-3 fs-4"></i>
+                    <div>
+                        <h5 class="alert-heading mb-1">Important Notice</h5>
+                        <p class="mb-0">This action will promote all eligible students to the next academic level.</p>
+                    </div>
+                </div>
+                
+                <div class="promotion-summary p-3 bg-light rounded">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-bold">Total Eligible Students:</span>
+                        <span class="custom-badge bg-primary">@Model.Count(s => s.IsPromotionEligible)</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-bold">Affected Levels:</span>
+                        <div>
+                            @foreach (var level in Model.Select(s => s.CurrentLevel).Distinct().OrderBy(l => l))
+                            {
+                                <span class="custom-badge bg-secondary me-1">Level @level</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i> Cancel
+                </button>
+                <form asp-action="PromoteAllEligibleStudents" method="post">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check me-1"></i> Confirm Promotion
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Toast notification function
+            function showToast(type, message) {
+                const toast = $(`<div class="toast align-items-center text-white bg-${type} border-0 fade show" role="alert">
+                    <div class="d-flex">
+                        <div class="toast-body">${message}</div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>`);
+                
+                $('.message-container').append(toast);
+                setTimeout(() => toast.remove(), 5000);
+            }
+
+            // Toggle promotion eligibility for single student
+            $('.btn-toggle-eligibility').click(function () {
+                const button = $(this);
+                const studentId = button.data('student-id');
+                const row = button.closest('tr');
+                
+                button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i> Processing...');
+
+                $.post('@Url.Action("TogglePromotionEligibility")', {
+                    studentId: studentId,
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                }).done(function(data) {
+                    if (data.success) {
+                        // Update UI
+                        if (data.isEligible) {
+                            button.removeClass('btn-outline-primary').addClass('btn-outline-warning')
+                                .html('<i class="fas fa-user-minus me-1"></i>Exclude');
+                            row.removeClass('table-row-ineligible').addClass('table-row-eligible');
+                            row.find('.status-text').text('Ready for Promotion');
+                            row.find('td:eq(4) i').removeClass('fa-exclamation-circle text-warning')
+                                .addClass('fa-check-circle text-success');
+                        } else {
+                            button.removeClass('btn-outline-warning').addClass('btn-outline-primary')
+                                .html('<i class="fas fa-user-plus me-1"></i>Include');
+                            row.removeClass('table-row-eligible').addClass('table-row-ineligible');
+                            row.find('.status-text').text('Not Eligible');
+                            row.find('td:eq(4) i').removeClass('fa-check-circle text-success')
+                                .addClass('fa-exclamation-circle text-warning');
+                        }
+                        
+                        showToast('success', `Student ${data.isEligible ? 'included' : 'excluded'} successfully`);
+                    } else {
+                        showToast('danger', data.message || 'Error processing request');
+                    }
+                }).fail(function() {
+                    showToast('danger', 'Network error occurred');
+                }).always(function() {
+                    button.prop('disabled', false);
+                });
+            });
+
+            // Bulk include students with confirmation
+            $('#btnBulkInclude').click(function() {
+                const level = $('#bulkLevelSelect').val();
+                const levelText = level ? `Level ${level} ` : '';
+                
+                Swal.fire({
+                    title: `Include All ${levelText}Students?`,
+                    text: "This will mark all selected students as eligible for promotion.",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, include all',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        updateBulkEligibility(level, true);
+                    }
+                });
+            });
+
+            // Bulk exclude students with confirmation
+            $('#btnBulkExclude').click(function() {
+                const level = $('#bulkLevelSelect').val();
+                const levelText = level ? `Level ${level} ` : '';
+                
+                Swal.fire({
+                    title: `Exclude All ${levelText}Students?`,
+                    text: "This will mark all selected students as ineligible for promotion.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, exclude all',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        updateBulkEligibility(level, false);
+                    }
+                });
+            });
+
+            // Toggle eligibility for current page with confirmation
+            $('#btnToggleCurrentPage').click(function() {
+                const studentCount = $('tbody tr').length;
+                
+                Swal.fire({
+                    title: `Toggle ${studentCount} Students?`,
+                    text: "This will invert the eligibility status for all students on the current page.",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, toggle all',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const studentIds = [];
+                        $('tbody tr').each(function() {
+                            studentIds.push($(this).find('.btn-toggle-eligibility').data('student-id'));
+                        });
+
+                        if (studentIds.length > 0) {
+                            toggleCurrentPageEligibility(studentIds);
+                        }
+                    }
+                });
+            });
+
+            // Update eligibility in bulk
+            function updateBulkEligibility(level, isEligible) {
+                $('#btnBulkInclude, #btnBulkExclude').prop('disabled', true);
+                
+                $.post('@Url.Action("UpdateBulkEligibility")', {
+                    level: level,
+                    isEligible: isEligible,
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                }).done(function(data) {
+                    if (data.success) {
+                        showToast('success', `Bulk ${isEligible ? 'include' : 'exclude'} successful for ${data.affectedCount} students`);
+                        setTimeout(() => location.reload(), 1500);
+                    } else {
+                        showToast('danger', data.message || 'Error processing bulk operation');
+                    }
+                }).fail(function() {
+                    showToast('danger', 'Network error during bulk operation');
+                }).always(function() {
+                    $('#btnBulkInclude, #btnBulkExclude').prop('disabled', false);
+                });
+            }
+
+            // Toggle eligibility for current page
+            function toggleCurrentPageEligibility(studentIds) {
+                $('#btnToggleCurrentPage').prop('disabled', true)
+                    .html('<i class="fas fa-spinner fa-spin me-1"></i> Processing...');
+                
+                $.post('@Url.Action("TogglePageEligibility")', {
+                    studentIds: studentIds,
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                }).done(function(data) {
+                    if (data.success) {
+                        showToast('success', `Toggled eligibility for ${data.affectedCount} students`);
+                        setTimeout(() => location.reload(), 1500);
+                    } else {
+                        showToast('danger', data.message || 'Error processing page toggle');
+                    }
+                }).fail(function() {
+                    showToast('danger', 'Network error during page toggle');
+                });
+            }
+
+            // Update demotion level badge when selection changes
+            $('#demotionLevelSelect').change(function() {
+                $('#demotionLevelBadge').text('Level ' + $(this).val());
+            });
+
+            // Handle demotion confirmation
+            $('#confirmDemotionBtn').click(function() {
+                const level = $('#demotionLevelSelect').val();
+
+                Swal.fire({
+                    title: `Demote Level ${level} Students?`,
+                    text: `This will demote all Level ${level} students to Level ${parseInt(level)-100}.`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, demote',
+                    cancelButtonText: 'Cancel',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        demoteStudents(level);
+                    }
+                });
+            });
+
+            // Function to handle demotion
+            function demoteStudents(level) {
+                $('#confirmDemotionBtn').prop('disabled', true)
+                    .html('<i class="fas fa-spinner fa-spin me-1"></i> Processing...');
+
+                $.post('@Url.Action("DemoteStudents")', {
+                    level: level,
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                }).done(function(data) {
+                    if (data.success) {
+                        showToast('success', `Successfully demoted ${data.affectedCount} students`);
+                        setTimeout(() => location.reload(), 1500);
+                    } else {
+                        showToast('danger', data.message || 'Error during demotion');
+                    }
+                }).fail(function() {
+                    showToast('danger', 'Network error during demotion');
+                }).always(function() {
+                    $('#confirmDemotionBtn').prop('disabled', false)
+                        .html('<i class="fas fa-arrow-down me-1"></i> Confirm Demotion');
+                    $('#demotionConfirmationModal').modal('hide');
+                });
+            }
+            
+            // Initialize tooltips
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+    </script>
+}
+
+<style>
+    /* Custom styling */
+    .card {
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
+        border: none;
+    }
+    
+    .card-header {
+        border-bottom: none;
+    }
+    
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #3f51b5 0%, #2196f3 100%);
+    }
+    
+    .bg-gradient-warning {
+        background: linear-gradient(135deg, #ff9800 0%, #ffc107 100%);
+    }
+    
+    .btn-promote-all {
+        transition: all 0.3s;
+        font-weight: 500;
+    }
+    
+    .btn-promote-all:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .table-row-eligible {
+        background-color: rgba(40, 167, 69, 0.05);
+    }
+    
+    .table-row-ineligible {
+        background-color: rgba(220, 53, 69, 0.03);
+    }
+    
+    .table-hover tbody tr:hover {
+        background-color: rgba(0, 0, 0, 0.02) !important;
+    }
+    
+    .level-badge {
+        display: inline-block;
+        padding: 0.25em 0.6em;
+        font-size: 0.85em;
+        font-weight: 600;
+        line-height: 1;
+        color: #fff;
+        background-color: #6c757d;
+        border-radius: 0.25rem;
+    }
+    
+    .stats-badge {
+        border: 1px solid #dee2e6;
+    }
+    
+    .control-panel {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05);
+    }
+    
+    .promotion-summary {
+        border-left: 4px solid #ffc107;
+    }
+    
+    .toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1100;
+        min-width: 300px;
+    }
+    
+    /* Responsive adjustments */
+    @@media (max-width: 992px) {
+        .control-panel .row > div {
+            margin-bottom: 1rem;
+        }
+        
+        .bulk-actions-container {
+            flex-direction: column;
+        }
+        
+        #bulkLevelSelect {
+            margin-bottom: 0.5rem;
+            max-width: 100%;
+        }
+    }
+    
+    @@media (max-width: 768px) {
+        .card-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .btn-promote-all {
+            margin-top: 1rem;
+            width: 100%;
+        }
+        
+        .pagination {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .page-item {
+            margin-bottom: 0.5rem;
+        }
+    }
+
+    .btn-demote-all {
+        background-color: #f8f9fa;
+        color: #dc3545;
+        border-color: #dc3545;
+        transition: all 0.3s;
+    }
+
+    .btn-demote-all:hover {
+        background-color: #dc3545;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .bg-gradient-danger {
+        background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+    }
+</style>

@@ -1,0 +1,169 @@
+@model PWCEPortal.ViewModel.Dashboard.OutstandingFeesViewModel
+@{
+    ViewData["Title"] = "Outstanding Fees";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">
+            <i class="fas fa-exclamation-circle me-2 text-warning"></i>Over Paymnet Fees
+        </h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="FinanceDashboard" asp-action="Index">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Outstanding Fees</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm border-warning">
+        <div class="card-header bg-warning text-white">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h3 class="mb-0">Over Paid Balances</h3>
+                </div>
+                <div class="col-md-6">
+                    <form method="get" asp-action="OverPaymentFees" class="input-group">
+                        <input type="text" name="searchQuery" value="@Model.SearchQuery"
+                               class="form-control" placeholder="Search students..." />
+                        <select name="level" class="form-select">
+                            <option value="">All Levels</option>
+                            <option value="100" selected="@(Model.Level == 100)">Level 100</option>
+                            <option value="200" selected="@(Model.Level == 200)">Level 200</option>
+                            <option value="300" selected="@(Model.Level == 300)">Level 300</option>
+                            <option value="400" selected="@(Model.Level == 400)">Level 400</option>
+                        </select>
+                        <button type="submit" class="btn btn-light">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-4">
+                <form method="post" asp-action="DownloadOverPaymentFees" class="mb-0">
+                    <input type="hidden" name="searchQuery" value="@Model.SearchQuery" />
+                    <input type="hidden" name="level" value="@Model.Level" />
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-file-excel me-2"></i>Export to Excel
+                    </button>
+                </form>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Student</th>
+                        <th>Student ID</th>
+                        <th>Level</th>
+                        <th>Academic Year</th>
+                        <th class="text-end">Full Fees</th>
+                        <th class="text-end">Paid</th>
+                        <th class="text-end">Over Paid Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @{
+                        int startRow = ((ViewBag.Page ?? 1) - 1) * (ViewBag.PageSize ?? 10) + 1;
+                        int count = startRow;
+                    }
+                    @foreach (var outstanding in Model.OutstandingFees)
+                    {
+                        <tr>
+                            <td>@count</td>
+                            <td>@outstanding.Student.Surname @outstanding.Student.OtherNames</td>
+                            <td>@outstanding.Student.ApplicationNumber</td>
+                            <td>
+                                <span class="custom-badge bg-info">Level @outstanding.Student.CurrentLevel</span>
+                            </td>
+                            <td>@outstanding.AcademicYear.Year</td>
+                            <td class="text-end">GHS @outstanding.FullFee.ToString("N2")</td>
+                            <td class="text-end">GHS @outstanding.PaymentMade.ToString("N2")</td>
+                            <td class="text-end fw-bold text-success">GHS @Math.Abs(outstanding.OutstandingFee).ToString("N2")</td>
+                        </tr>
+                    }
+                    @if (!Model.OutstandingFees.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">
+                                <i class="fas fa-check-circle fa-2x mb-3 text-success"></i>
+                                <p>No outstanding fees found</p>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (Model.TotalCount > Model.PageSize)
+            {
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item @(Model.Page == 1 ? "disabled" : "")">
+                            <a class="page-link"
+                               href="@Url.Action("OverPaymentFees", new { searchQuery = Model.SearchQuery, level = Model.Level, page = Model.Page - 1, pageSize = Model.PageSize })">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        </li>
+
+                        @{
+                            int totalPages = (Model.TotalCount + Model.PageSize.Value - 1) / Model.PageSize.Value;
+                            int startPage = Math.Max(1, Model.Page.Value - 2);
+                            int endPage = Math.Min(totalPages, Model.Page.Value + 2);
+
+                            // Always show first page
+                            if (startPage > 1)
+                            {
+                                <li class="page-item @(1 == Model.Page ? "active" : "")">
+                                    <a class="page-link"
+                                       href="@Url.Action("OverPaymentFees", new { searchQuery = Model.SearchQuery, level = Model.Level, page = 1, pageSize = Model.PageSize })">1</a>
+                                </li>
+                                if (startPage > 2)
+                                {
+                                    <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                }
+                            }
+
+                            // Show middle pages
+                            for (int i = startPage; i <= endPage; i++)
+                            {
+                                <li class="page-item @(i == Model.Page ? "active" : "")">
+                                    <a class="page-link"
+                                       href="@Url.Action("OverPaymentFees", new { searchQuery = Model.SearchQuery, level = Model.Level, page = i, pageSize = Model.PageSize })">@i</a>
+                                </li>
+                            }
+
+                            // Always show last page
+                            if (endPage < totalPages)
+                            {
+                                if (endPage < totalPages - 1)
+                                {
+                                    <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                }
+                                <li class="page-item @(totalPages == Model.Page ? "active" : "")">
+                                    <a class="page-link"
+                                       href="@Url.Action("OverPaymentFees", new { searchQuery = Model.SearchQuery, level = Model.Level, page = totalPages, pageSize = Model.PageSize })">@totalPages</a>
+                                </li>
+                            }
+                        }
+
+                        <li class="page-item @(Model.Page == totalPages ? "disabled" : "")">
+                            <a class="page-link"
+                               href="@Url.Action("OverPaymentFees", new { searchQuery = Model.SearchQuery, level = Model.Level, page = Model.Page + 1, pageSize = Model.PageSize })">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,416 @@
+@model PWCEPortal.ViewModel.Student.EditProfileViewModel
+
+@{
+    ViewBag.Title = "Edit Profile";
+    Layout = "_AdminLayout";
+}
+
+<style>
+    :root {
+        --primary-color: #4e73df;
+        --secondary-color: #f8f9fc;
+        --accent-color: #2e59d9;
+        --success-color: #1cc88a;
+        --warning-color: #f6c23e;
+        --danger-color: #e74a3b;
+        --info-color: #36b9cc;
+    }
+
+    .card {
+        border: none;
+        border-radius: 0.35rem;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+        background-color: var(--primary-color);
+        border-bottom: none;
+        border-radius: 0.35rem 0.35rem 0 0 !important;
+        color: white;
+        font-weight: 600;
+        padding: 1rem 1.35rem;
+    }
+
+    .btn {
+        border-radius: 0.35rem;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+        transition: all 0.2s;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .btn-primary:hover {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+        background-color: #858796;
+        border-color: #858796;
+    }
+
+    .btn-secondary:hover {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+    .btn-success {
+        background-color: var(--success-color);
+        border-color: var(--success-color);
+    }
+
+    .btn-success:hover {
+        background-color: #17a673;
+        border-color: #17a673;
+    }
+
+    .table {
+        color: #6e707e;
+        margin-bottom: 1rem;
+    }
+
+    .table th {
+        border-top: none;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 0.05rem;
+        color: #858796;
+        background-color: #f8f9fc;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+        color: white;
+        border-radius: 0.35rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    }
+
+    .page-header h2 {
+        font-weight: 700;
+        margin-bottom: 0;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: #5a5c69;
+    }
+
+    .detail-value {
+        color: #6e707e;
+    }
+
+    .section-divider {
+        border-top: 1px solid #e3e6f0;
+        margin: 1.5rem 0;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 2rem;
+        color: #858796;
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: #dddfeb;
+    }
+</style>
+
+<div class="container-fluid mt-4">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h2><i class="fas fa-user-edit me-2"></i>Edit Profile</h2>
+                <p class="mb-0">Manage your personal, academic, and financial information</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Details -->
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0"><i class="fas fa-user-graduate me-2"></i>Student Details</h5>
+            <a href="@Url.Action("EditStudent", "StudentDashboard", new { studentId = Model.Student.Id })" class="btn btn-primary">
+                <i class="fas fa-edit me-1"></i> Edit Details
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h6 class="mb-3"><i class="fas fa-id-card me-2"></i>Personal Information</h6>
+                    <dl class="row mb-4">
+                        <dt class="col-sm-4 detail-label">Application Number</dt>
+                        <dd class="col-sm-8 detail-value">@(string.IsNullOrEmpty(Model.Student.ApplicationNumber) ? "N/A" : Model.Student.ApplicationNumber)</dd>
+
+                        <dt class="col-sm-4 detail-label">Student ID Number</dt>
+                        <dd class="col-sm-8 detail-value">@(string.IsNullOrEmpty(Model.Student.StudentID) ? "N/A" : Model.Student.StudentID)</dd>
+
+
+                        <dt class="col-sm-4 detail-label">Full Name</dt>
+                        <dd class="col-sm-8 detail-value">@(string.IsNullOrEmpty(Model.Student.Title) ? "" : Model.Student.Title) @Model.Student.Surname @Model.Student.OtherNames</dd>
+
+                        <dt class="col-sm-4 detail-label">Marital Status</dt>
+                        <dd class="col-sm-8 detail-value">@(string.IsNullOrEmpty(Model.Student.MaritalStatus) ? "N/A" : Model.Student.MaritalStatus)</dd>
+                        
+                        <dt class="col-sm-4 detail-label">Date of Birth</dt>
+                        <dd class="col-sm-8 detail-value">@(Model.Student.DateOfBirth == default ? "N/A" : Model.Student.DateOfBirth.ToShortDateString())</dd>
+
+                        <dt class="col-sm-4 detail-label">Gender</dt>
+                        <dd class="col-sm-8 detail-value">@(string.IsNullOrEmpty(Model.Student.Gender) ? "N/A" : Model.Student.Gender)</dd>
+
+                        <dt class="col-sm-4 detail-label">Email</dt>
+                        <dd class="col-sm-8 detail-value">@(string.IsNullOrEmpty(Model.Student.Email) ? "N/A" : Model.Student.Email)</dd>
+
+                        <dt class="col-sm-4 detail-label">Phone Number</dt>
+                        <dd class="col-sm-8 detail-value">@(string.IsNullOrEmpty(Model.Student.PhoneNo) ? "N/A" : Model.Student.PhoneNo)</dd>
+
+                        <dt class="col-sm-4 detail-label">Contact Address</dt>
+                        <dd class="col-sm-8 detail-value">@(string.IsNullOrEmpty(Model.Student.ContactAddress) ? "N/A" : Model.Student.ContactAddress)</dd>
+
+                        <dt class="col-sm-4 detail-label">Religion</dt>
+                        <dd class="col-sm-8 detail-value">@(string.IsNullOrEmpty(Model.Student.Religion) ? "N/A" : Model.Student.Religion)</dd>
+
+                        <dt class="col-sm-4 detail-label">Religious Denomination</dt>
+                        <dd class="col-sm-8 detail-value">@(string.IsNullOrEmpty(Model.Student.ReligiousDenom) ? "N/A" : Model.Student.ReligiousDenom)</dd>
+                    </dl>
+                </div>
+                <div class="col-lg-6">
+                    <h6 class="mb-3"><i class="fas fa-university me-2"></i>Academic Information</h6>
+                    <dl class="row">
+                        <dt class="col-sm-4 detail-label">College Hall</dt>
+                        <dd class="col-sm-8 detail-value">@(Model.Student.CollegeHall != null && !string.IsNullOrEmpty(Model.Student.CollegeHall.HallName) ? Model.Student.CollegeHall.HallName : "N/A")</dd>
+
+                        <dt class="col-sm-4 detail-label">Disability Status</dt>
+                        <dd class="col-sm-8 detail-value">@(Model.Student.DisabilityStatus.HasValue ? (Model.Student.DisabilityStatus.Value ? "Yes" : "No") : "N/A")</dd>
+
+                        <dt class="col-sm-4 detail-label">District</dt>
+                        <dd class="col-sm-8 detail-value">@(string.IsNullOrEmpty(Model.Student.District) ? "N/A" : Model.Student.District)</dd>
+
+                        <dt class="col-sm-4 detail-label">Home Town</dt>
+                        <dd class="col-sm-8 detail-value">@(string.IsNullOrEmpty(Model.Student.HomeTown) ? "N/A" : Model.Student.HomeTown)</dd>
+
+                        <dt class="col-sm-4 detail-label">Ghanaian Languages</dt>
+                        <dd class="col-sm-8 detail-value">@(string.IsNullOrEmpty(Model.Student.GhanaianLanguagesSpoken) ? "N/A" : Model.Student.GhanaianLanguagesSpoken)</dd>
+
+                        <dt class="col-sm-4 detail-label">Place of Birth</dt>
+                        <dd class="col-sm-8 detail-value">@(string.IsNullOrEmpty(Model.Student.PlaceOfBirth) ? "N/A" : Model.Student.PlaceOfBirth)</dd>
+
+                        <dt class="col-sm-4 detail-label">College Program</dt>
+                        <dd class="col-sm-8 detail-value">@(Model.Student.CollegeProgram == null ? "N/A" : Model.Student.CollegeProgram.ProgramName)</dd>
+
+                        <dt class="col-sm-4 detail-label">Enrolment Year</dt>
+                        <dd class="col-sm-8 detail-value">@(Model.Student.EnrolmentYear == 0 ? "N/A" : Model.Student.EnrolmentYear.ToString())</dd>
+
+                        <dt class="col-sm-4 detail-label">Current Level</dt>
+                        <dd class="col-sm-8 detail-value">@(Model.Student.CurrentLevel == 0 ? "N/A" : Model.Student.CurrentLevel.ToString())</dd>
+
+                        <dt class="col-sm-4 detail-label">Entry Level</dt>
+                        <dd class="col-sm-8 detail-value">@(Model.Student.LevelOfEntry == 0 ? "N/A" : Model.Student.LevelOfEntry.ToString())</dd>
+
+                        <dt class="col-sm-4 detail-label">Completion Year</dt>
+                        <dd class="col-sm-8 detail-value">@(Model.Student.ExpectedCompletionYear == 0 ? "N/A" : Model.Student.ExpectedCompletionYear.ToString())</dd>
+
+                        <dt class="col-sm-4 detail-label">College Class</dt>
+                        <dd class="col-sm-8 detail-value">@(Model.Student.CollegeClass != null && !string.IsNullOrEmpty(Model.Student.CollegeClass.ClassName) ? Model.Student.CollegeClass.ClassName : "N/A")</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Parent/Guardian Information -->
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0"><i class="fas fa-users me-2"></i>Parent/Guardian Information</h5>
+            <a href="@Url.Action("AddParentGuardian", "StudentDashboard", new { studentId = Model.Student.Id })" class="btn btn-success">
+                <i class="fas fa-plus me-1"></i> Add Parent/Guardian
+            </a>
+        </div>
+        <div class="card-body">
+            @if (Model.ParentsGuardians.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Telephone</th>
+                                <th>Occupation</th>
+                                <th>Relationship</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var parent in Model.ParentsGuardians)
+                            {
+                                <tr>
+                                    <td>@(string.IsNullOrEmpty(parent.FullName) ? "N/A" : parent.FullName)</td>
+                                    <td>@(string.IsNullOrEmpty(parent.Email) ? "N/A" : parent.Email)</td>
+                                    <td>@(string.IsNullOrEmpty(parent.Telephone) ? "N/A" : parent.Telephone)</td>
+                                    <td>@(string.IsNullOrEmpty(parent.Occupation) ? "N/A" : parent.Occupation)</td>
+                                    <td>@(string.IsNullOrEmpty(parent.Relationship) ? "N/A" : parent.Relationship)</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <a href="@Url.Action("EditParentGuardian", "StudentDashboard", new { id = parent.Id })" class="btn btn-sm btn-secondary">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="@Url.Action("DeleteParentGuardian", "StudentDashboard", new { id = parent.Id })" class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="fas fa-users-slash"></i>
+                    <h5>No Parent/Guardian Information</h5>
+                    <p>No parent or guardian records found for this student.</p>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Financial Information -->
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0"><i class="fas fa-wallet me-2"></i>Financial Information</h5>
+            <a href="@Url.Action("AddFinancialInfo", "StudentDashboard", new { studentId = Model.Student.Id })" class="btn btn-success">
+                <i class="fas fa-plus me-1"></i> Add Financial Info
+            </a>
+        </div>
+        <div class="card-body">
+            @if (Model.FinancialInfos.Any())
+            {
+                <div class="row">
+                    @foreach (var financialInfo in Model.FinancialInfos)
+                    {
+                        <div class="col-md-6">
+                            <div class="card border-left-primary mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="text-primary"><i class="fas fa-piggy-bank me-2"></i>Financial Details</h6>
+                                        <div class="action-buttons">
+                                            <a href="@Url.Action("EditFinancialInfo", "StudentDashboard", new { id = financialInfo.Id })" class="btn btn-sm btn-secondary">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="section-divider"></div>
+                                    <dl class="row">
+                                        <dt class="col-sm-5 detail-label">SSNIT Number</dt>
+                                        <dd class="col-sm-7 detail-value">@financialInfo.SSNITNumber</dd>
+
+                                        <dt class="col-sm-5 detail-label">EZwich Account Name</dt>
+                                        <dd class="col-sm-7 detail-value">@financialInfo.EZwichAccountName.ToString()</dd>
+
+                                        <dt class="col-sm-5 detail-label">EZwich Account Number</dt>
+                                        <dd class="col-sm-7 detail-value">@financialInfo.EZwichAccountNumber</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <h5>No Financial Information</h5>
+                    <p>No financial records found for this student.</p>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Educational History -->
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0"><i class="fas fa-graduation-cap me-2"></i>Educational History</h5>
+            <a href="@Url.Action("AddEducationHistory", "StudentDashboard", new { studentId = Model.Student.Id })" class="btn btn-success">
+                <i class="fas fa-plus me-1"></i> Add Education History
+            </a>
+        </div>
+        <div class="card-body">
+            @if (Model.EducationHistories.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>School Name</th>
+                                <th>From Date</th>
+                                <th>To Date</th>
+                                <th>Office Held</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var educationHistory in Model.EducationHistories)
+                            {
+                                <tr>
+                                    <td>@(string.IsNullOrEmpty(educationHistory.SchoolName) ? "N/A" : educationHistory.SchoolName)</td>
+                                    <td>@(educationHistory.FromDate == default ? "N/A" : educationHistory.FromDate.ToShortDateString())</td>
+                                    <td>@(educationHistory.ToDate == default ? "N/A" : educationHistory.ToDate.ToShortDateString())</td>
+                                    <td>@(string.IsNullOrEmpty(educationHistory.OfficeHeld) ? "N/A" : educationHistory.OfficeHeld)</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <a href="@Url.Action("EditEducationHistory", "StudentDashboard", new { id = educationHistory.Id })" class="btn btn-sm btn-secondary">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="@Url.Action("DeleteEducationHistory", "StudentDashboard", new { id = educationHistory.Id })" class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="fas fa-school"></i>
+                    <h5>No Educational History</h5>
+                    <p>No educational history records found for this student.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />

@@ -1,0 +1,107 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model PWCEPortal.ViewModel.Reports.PaginationViewModel
+
+@if (Model.TotalPages > 1)
+{
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <!-- First Page -->
+            <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+                <a class="page-link"
+                   asp-action="@ViewContext.RouteData.Values["action"]"
+                   asp-route-pageNumber="1"
+                   asp-all-route-data="@Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString())">
+                    &laquo;&laquo;
+                </a>
+            </li>
+            
+            <!-- Previous Page -->
+            <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+                <a class="page-link"
+                   asp-action="@ViewContext.RouteData.Values["action"]"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   asp-all-route-data="@Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString())">
+                    &laquo;
+                </a>
+            </li>
+
+            @{
+                int startPage = Math.Max(1, Model.PageIndex - 2);
+                int endPage = Math.Min(Model.TotalPages, Model.PageIndex + 2);
+                
+                // Always show first page
+                if (startPage > 1)
+                {
+                    <li class="page-item @(1 == Model.PageIndex ? "active" : "")">
+                        <a class="page-link"
+                           asp-action="@ViewContext.RouteData.Values["action"]"
+                           asp-route-pageNumber="1"
+                           asp-all-route-data="@Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString())">
+                            1
+                        </a>
+                    </li>
+                    
+                    if (startPage > 2)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    }
+                }
+
+                // Show page range
+                for (var i = startPage; i <= endPage; i++)
+                {
+                    <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                        <a class="page-link"
+                           asp-action="@ViewContext.RouteData.Values["action"]"
+                           asp-route-pageNumber="@i"
+                           asp-all-route-data="@Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString())">
+                            @i
+                        </a>
+                    </li>
+                }
+
+                // Always show last page
+                if (endPage < Model.TotalPages)
+                {
+                    if (endPage < Model.TotalPages - 1)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    }
+                    
+                    <li class="page-item @(Model.TotalPages == Model.PageIndex ? "active" : "")">
+                        <a class="page-link"
+                           asp-action="@ViewContext.RouteData.Values["action"]"
+                           asp-route-pageNumber="@Model.TotalPages"
+                           asp-all-route-data="@Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString())">
+                            @Model.TotalPages
+                        </a>
+                    </li>
+                }
+            }
+
+            <!-- Next Page -->
+            <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+                <a class="page-link"
+                   asp-action="@ViewContext.RouteData.Values["action"]"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   asp-all-route-data="@Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString())">
+                    &raquo;
+                </a>
+            </li>
+            
+            <!-- Last Page -->
+            <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+                <a class="page-link"
+                   asp-action="@ViewContext.RouteData.Values["action"]"
+                   asp-route-pageNumber="@Model.TotalPages"
+                   asp-all-route-data="@Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString())">
+                    &raquo;&raquo;
+                </a>
+            </li>
+        </ul>
+    </nav>
+}

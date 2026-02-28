@@ -1,0 +1,175 @@
+@model PWCEPortal.ViewModel.Dashboard.StudentDashboardViewModel
+
+@{
+    ViewBag.Title = "Student Dashboard";
+    Layout = "_AdminLayout";
+}
+
+<div class="container mt-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2>Welcome, @Model.Student.Surname @Model.Student.OtherNames!</h2>
+            <div class="btn-group">
+                <a href="@Url.Action("EditProfile", "StudentDashboard", new { studentId = Model.Student.Id })" class="btn btn-outline-primary">Update Profile</a>
+                <a href="#" class="btn btn-outline-secondary">Change Password</a>
+                <a href="@Url.Action("Logout","Account")" class="btn btn-outline-danger">Log Out</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Overview -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title">Profile Overview</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Application Number</dt>
+                        <dd class="col-sm-8">@Model.Student.ApplicationNumber</dd>
+
+                        <dt class="col-sm-4">Program</dt>
+                        <dd class="col-sm-8">@Model.Program?.ProgramName</dd>
+
+                        <dt class="col-sm-4">Current Level</dt>
+                        <dd class="col-sm-8">@Model.Student.CurrentLevel</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Email</dt>
+                        <dd class="col-sm-8">@Model.Student.Email</dd>
+
+                        <dt class="col-sm-4">Phone Number</dt>
+                        <dd class="col-sm-8">@Model.Student.PhoneNo</dd>
+
+                        <dt class="col-sm-4">Expected Completion</dt>
+                        <dd class="col-sm-8">@Model.Student.ExpectedCompletionYear</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Academic Information -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title">Academic Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Academic Year</dt>
+                        <dd class="col-sm-8">@Model.CurrentAcademicYear?.Year</dd>
+
+                        <dt class="col-sm-4">Courses Registered</dt>
+                        <dd class="col-sm-8">
+                            <ul>
+                                @if (Model.RegisteredCourses.Any())
+                                {
+                                    foreach (var course in Model.RegisteredCourses)
+                                    {
+                                        <li>@course.CourseName</li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li>No courses registered.</li>
+                                }
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Current Level</dt>
+                        <dd class="col-sm-8">@Model.Student.CurrentLevel</dd>
+
+                        <dt class="col-sm-4">Semester</dt>
+                        <dd class="col-sm-8">Semester @(Model.RegisteredCourses.FirstOrDefault()?.Semester ?? 1)</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fee/Payment Information -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title">Fee/Payment Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-8">Total Fee For Academic Year</dt>
+                        <dd class="col-sm-4">GHS @Model.TotalFee.ToString("N2")</dd>
+
+                        <dt class="col-sm-8">Payment Made Pending Verification</dt>
+                        <dd class="col-sm-4">GHS @Model.UnVerifiedPaymentMade.ToString("N2")</dd>
+
+                        <dt class="col-sm-8">Verified Amount Paid</dt>
+                        <dd class="col-sm-4">GHS @Model.PaymentMade.ToString("N2")</dd>
+
+                        <dt class="col-sm-8">Outstanding Balance</dt>
+                        <dd class="col-sm-4">GHS @Model.OutstandingFee.ToString("N2")</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <a href="@Url.Action("MakePayment", "StudentDashboard", new { studentId = Model.Student.Id })" class="btn btn-success">Pay Fees</a>
+                    <a href="@Url.Action("Payments", "StudentDashboard", new { studentId = Model.Student.Id })" class="btn btn-info">View Payment History</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title">Notifications</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.Notifications.Any())
+            {
+                foreach (var notification in Model.Notifications)
+                {
+                    <div class="alert alert-warning">
+                        @notification
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    No new notifications.
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title">Quick Actions</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <a href="#" class="btn btn-outline-primary btn-block">Pay Fees</a>
+                </div>
+                <div class="col-md-3">
+                    <a href="#" class="btn btn-outline-secondary btn-block">View Receipts</a>
+                </div>
+                <div class="col-md-3">
+                    <a href="#" class="btn btn-outline-success btn-block">Update Contact Info</a>
+                </div>
+                <div class="col-md-3">
+                    <a href="#" class="btn btn-outline-info btn-block">View Academic Calendar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,212 @@
+@model PWCEPortal.Models.Academic.Course
+@{
+    ViewBag.Title = "Create Course";
+    Layout = "_AdminLayout";
+    var programs = (IEnumerable<PWCEPortal.Models.Academic.CollegeProgram>)ViewBag.Programs;
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Create New Course</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "AdminDashboard")">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("ManageCourses", "AdminDashboard")">Courses</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Create</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">
+                <i class="fas fa-book-medical me-2"></i>Course Information
+            </h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="CreateCourse" method="post" class="needs-validation" novalidate>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input asp-for="CourseName" class="form-control" placeholder="Enter course name" required />
+                            <label asp-for="CourseName">Course Name</label>
+                            <span asp-validation-for="CourseName" class="text-danger small"></span>
+                            <div class="form-text">Enter the full course title (e.g., "Introduction to Computer Science")</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input asp-for="CourseCode" class="form-control" placeholder="Enter course code" required />
+                            <label asp-for="CourseCode">Course Code</label>
+                            <span asp-validation-for="CourseCode" class="text-danger small"></span>
+                            <div class="form-text">Standard course code (e.g., "CS101")</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-check form-switch mt-2 mb-4">
+                            <input asp-for="IsCommon" class="form-check-input" id="IsCommon" type="checkbox"/>
+                            <label class="form-check-label fw-semibold" for="IsCommon">
+                                Is Common (Applies to all Programmes)
+                            </label>
+                            <div class="form-text">Tick if this course is taken by all programmes (e.g., Level 100 commons).</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="form-floating mb-4">
+                            <select asp-for="CollegeProgramId" class="form-select" id="ProgramSelect">
+                                <option value="">Select Programme</option>
+                                @foreach (var program in programs)
+                                {
+                                    <option value="@program.Id">@program.ProgramName</option>
+                                }
+                            </select>
+                            <label asp-for="CollegeProgramId">Programme</label>
+                            <span asp-validation-for="CollegeProgramId" class="text-danger small"></span>
+                            <div class="form-text">Disabled when “Is Common” is on.</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <select asp-for="Level" class="form-select" required>
+                                <option value="">Select Level</option>
+                                <option value="100">Level 100</option>
+                                <option value="200">Level 200</option>
+                                <option value="300">Level 300</option>
+                                <option value="400">Level 400</option>
+                            </select>
+                            <label asp-for="Level">Level</label>
+                            <span asp-validation-for="Level" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <select asp-for="CourseType" class="form-select" required>
+                                <option value="">Select Type</option>
+                                <option value="Core">Core</option>
+                                <option value="Elective">Elective</option>
+                            </select>
+                            <label asp-for="CourseType">Course Type</label>
+                            <span asp-validation-for="CourseType" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input asp-for="Semester" type="number" min="1" max="2" class="form-control" placeholder="Enter semester" required />
+                            <label asp-for="Semester">Semester</label>
+                            <span asp-validation-for="Semester" class="text-danger small"></span>
+                            <div class="form-text">Enter 1 or 2</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <a href="@Url.Action("ManageCourses", "AdminDashboard")" class="btn btn-outline-secondary me-md-2">
+                        <i class="fas fa-times me-1"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Create Course
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+<script>
+    (function () {
+        'use strict';
+
+        // Bootstrap validation
+        var forms = document.querySelectorAll('.needs-validation');
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                // If IsCommon is ON, clear Programme to avoid server-side conflicts
+                const isCommon = document.getElementById('IsCommon').checked;
+                const programSelect = document.getElementById('ProgramSelect');
+                if (isCommon) {
+                    programSelect.value = '';
+                }
+
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+
+        // Semester bounds
+        document.getElementById('Semester').addEventListener('change', function() {
+            if (this.value < 1) this.value = 1;
+            if (this.value > 2) this.value = 2;
+        });
+
+        // Toggle Programme when IsCommon changes
+        const isCommonSwitch = document.getElementById('IsCommon');
+        const programSelect = document.getElementById('ProgramSelect');
+
+        function toggleProgramme() {
+            const isCommon = isCommonSwitch.checked;
+            programSelect.disabled = isCommon;
+            // remove required visually when disabled
+            if (isCommon) {
+                programSelect.removeAttribute('required');
+                programSelect.value = '';
+            } else {
+                programSelect.setAttribute('required', 'required');
+            }
+        }
+
+        isCommonSwitch.addEventListener('change', toggleProgramme);
+        // on load
+        toggleProgramme();
+    })();
+</script>
+
+<style>
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            border-bottom: none;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .form-floating label {
+            color: #6c757d;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+        }
+
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.9rem;
+        }
+
+        .was-validated .form-control:invalid,
+        .was-validated .form-select:invalid {
+            border-color: #dc3545;
+        }
+
+        .was-validated .form-control:valid,
+        .was-validated .form-select:valid {
+            border-color: #198754;
+        }
+    </style>
+}

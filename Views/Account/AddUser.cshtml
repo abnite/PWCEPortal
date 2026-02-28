@@ -1,0 +1,266 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model PWCEPortal.ViewModel.Account.UserRegistrationAndListViewModel
+
+@{
+    ViewBag.Title = "User Management";
+    Layout = "_AdminLayout";
+    var getRoles = await db.Roles.ToListAsync();
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">User Management</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Users</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Add New User Card -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">Register New User</h3>
+            <i class="fas fa-user-plus fa-lg"></i>
+        </div>
+        <div class="card-body">
+            <form asp-action="AddUser" method="post">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input asp-for="Registration.FirstName" class="form-control" placeholder="Enter first name" />
+                            <label asp-for="Registration.FirstName">First Name</label>
+                            <span asp-validation-for="Registration.FirstName" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input asp-for="Registration.LastName" class="form-control" placeholder="Enter last name" />
+                            <label asp-for="Registration.LastName">Last Name</label>
+                            <span asp-validation-for="Registration.LastName" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row g-3 mt-2">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input asp-for="Registration.EmailAddress" class="form-control" placeholder="Enter email address" type="email" />
+                            <label asp-for="Registration.EmailAddress">Email Address</label>
+                            <span asp-validation-for="Registration.EmailAddress" class="text-danger small"></span>
+                            <div class="form-text">This will be used as the username</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input asp-for="Registration.PhoneNumber" class="form-control" placeholder="Enter phone number" />
+                            <label asp-for="Registration.PhoneNumber">Phone Number</label>
+                            <span asp-validation-for="Registration.PhoneNumber" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row g-3 mt-2">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <select asp-for="Registration.Role" class="form-select">
+                                <option value="">Select Role</option>
+                                @foreach (var role in getRoles)
+                                {
+                                    <option value="@role.Name">@role.Name</option>
+                                }
+                            </select>
+                            <label asp-for="Registration.Role">User Role</label>
+                            <span asp-validation-for="Registration.Role" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <button type="reset" class="btn btn-outline-secondary me-md-2">
+                        <i class="fas fa-undo me-1"></i> Reset
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-user-plus me-1"></i> Register User
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- User List Card -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">User List</h3>
+            <div class="input-group" style="width: 300px;">
+                <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+                <input type="text" id="searchInput" class="form-control" placeholder="Search users...">
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="userTable" class="table table-hover table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th width="5%">#</th>
+                            <th width="20%">User</th>
+                            <th width="15%">First Name</th>
+                            <th width="15%">Last Name</th>
+                            <th width="15%">Phone</th>
+                            <th width="15%">Role</th>
+                            <th width="15%" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Users != null && Model.Users.Any())
+                        {
+                            var index = 1;
+                            foreach (var user in Model.Users)
+                            {
+                                var getUser = await db.Users.Where(i => i.Email == user.EmailAddress).FirstOrDefaultAsync();
+                                var userRoles = getUser != null ? await db.UserRoles.Where(ur => ur.UserId == getUser.Id).ToListAsync() : null;
+                                var roleName = "No Role";
+                                
+                                if (userRoles != null && userRoles.Any())
+                                {
+                                    var roleId = userRoles.First().RoleId;
+                                    roleName = (await db.Roles.FirstOrDefaultAsync(r => r.Id == roleId))?.Name ?? "No Role";
+                                }
+                                
+                                <tr>
+                                    <td>@index</td>
+                                    <td>
+                                        <strong>@user.EmailAddress</strong>
+                                        @if (getUser == null)
+                                        {
+                                            <br><small class="text-danger"><i class="fas fa-exclamation-circle"></i> Account not found</small>
+                                        }
+                                    </td>
+                                    <td>@user.FirstName</td>
+                                    <td>@user.LastName</td>
+                                    <td>@user.PhoneNumber</td>
+                                    <td>
+                                        @user.Role
+                                    </td>
+                                    <td class="text-center">
+                                        @if (getUser != null)
+                                        {
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <a asp-action="EditUser" asp-route-userId="@user.Id" 
+                                                   class="btn btn-outline-primary" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a asp-action="DeleteUser" asp-route-userId="@user.Id" 
+                                                   class="btn btn-outline-danger" title="Delete"
+                                                   onclick="return confirm('Are you sure you want to delete this user?');">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </a>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">N/A</span>
+                                        }
+                                    </td>
+                                </tr>
+                                index++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    <i class="fas fa-users fa-2x mb-3"></i>
+                                    <p>No users found. Register your first user using the form above.</p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable with search functionality
+            $('#userTable').DataTable({
+                responsive: true,
+                dom: '<"top"f>rt<"bottom"lip><"clear">',
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search users..."
+                },
+                columnDefs: [
+                    { orderable: false, targets: [6] } // Disable sorting on actions column
+                ]
+            });
+            
+            // Add focus style to form inputs
+            $('.form-control, .form-select').focus(function() {
+                $(this).parent().addClass('input-focused');
+            }).blur(function() {
+                $(this).parent().removeClass('input-focused');
+            });
+        });
+    </script>
+    
+    <style>
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-header {
+            border-bottom: none;
+            padding: 1.25rem 1.5rem;
+        }
+        
+        .form-floating label {
+            color: #6c757d;
+        }
+        
+        .input-focused {
+            transition: all 0.3s ease;
+        }
+        
+        .input-focused label {
+            color: #0d6efd !important;
+        }
+        
+        .input-focused .form-control, .input-focused .form-select {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+        
+        .btn-outline-primary:hover, .btn-outline-danger:hover {
+            color: white;
+        }
+        
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.9rem;
+        }
+        
+        .badge {
+            font-size: 0.85em;
+            font-weight: 500;
+            padding: 0.35em 0.65em;
+        }
+        
+        .empty-state {
+            opacity: 0.7;
+        }
+    </style>
+}

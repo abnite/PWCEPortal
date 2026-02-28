@@ -1,0 +1,166 @@
+@{
+    ViewBag.Title = "Database Backup";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Database Management</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Database Backup</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">
+                <i class="fas fa-database me-2"></i>Database Backup
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-database fa-5x text-primary mb-3"></i>
+                        <h3>Create Database Backup</h3>
+                        <p class="text-muted">Backup your database to ensure data safety and integrity</p>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <h5 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Backup Information</h5>
+                        <ul class="mb-0">
+                            <li>Backups include all tables, views, stored procedures, and data</li>
+                            <li>Recommended to perform backups regularly</li>
+                            <li>Backup files are compressed for efficient storage</li>
+                        </ul>
+                    </div>
+
+                    <div class="card border-primary mb-4">
+                        <div class="card-header bg-primary bg-opacity-10">
+                            <h5 class="mb-0"><i class="fas fa-cog me-2"></i>Backup Options</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="backupForm" asp-action="Backup" method="post">
+                                <div class="mb-3">
+                                    <label class="form-label">Backup Name</label>
+                                    <input type="text" class="form-control" 
+                                           value="@($"DB_Backup_{DateTime.Now:yyyyMMdd_HHmmss}")" 
+                                           readonly>
+                                    <div class="form-text">Automatically generated with timestamp</div>
+                                </div>
+                                
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="includeLogs">
+                                    <label class="form-check-label" for="includeLogs">
+                                        Include transaction logs
+                                    </label>
+                                </div>
+                                
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary btn-lg" id="backupBtn">
+                                        <i class="fas fa-download me-2"></i> Create Backup Now
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card border-secondary">
+                        <div class="card-header bg-secondary bg-opacity-10">
+                            <h5 class="mb-0"><i class="fas fa-history me-2"></i>Recent Backups</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Backup Name</th>
+                                            <th>Date</th>
+                                            <th>Size</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="4" class="text-center text-muted py-4">
+                                                <i class="fas fa-cloud-download-alt fa-2x mb-3"></i>
+                                                <p>No recent backups found</p>
+                                                <small class="text-muted">Backups will appear here after creation</small>
+                                            </td>
+                                        </tr>
+                                        <!-- Would be populated dynamically in a real implementation -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('backupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const backupBtn = document.getElementById('backupBtn');
+            const originalText = backupBtn.innerHTML;
+            
+            // Show loading state
+            backupBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Creating Backup...';
+            backupBtn.disabled = true;
+            
+            // Simulate backup process (replace with actual form submission)
+            setTimeout(() => {
+                // In a real implementation, this would be handled by the form submission
+                // For demo purposes, we'll simulate a download
+                backupBtn.innerHTML = '<i class="fas fa-check-circle me-1"></i> Backup Complete!';
+                
+                // Redirect to the backup action after a brief delay
+                setTimeout(() => {
+                    window.location.href = '@Url.Action("Backup")';
+                }, 1000);
+                
+            }, 2000);
+        });
+    </script>
+    
+    <style>
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-header {
+            border-bottom: none;
+            padding: 1.25rem 1.5rem;
+        }
+        
+        #backupBtn {
+            transition: all 0.3s ease;
+        }
+        
+        #backupBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(13, 110, 253, 0.25);
+        }
+        
+        .fa-database {
+            opacity: 0.8;
+        }
+        
+        .alert ul {
+            padding-left: 1rem;
+        }
+        
+        .alert ul li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+}

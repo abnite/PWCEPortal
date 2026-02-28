@@ -1,0 +1,210 @@
+@model PWCEPortal.ViewModel.Dashboard.FeesCollectedViewModel
+@{
+    ViewData["Title"] = "Fees Collected";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">
+            <i class="fas fa-money-bill-wave me-2"></i>Fees Collected
+        </h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="FinanceDashboard" asp-action="Index">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Fees Collected</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h3 class="mb-0">Payment Records</h3>
+                </div>
+                <div class="col-md-6">
+                    <form method="get" asp-action="FeesCollected" class="input-group">
+                        <input type="text" name="searchQuery" value="@Model.SearchQuery" 
+                               class="form-control" placeholder="Search payments..." />
+                        <select name="level" class="form-select">
+                            <option value="">All Levels</option>
+                            <option value="100" selected="@(Model.Level == 100)">Level 100</option>
+                            <option value="200" selected="@(Model.Level == 200)">Level 200</option>
+                            <option value="300" selected="@(Model.Level == 300)">Level 300</option>
+                            <option value="400" selected="@(Model.Level == 400)">Level 400</option>
+                        </select>
+                        <button type="submit" class="btn btn-light">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-4">
+                <form method="post" asp-action="DownloadFeesCollected" class="mb-0">
+                    <input type="hidden" name="searchQuery" value="@Model.SearchQuery" />
+                    <input type="hidden" name="level" value="@Model.Level" />
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-file-excel me-2"></i>Export to Excel
+                    </button>
+                </form>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                    <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Reference</th>
+                        <th>Student</th>
+                        <th>App No</th>
+                        <th>Student ID No</th>
+                        <th class="text-end">Amount</th>
+                        <th>Payment Date</th>
+                        <th>Bank Ref</th>
+                        <th>Accountant Receipt</th>
+                        <th class="text-center">Receipt</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @{
+                        int startRow = ((Model.Page ?? 1) - 1) * (Model.PageSize ?? 10) + 1;
+                        int count = startRow;
+                    }
+                    @foreach (var payment in Model.Payments)
+                    {
+                        <tr>
+                            <td>@count</td>
+                            <td>
+                                <span class="custom-badge bg-primary">@payment.PaymentReference</span>
+                            </td>
+                            <td>@payment.Student.Surname @payment.Student.OtherNames</td>
+                            <td>@payment.Student.ApplicationNumber</td>
+                            <td>@(payment.Student.StudentID??"N/A")</td>
+                            <td class="text-end">GHS @payment.AmountPaid.ToString("N2")</td>
+                            <td>@payment.PaymentDate.ToString("dd MMM yyyy")</td>
+                            <td>@payment.BankReferenceNumber</td>
+                            <td>@payment.AccountantReceipt</td>
+                            <td class="text-center">
+                                @if (!string.IsNullOrEmpty(payment.ReceiptFilePath))
+                                {
+                                    <a href="@payment.ReceiptFilePath" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-receipt"></i> View
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">None</span>
+                                }
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                    @if (!Model.Payments.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">
+                                <i class="fas fa-money-bill-wave fa-2x mb-3"></i>
+                                <p>No payment records found</p>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+            @{
+                int currentPage1 = Model.Page.Value;
+                int pageSize = Model.PageSize.Value;
+                int totalCount = Model.TotalCount;
+                int startRecord = ((currentPage1 - 1) * pageSize) + 1;
+                int endRecord = Math.Min(currentPage1 * pageSize, totalCount);
+            }
+            <div class="card-footer">
+                <div class="table-footer-info">
+                    Showing @startRecord to @endRecord of @totalCount records
+                </div>
+            </div>
+
+
+            @if (Model.TotalCount > Model.PageSize)
+            {
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item @(Model.Page == 1 ? "disabled" : "")">
+                            <a class="page-link"
+                               href="@Url.Action("FeesCollected", new { searchQuery = Model.SearchQuery, level = Model.Level, page = Model.Page - 1, pageSize = Model.PageSize })">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        </li>
+
+                        @{
+                            int totalPages = (int)Math.Ceiling((double)Model.TotalCount / Model.PageSize.Value);
+                            int currentPage = Model.Page.Value;
+                            int maxPagesToShow = 5; // Number of page links to show on each side of current page
+                            int startPage = Math.Max(1, currentPage - maxPagesToShow);
+                            int endPage = Math.Min(totalPages, currentPage + maxPagesToShow);
+
+                            // Adjust if we're near the start or end
+                            if (currentPage - maxPagesToShow <= 1)
+                            {
+                                endPage = Math.Min(totalPages, endPage + (maxPagesToShow - (currentPage - startPage)));
+                            }
+                            else if (currentPage + maxPagesToShow >= totalPages)
+                            {
+                                startPage = Math.Max(1, startPage - (maxPagesToShow - (endPage - currentPage)));
+                            }
+
+                            // Always show first page
+                            if (startPage > 1)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link"
+                                       href="@Url.Action("FeesCollected", new { searchQuery = Model.SearchQuery, level = Model.Level, page = 1, pageSize = Model.PageSize })">1</a>
+                                </li>
+                                if (startPage > 2)
+                                {
+                                    <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                }
+                            }
+
+                            // Show pages around current page
+                            for (int i = startPage; i <= endPage; i++)
+                            {
+                                <li class="page-item @(i == currentPage ? "active" : "")">
+                                    <a class="page-link"
+                                       href="@Url.Action("FeesCollected", new { searchQuery = Model.SearchQuery, level = Model.Level, page = i, pageSize = Model.PageSize })">@i</a>
+                                </li>
+                            }
+
+                            // Always show last page
+                            if (endPage < totalPages)
+                            {
+                                if (endPage < totalPages - 1)
+                                {
+                                    <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                }
+                                <li class="page-item">
+                                    <a class="page-link"
+                                       href="@Url.Action("FeesCollected", new { searchQuery = Model.SearchQuery, level = Model.Level, page = totalPages, pageSize = Model.PageSize })">@totalPages</a>
+                                </li>
+                            }
+                        }
+
+                        <li class="page-item @(Model.Page == totalPages ? "disabled" : "")">
+                            <a class="page-link"
+                               href="@Url.Action("FeesCollected", new { searchQuery = Model.SearchQuery, level = Model.Level, page = Model.Page + 1, pageSize = Model.PageSize })">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            }
+        </div>
+    </div>
+</div>

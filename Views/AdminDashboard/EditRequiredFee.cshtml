@@ -1,0 +1,147 @@
+@model PWCEPortal.Models.Payment.RequiredFee
+@{
+    ViewBag.Title = "Edit Fee Configuration";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Edit Fee Configuration</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "AdminDashboard")">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("ManageRequiredFees", "AdminDashboard")">Fee Settings</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">
+                <i class="fas fa-money-bill-wave me-2"></i>Update Fee Configuration
+            </h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="EditRequiredFee" method="post" class="needs-validation" novalidate>
+                @Html.HiddenFor(model => model.Id)
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input asp-for="RequiredAmount" type="number" 
+                                   class="form-control" 
+                                   placeholder="Enter required amount" 
+                                   min="10" 
+                                   required />
+                            <label asp-for="RequiredAmount">Required Payment Percentage</label>
+                            <span asp-validation-for="RequiredAmount" class="text-danger small"></span>
+                            <div class="form-text">Minimum required payment %</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-check form-switch mb-4 ps-5">
+                            <input asp-for="IsActive" class="form-check-input" type="checkbox" role="switch" id="flexSwitchActive" />
+                            <label class="form-check-label" for="flexSwitchActive">Active Configuration</label>
+                            <div class="form-text">Toggle to activate/deactivate this fee configuration</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <a href="@Url.Action("ManageRequiredFees", "AdminDashboard")" class="btn btn-outline-secondary me-md-2">
+                        <i class="fas fa-times me-1"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Client-side validation
+        (function () {
+            'use strict'
+            
+            var forms = document.querySelectorAll('.needs-validation')
+            
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+        
+        // Ensure amount is positive
+        document.getElementById('RequiredAmount').addEventListener('change', function() {
+            if (this.value < 0) this.value = 0;
+        });
+        
+        // Toggle switch confirmation
+        document.getElementById('flexSwitchActive').addEventListener('change', function() {
+            if(this.checked) {
+                if(!confirm('Activating this configuration will deactivate any currently active configuration. Continue?')) {
+                    this.checked = false;
+                }
+            }
+        });
+    </script>
+    
+    <style>
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-header {
+            border-bottom: none;
+            padding: 1.25rem 1.5rem;
+        }
+        
+        .form-floating label {
+            color: #6c757d;
+        }
+        
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+        }
+        
+        .form-check-input:checked {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        
+        .form-switch .form-check-input {
+            width: 3em;
+            height: 1.5em;
+        }
+        
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.9rem;
+        }
+        
+        .was-validated .form-control:invalid {
+            border-color: #dc3545;
+        }
+        
+        .was-validated .form-control:valid {
+            border-color: #198754;
+        }
+    </style>
+}

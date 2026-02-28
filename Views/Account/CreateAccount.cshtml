@@ -1,0 +1,36 @@
+@model PWCEPortal.Models.StudentInfo.Student
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_LoginLayout";
+}
+
+        <div class="login-header">
+            <h2>Create Account</h2>
+            <p>Please Check and Confirm your Email.</p>
+        </div >
+        <div class="login-header">
+            @if (!string.IsNullOrEmpty(Model.Email))
+            {
+                <span>Email on record: <strong>@Model.Email</strong></span>
+            }
+            else
+            {
+                <span>No email on record. Please enter your email below.</span>
+            }
+        </div>
+        <form asp-action="CreateAccount" asp-controller="Account" method="post">
+            <input type="hidden" name="studentId" value="@Model.Id" />
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="@Model.Email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn-login">Create Account</button>
+            </div>
+        </form>
+        <div class="login-footer">
+            <a href="#">Return To Login</a>
+        </div>
+
+

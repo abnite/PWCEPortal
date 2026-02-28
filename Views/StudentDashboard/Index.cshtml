@@ -1,0 +1,841 @@
+@model PWCEPortal.ViewModel.Dashboard.StudentDashboardViewModel
+@{
+    ViewData["Title"] = "Student Dashboard";
+    Layout = "_AdminLayout";
+    
+    // Calculate payment compliance status
+    bool canRegisterCourses = Model.PaymentMade >= Model.RequiredFeeAmount;
+    string paymentStatusClass = canRegisterCourses ? "success" : "danger";
+    string paymentStatusText = canRegisterCourses ? "Complete" : "Incomplete";
+}
+
+<style>
+    :root {
+        --primary-color: #4e73df;
+        --secondary-color: #f8f9fc;
+        --accent-color: #2e59d9;
+        --success-color: #1cc88a;
+        --warning-color: #f6c23e;
+        --danger-color: #e74a3b;
+        --info-color: #36b9cc;
+    }
+
+    body {
+        background-color: #f8f9fc;
+        font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .card {
+        border: none;
+        border-radius: 0.35rem;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+        background-color: var(--primary-color);
+        border-bottom: none;
+        border-radius: 0.35rem 0.35rem 0 0 !important;
+        color: white;
+        font-weight: 600;
+        padding: 1rem 1.35rem;
+    }
+
+    .profile-picture {
+        border: 3px solid #dee2e6;
+        transition: all 0.3s ease;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .profile-picture:hover {
+        border-color: var(--primary-color);
+        transform: scale(1.05);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    .no-photo-placeholder {
+        background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+        border-radius: 50%;
+    }
+
+    .progress {
+        height: 1rem;
+        border-radius: 0.35rem;
+        background-color: #eaecf4;
+    }
+
+    .progress-bar {
+        border-radius: 0.35rem;
+    }
+
+    .btn {
+        border-radius: 0.35rem;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+        transition: all 0.2s;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .btn-primary:hover {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        transform: translateY(-1px);
+    }
+
+    .alert {
+        border-radius: 0.35rem;
+        border-left: 0.25rem solid;
+    }
+
+    .alert-success {
+        border-left-color: var(--success-color);
+    }
+
+    .alert-danger {
+        border-left-color: var(--danger-color);
+    }
+
+    .alert-warning {
+        border-left-color: var(--warning-color);
+    }
+
+    .alert-info {
+        border-left-color: var(--info-color);
+    }
+
+    .badge {
+        font-weight: 600;
+        padding: 0.35em 0.65em;
+    }
+
+    .list-group-item {
+        border-left: none;
+        border-right: none;
+        padding: 0.75rem 1.25rem;
+    }
+
+    .list-group-item:first-child {
+        border-top: none;
+    }
+
+    .stat-card {
+        border-left: 0.25rem solid var(--primary-color);
+        transition: transform 0.3s;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stat-card .card-body {
+        padding: 1rem;
+    }
+
+    .stat-card .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+
+    .stat-card .stat-label {
+        font-size: 0.875rem;
+        color: #858796;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    .nav-tabs .nav-link.active {
+        color: var(--primary-color);
+        font-weight: 600;
+        border-bottom: 2px solid var(--primary-color);
+    }
+
+    .nav-tabs .nav-link {
+        color: #6e707e;
+    }
+
+    .table {
+        color: #6e707e;
+    }
+
+    .table th {
+        border-top: none;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 0.05rem;
+        color: #858796;
+    }
+
+    .certificate-card {
+        border-left: 0.25rem solid var(--warning-color);
+        transition: all 0.3s;
+    }
+
+    .certificate-card:hover {
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+    }
+
+    .quick-action-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        padding: 1.5rem 0;
+        border-radius: 0.35rem;
+        transition: all 0.3s;
+        background-color: white;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+    }
+
+    .quick-action-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0.5rem 1.5rem rgba(58, 59, 69, 0.2);
+    }
+
+    .quick-action-btn i {
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .quick-action-btn .btn-text {
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .welcome-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+        color: white;
+        border-radius: 0.35rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    }
+
+    .welcome-header h2 {
+        font-weight: 700;
+    }
+
+    .welcome-header .lead {
+        opacity: 0.9;
+    }
+
+    .profile-img-container {
+        position: relative;
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-img-container .edit-overlay {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: crosshair;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .profile-img-container:hover .edit-overlay {
+        opacity: 1;
+    }
+
+    .status-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 2px solid white;
+    }
+
+    .status-badge.online {
+        background-color: var(--success-color);
+    }
+
+    .status-badge.offline {
+        background-color: var(--danger-color);
+    }
+</style>
+
+<div class="container-fluid mt-4">
+    <!-- Welcome Header Section -->
+    <div class="welcome-header">
+        <div class="row align-items-center">
+            <div class="col-md-10">
+                <h2>Welcome back, @Model.Student.Surname @Model.Student.OtherNames!</h2>
+                <p class="lead mb-0">
+                    <i class="fas fa-graduation-cap"></i> @(Model.Program?.ProgramName ?? "Program not set") | 
+                    <i class="fas fa-layer-group"></i> Level: @(Model.Student?.CurrentLevel.ToString() ?? "N/A") | 
+                    <i class="fas fa-calendar-alt"></i> Academic Year: @(Model.CurrentAcademicYear?.Year?? "N/A") | 
+                    <i class="fas fa-clock"></i> @(Model.CurrentSemester?.SemesterName?? "Semester not set")
+                </p>
+            </div>
+            <div class="col-md-2 text-end">
+                <div class="profile-img-container">
+                    @if (!string.IsNullOrEmpty(Model.PassportPicturePath))
+                    {
+                        <img src="@Model.PassportPicturePath"
+                             alt="Passport Picture"
+                             class="profile-picture img-fluid"
+                             style="width: 120px; height: 120px;">
+                    }
+                    else
+                    {
+                        <div class="profile-picture no-photo-placeholder img-fluid" style="width: 120px; height: 120px;">
+                            <i class="fas fa-user fa-3x"></i>
+                        </div>
+                    }
+                    <div class="edit-overlay" onclick="location.href='@Url.Action("EditStudent", "StudentDashboard", new { studentId = Model.Student.Id })'">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <div class="status-badge online"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats Row -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col mr-2">
+                            <div class="stat-label">Total Fees</div>
+                            <div class="stat-value">GHS @Model.TotalFee.ToString("N2")</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-money-bill-wave fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col mr-2">
+                            <div class="stat-label">Amount Paid</div>
+                            <div class="stat-value">GHS @Model.PaymentMade.ToString("N2")</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-receipt fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col mr-2">
+                            <div class="stat-label">Balance</div>
+                            <div class="stat-value @(Model.OutstandingFee > 0 ? "text-danger" : "text-success")">
+                                GHS @Model.OutstandingFee.ToString("N2")
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-wallet fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col mr-2">
+                            <div class="stat-label">Registered Courses</div>
+                            <div class="stat-value">@Model.RegisteredCourses.Count()</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-book fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Compliance Alert -->
+    <div class="alert alert-@paymentStatusClass d-flex align-items-center mb-4">
+        <i class="fas fa-@(canRegisterCourses ? "check-circle" : "exclamation-circle") fa-2x me-3"></i>
+        <div>
+            <h5 class="alert-heading mb-1">Payment Compliance: @paymentStatusText</h5>
+            @if (canRegisterCourses)
+            {
+                <p class="mb-0">You've met the minimum payment requirement (GHS @Model.RequiredFeeAmount.ToString("N2")). You may now register for courses.</p>
+            }
+            else
+            {
+                <p class="mb-0">You need to pay at least GHS @((Model.RequiredFeeAmount - Model.PaymentMade).ToString("N2")) more to register for courses. Current payment: GHS @Model.PaymentMade.ToString("N2")</p>
+            }
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="quick-action-btn text-primary" style="cursor: pointer" onclick="location.href='@Url.Action("EditProfile", "StudentDashboard", new { studentId = Model.Student.Id })'">
+                <i class="fas fa-user-edit"></i>
+                <span class="btn-text">Update Profile</span>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            @if (Model.Student.Status != "Active")
+            {
+                <div class="quick-action-btn text-muted" style="cursor: not-allowed;" title="Account Not Active. Contact The System Admin or IT Officer">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span class="btn-text">Pay Fees</span>
+                </div>
+            }
+            else
+            {
+                <div class="quick-action-btn text-success" style="cursor: pointer" onclick="location.href='@Url.Action("MakePayment", "StudentDashboard", new { studentId = Model.Student.Id })'">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span class="btn-text">Pay Fees</span>
+                </div>
+            }
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="quick-action-btn text-info" style="cursor: pointer" onclick="location.href='@Url.Action("Payments", "StudentDashboard", new { studentId = Model.Student.Id })'">
+                <i class="fas fa-receipt"></i>
+                <span class="btn-text">Payment History</span>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            @if (canRegisterCourses)
+            {
+                <div class="quick-action-btn text-warning" style="cursor: pointer" onclick="location.href='@Url.Action("RegisterCourses", "Academic", new { studentId = Model.Student.Id })'">
+                    <i class="fas fa-book"></i>
+                    <span class="btn-text">Register Courses</span>
+                </div>
+            }
+            else
+            {
+                <div class="quick-action-btn text-muted" style="cursor: not-allowed;" title="Complete minimum payment requirement to register courses">
+                    <i class="fas fa-book"></i>
+                    <span class="btn-text">Register Courses</span>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Main Content Row -->
+    <div class="row">
+        <!-- Left Column -->
+        <div class="col-lg-8">
+            <!-- Academic Information Card -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0"><i class="fas fa-graduation-cap me-2"></i>Academic Information</h5>
+                    <a asp-action="ViewRegisteredCourses" asp-controller="Academic" asp-route-studentId="@Model.Student.Id" class="btn btn-sm btn-primary">
+                        <i class="fas fa-eye me-1"></i> View My Courses
+                    </a>
+                </div>
+                <div class="card-body">
+                    <ul class="nav nav-tabs mb-4" id="academicTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="courses-tab" data-bs-toggle="tab" data-bs-target="#courses" type="button" role="tab">My Courses</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="status-tab" data-bs-toggle="tab" data-bs-target="#status" type="button" role="tab">Academic Status</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="academicTabContent">
+                        <div class="tab-pane fade show active" id="courses" role="tabpanel">
+                            @if (Model.RegisteredCourses.Any())
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Course Code</th>
+                                                <th>Course Name</th>
+                                                <th>Level</th>
+                                                <th>Semester</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var course in Model.RegisteredCourses)
+                                            {
+                                                <tr>
+                                                    <td>@course.CourseCode</td>
+                                                    <td>@course.CourseName</td>
+                                                    <td>@course.Level</td>
+                                                    <td>@course.Semester</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>No courses registered yet.
+                                </div>
+                            }
+                        </div>
+                        <div class="tab-pane fade" id="status" role="tabpanel">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <h6><i class="fas fa-user-graduate me-2"></i>Academic Details</h6>
+                                        <dl class="row">
+                                            <dt class="col-sm-5">Current Level:</dt>
+                                            <dd class="col-sm-7">@Model.Student.CurrentLevel</dd>
+
+                                            <dt class="col-sm-5">Enrollment Year:</dt>
+                                            <dd class="col-sm-7">@Model.Student.EnrolmentYear</dd>
+
+                                            <dt class="col-sm-5">Expected Graduation:</dt>
+                                            <dd class="col-sm-7">@Model.Student.ExpectedCompletionYear</dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    @if (Model.CurrentSemester != null)
+                                    {
+                                        <div class="mb-3">
+                                            <h6><i class="fas fa-calendar-alt me-2"></i>Current Semester</h6>
+                                            <dl class="row">
+                                                <dt class="col-sm-5">Semester:</dt>
+                                                <dd class="col-sm-7">@Model.CurrentSemester.SemesterName</dd>
+
+                                                <dt class="col-sm-5">Registration Period:</dt>
+                                                <dd class="col-sm-7">
+                                                    @Model.CurrentSemester.RegistrationStartDate.ToString("dd MMM yyyy") - 
+                                                    @Model.CurrentSemester.RegistrationEndDate.ToString("dd MMM yyyy")
+                                                </dd>
+
+                                                <dt class="col-sm-5">Status:</dt>
+                                                <dd class="col-sm-7">
+                                                    @if (DateTime.Now >= Model.CurrentSemester.RegistrationStartDate &&
+                                                         DateTime.Now <= Model.CurrentSemester.RegistrationEndDate)
+                                                    {
+                                                        <span class="custom-badge bg-success">Registration Open</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="custom-badge bg-danger">Registration Closed</span>
+                                                    }
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-warning">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>No active semester found
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            
+                            <!-- Registration Status Card -->
+                            @if (Model.CurrentSemester != null)
+                            {
+                                <div class="card border-left-@(DateTime.Now >= Model.CurrentSemester.RegistrationStartDate &&
+                                                             DateTime.Now <= Model.CurrentSemester.RegistrationEndDate ? "success" : "danger") mb-0">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-@(DateTime.Now >= Model.CurrentSemester.RegistrationStartDate &&
+                                                              DateTime.Now <= Model.CurrentSemester.RegistrationEndDate ? "check-circle" : "times-circle") 
+                                                fa-2x text-@(DateTime.Now >= Model.CurrentSemester.RegistrationStartDate &&
+                                                             DateTime.Now <= Model.CurrentSemester.RegistrationEndDate ? "success" : "danger") me-3"></i>
+                                            <div>
+                                                @if (DateTime.Now < Model.CurrentSemester.RegistrationStartDate)
+                                                {
+                                                    <h5 class="card-title mb-1">Registration Not Yet Open</h5>
+                                                    <p class="card-text mb-0">
+                                                        Registration will open on @Model.CurrentSemester.RegistrationStartDate.ToString("dd MMM yyyy")
+                                                    </p>
+                                                }
+                                                else if (DateTime.Now > Model.CurrentSemester.RegistrationEndDate)
+                                                {
+                                                    <h5 class="card-title mb-1">Registration Closed</h5>
+                                                    <p class="card-text mb-0">
+                                                        Registration closed on @Model.CurrentSemester.RegistrationEndDate.ToString("dd MMM yyyy")
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                    <h5 class="card-title mb-1">Registration Open</h5>
+                                                    <p class="card-text mb-0">
+                                                        Registration is open until @Model.CurrentSemester.RegistrationEndDate.ToString("dd MMM yyyy")
+                                                        <span class="badge bg-primary ms-2">
+                                                            @((Model.CurrentSemester.RegistrationEndDate - DateTime.Now).Days) days remaining
+                                                        </span>
+                                                    </p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fee/Payment Information Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0"><i class="fas fa-wallet me-2"></i>Fee Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <th>Total Fee</th>
+                                        <td>GHS @Model.TotalFee.ToString("N2")</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Amount Paid</th>
+                                        <td>GHS @Model.PaymentMade.ToString("N2")</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Outstanding Balance</th>
+                                        <td class="@(Model.OutstandingFee > 0 ? "text-danger fw-bold" : "text-success fw-bold")">
+                                            GHS @Model.OutstandingFee.ToString("N2")
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="alert alert-@(Model.OutstandingFee <= 0 ? "success" : "warning")">
+                                <h6><i class="fas fa-@(Model.OutstandingFee <= 0 ? "check-circle" : "exclamation-triangle") me-2"></i>
+                                    Payment Status
+                                </h6>
+                                @if (Model.OutstandingFee <= 0)
+                                {
+                                    <span class="badge bg-success">Fully Paid</span>
+                                    <p class="mt-2 mb-0">No outstanding fees. You're all set!</p>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Outstanding Balance</span>
+                                    <p class="mt-2 mb-0">Please pay your outstanding balance to avoid penalties.</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h6 class="mt-4 mb-3">Payment Progress</h6>
+                    <div class="progress mb-3" style="height: 20px;">
+                        @{
+                            decimal paymentPercentage = 0;
+                            if (Model.RequiredFeeAmount != 0)
+                            {
+                                paymentPercentage = (Model.PaymentMade / Model.RequiredFeeAmount) * 100;
+                                paymentPercentage = Math.Min(paymentPercentage, 100); // Cap at 100%
+                            }
+                        }
+                        <div class="progress-bar bg-@(canRegisterCourses ? "success" : "warning")"
+                             role="progressbar"
+                             style="width: @paymentPercentage%"
+                             aria-valuenow="@paymentPercentage"
+                             aria-valuemin="0"
+                             aria-valuemax="100">
+                            @paymentPercentage.ToString("N0")%
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-@(canRegisterCourses ? "success" : "warning") mb-0">
+                        @if (canRegisterCourses)
+                        {
+                            <p class="mb-0"><i class="fas fa-check-circle me-2"></i> You've met the minimum payment requirement.</p>
+                        }
+                        else
+                        {
+                            <p class="mb-0">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                You need to pay GHS @((Model.RequiredFeeAmount - Model.PaymentMade).ToString("N2")) more to register for courses.
+                            </p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications Card -->
+            @if (Model.Notifications.Any())
+            {
+                <div class="card mb-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="card-title mb-0"><i class="fas fa-bell me-2"></i>Notifications</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            @foreach (var notification in Model.Notifications)
+                            {
+                                <div class="list-group-item">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-exclamation-circle text-warning me-3"></i>
+                                        <div>@notification</div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-lg-4">
+            <!-- Profile Overview Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0"><i class="fas fa-id-card me-2"></i>Profile Overview</h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        @if (!string.IsNullOrEmpty(Model.PassportPicturePath))
+                        {
+                            <img src="@Model.PassportPicturePath"
+                                 alt="Passport Picture"
+                                 class="profile-picture mb-3"
+                                 style="width: 150px; height: 150px;">
+                        }
+                        else
+                        {
+                            <div class="profile-picture no-photo-placeholder mb-3 mx-auto"
+                                 style="width: 150px; height: 150px;">
+                                <i class="fas fa-user fa-4x"></i>
+                            </div>
+                        }
+                        <a href="@Url.Action("EditStudent", "StudentDashboard", new { studentId = Model.Student.Id })"
+                           class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-camera me-1"></i> Update Photo
+                        </a>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6><i class="fas fa-info-circle me-2"></i>Basic Information</h6>
+                        <dl class="row">
+                            <dt class="col-sm-5">Application No:</dt>
+                            <dd class="col-sm-7">@Model.Student.ApplicationNumber</dd>
+
+                            <dt class="col-sm-5">Student ID No:</dt>
+                            <dd class="col-sm-7">@(Model.Student.StudentID ?? "N/A")</dd>
+
+                            <dt class="col-sm-5">Email:</dt>
+                            <dd class="col-sm-7">@Model.Student.Email</dd>
+
+                            <dt class="col-sm-5">Phone:</dt>
+                            <dd class="col-sm-7">@Model.Student.PhoneNo</dd>
+                        </dl>
+                    </div>
+                    
+                    <div class="mb-0">
+                        <h6><i class="fas fa-calendar-alt me-2"></i>Academic Timeline</h6>
+                        <dl class="row">
+                            <dt class="col-sm-5">Academic Year:</dt>
+                            <dd class="col-sm-7">@Model.CurrentAcademicYear?.Year</dd>
+
+                            <dt class="col-sm-5">Enrollment Year:</dt>
+                            <dd class="col-sm-7">@Model.Student.EnrolmentYear</dd>
+
+                            <dt class="col-sm-5">Expected Graduation:</dt>
+                            <dd class="col-sm-7">@Model.Student.ExpectedCompletionYear</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certificate Section -->
+            <div class="card certificate-card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0"><i class="fas fa-certificate me-2"></i>My Certificate</h5>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.Student.CertificateFilePath))
+                    {
+                        <div class="alert alert-success d-flex align-items-center mb-4">
+                            <i class="fas fa-check-circle fa-2x me-3 text-success"></i>
+                            <div>
+                                <h5 class="alert-heading mb-1">Certificate Available</h5>
+                                <p class="mb-0">Your certificate has been uploaded by the administration.</p>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <i class="fas fa-file-pdf fa-4x text-danger mb-3"></i>
+                            <h5>Certificate File</h5>
+                            <a href="@Model.Student.CertificateFilePath" target="_blank" class="btn btn-primary btn-block certificate-download-btn">
+                                <i class="fas fa-download me-1"></i> Download Certificate
+                            </a>
+                            <div class="text-muted small mt-2">
+                                @System.IO.Path.GetFileName(Model.Student.CertificateFilePath)
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning d-flex align-items-center mb-0">
+                            <i class="fas fa-exclamation-circle fa-2x me-3 text-warning"></i>
+                            <div>
+                                <h5 class="alert-heading mb-1">No Certificate Available</h5>
+                                <p class="mb-0">Your certificate has not been uploaded yet. Please contact the administration.</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Initialize Bootstrap tabs
+            var academicTab = new bootstrap.Tab(document.getElementById('courses-tab'));
+            academicTab.show();
+
+            // Enable tooltips
+            $('[data-bs-toggle="tooltip"]').tooltip();
+
+            // Table responsive dropdown fix
+            $('.table-responsive').on('show.bs.dropdown', function () {
+                $('.table-responsive').css("overflow", "inherit");
+            });
+            $('.table-responsive').on('hide.bs.dropdown', function () {
+                $('.table-responsive').css("overflow", "auto");
+            });
+        });
+    </script>
+}

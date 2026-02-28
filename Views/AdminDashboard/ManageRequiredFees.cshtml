@@ -1,0 +1,190 @@
+@model IEnumerable<PWCEPortal.Models.Payment.RequiredFee>
+@{
+    ViewBag.Title = "Required Fees Management";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Required Fees Management</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index","AdminDashboard")">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Required Fees</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">
+                <i class="fas fa-money-bill-wave me-2"></i>Fee Configurations
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-4">
+                <a class="btn btn-success" href="@Url.Action("CreateRequiredFee", "AdminDashboard")">
+                    <i class="fas fa-plus-circle me-2"></i>Create New Fee Configuration
+                </a>
+            </div>
+
+            <div class="table-responsive">
+                <table id="feesTable" class="table table-hover table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th width="25%">Amount</th>
+                            <th width="15%">Status</th>
+                            <th width="25%">Date Added</th>
+                            <th width="35%" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var config in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@(config.RequiredAmount +"%")</strong>
+                                </td>
+                                <td>
+                                    @if (config.IsActive)
+                                    {
+                                        <span class="custom-badge bg-success"><i class="fas fa-check-circle me-1"></i> Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="custom-badge bg-secondary"><i class="fas fa-times-circle me-1"></i> Inactive</span>
+                                    }
+                                </td>
+                                <td>@config.DateAdded?.ToString("MMMM dd, yyyy")</td>
+                                <td class="text-center">
+                                    @if (config.IsActive)
+                                    {
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a class="btn btn-outline-primary" href="@Url.Action("EditRequiredFee", "AdminDashboard", new { id = config.Id })" title="Edit">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a>
+                                            <button class="btn btn-outline-danger btn-deactivate" data-config-id="@config.Id" title="Deactivate">
+                                                <i class="fas fa-ban"></i> Deactivate
+                                            </button>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">No actions available</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">
+                                    <i class="fas fa-money-bill-alt fa-2x mb-3"></i>
+                                    <p>No fee configurations found. Create your first configuration.</p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Deactivate Confirmation Modal -->
+<div class="modal fade" id="deactivateModal" tabindex="-1" aria-labelledby="deactivateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title" id="deactivateModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Confirm Deactivation
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to deactivate this fee configuration?</p>
+                <div class="alert alert-warning mt-3">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <strong>Note:</strong> Deactivated fees won't be assigned to new students.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i> Cancel
+                </button>
+                <form id="deactivateForm" method="post" action="">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fas fa-ban me-1"></i> Confirm Deactivation
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable with search functionality
+            $('#feesTable').DataTable({
+                responsive: true,
+                dom: '<"top"f>rt<"bottom"lip><"clear">',
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search fee configurations..."
+                },
+                columnDefs: [
+                    { orderable: false, targets: [3] } // Disable sorting on actions column
+                ],
+                order: [], // Disable initial sorting to respect controller ordering
+                paging: true,
+                pageLength: 10
+            });
+            
+            // Deactivate confirmation modal
+            $('.btn-deactivate').click(function() {
+                var configId = $(this).data('config-id');
+                var deactivateUrl = '@Url.Action("DeactivateFee", "AdminDashboard")/' + configId;
+                $('#deactivateForm').attr('action', deactivateUrl);
+                $('#deactivateModal').modal('show');
+            });
+        });
+    </script>
+    
+    <style>
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-header {
+            border-bottom: none;
+            padding: 1.25rem 1.5rem;
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+        
+        .btn-outline-primary:hover, .btn-outline-danger:hover {
+            color: white;
+        }
+        
+        .badge {
+            font-size: 0.85em;
+            font-weight: 500;
+            padding: 0.35em 0.65em;
+        }
+        
+        .empty-state {
+            opacity: 0.7;
+        }
+        
+        .modal-header {
+            border-bottom: none;
+        }
+    </style>
+}

@@ -1,0 +1,274 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model PWCEPortal.ApplicationClass.PaginatedList<PWCEPortal.ViewModel.Reports.StudentCourseViewModel>
+
+@{
+    ViewData["Title"] = "Student Course Enrollment";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="card border-0 shadow-lg rounded-lg">
+        <div class="card-header bg-gradient-primary text-white d-flex justify-content-between align-items-center py-3">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-user-graduate me-3 fs-4"></i>
+                <h4 class="mb-0">Student Course Enrollment</h4>
+            </div>
+            <div class="stats-badge bg-light text-dark p-2 rounded">
+                <i class="fas fa-users me-1"></i>
+                <span class="fw-bold">@Model.TotalItems</span> students
+            </div>
+        </div>
+        
+        <div class="card-body p-4">
+            <!-- Search Box -->
+            <div class="control-panel bg-light p-4 rounded-3 mb-4">
+                <form asp-action="StudentCourseList" method="get">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+                        <input type="text" class="form-control border-start-0" 
+                               name="searchString" value="@ViewData["CurrentFilter"]"
+                               placeholder="Search students...">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                        <a asp-action="StudentCourseList" class="btn btn-outline-secondary">
+                            <i class="fas fa-sync-alt"></i> Reset
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Students Table -->
+            <div class="table-responsive rounded-3 border">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Student ID</th>
+                            <th>Name</th>
+                            <th>Program</th>
+                            <th>Level</th>
+                            <th>Enrolled Courses</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var student in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 fw-bold">@student.StudentId</td>
+                                <td>@student.FullName</td>
+                                <td>@student.Program</td>
+                                <td>
+                                    <span class="custom-badge bg-secondary">Level @student.Level</span>
+                                </td>
+                                <td>
+                                    <td>
+                                        @if (student.EnrolledCourses.Any())
+                                        {
+                                            <div class="enrolled-courses-container">
+                                                @foreach (var course in student.EnrolledCourses)
+                                                {
+                                                    <span class="custom-badge">@course</span>
+                                                }
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">No courses</span>
+                                        }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <!-- Enhanced Pagination with Numbered Pages -->
+            @if (Model.TotalPages > 1)
+            {
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <div class="text-muted">
+                        Showing @Model.FirstItemOnPage to @Model.LastItemOnPage of @Model.TotalItems students
+                    </div>
+
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination mb-0">
+                            <!-- First Page -->
+                            <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                                <a asp-action="StudentCourseList"
+                                   asp-route-pageNumber="1"
+                                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                                   class="page-link" aria-label="First">
+                                    <span aria-hidden="true">&laquo;&laquo;</span>
+                                </a>
+                            </li>
+
+                            <!-- Previous Page -->
+                            <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+                                <a asp-action="StudentCourseList"
+                                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                                   class="page-link" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+
+                            @{
+                                // Calculate page range (show 5 pages around current)
+                                int startPage = Math.Max(1, Model.PageIndex - 2);
+                                int endPage = Math.Min(Model.TotalPages, Model.PageIndex + 2);
+
+                                // Show first page and ellipsis if needed
+                                if (startPage > 1)
+                                {
+                                    <li class="page-item @(1 == Model.PageIndex ? "active" : "")">
+                                        <a asp-action="StudentCourseList"
+                                           asp-route-pageNumber="1"
+                                           asp-route-searchString="@ViewData["CurrentFilter"]"
+                                           class="page-link">
+                                            1
+                                        </a>
+                                    </li>
+                                    if (startPage > 2)
+                                    {
+                                        <li class="page-item disabled">
+                                            <span class="page-link">...</span>
+                                        </li>
+                                    }
+                                }
+
+                                // Show page numbers in range
+                                for (int i = startPage; i <= endPage; i++)
+                                {
+                                    <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                                        <a asp-action="StudentCourseList"
+                                           asp-route-pageNumber="@i"
+                                           asp-route-searchString="@ViewData["CurrentFilter"]"
+                                           class="page-link">
+                                            @i
+                                        </a>
+                                    </li>
+                                }
+
+                                // Show last page and ellipsis if needed
+                                if (endPage < Model.TotalPages)
+                                {
+                                    if (endPage < Model.TotalPages - 1)
+                                    {
+                                        <li class="page-item disabled">
+                                            <span class="page-link">...</span>
+                                        </li>
+                                    }
+                                    <li class="page-item @(Model.TotalPages == Model.PageIndex ? "active" : "")">
+                                        <a asp-action="StudentCourseList"
+                                           asp-route-pageNumber="@Model.TotalPages"
+                                           asp-route-searchString="@ViewData["CurrentFilter"]"
+                                           class="page-link">
+                                            @Model.TotalPages
+                                        </a>
+                                    </li>
+                                }
+                            }
+
+                            <!-- Next Page -->
+                            <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+                                <a asp-action="StudentCourseList"
+                                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                                   class="page-link" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+
+                            <!-- Last Page -->
+                            <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                                <a asp-action="StudentCourseList"
+                                   asp-route-pageNumber="@Model.TotalPages"
+                                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                                   class="page-link" aria-label="Last">
+                                    <span aria-hidden="true">&raquo;&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+    <style>
+        .card {
+            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
+            border: none;
+        }
+        
+        .card-header {
+            border-bottom: none;
+        }
+        
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #3f51b5 0%, #2196f3 100%);
+        }
+        
+        .stats-badge {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: rgba(33, 150, 243, 0.05);
+        }
+        
+        .badge {
+            font-size: 0.85em;
+            padding: 0.35em 0.65em;
+        }
+        
+        .control-panel {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05);
+        }
+
+        /* Improved course badges styling */
+        .enrolled-courses-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            max-height: 100px;
+            overflow-y: auto;
+            padding: 2px;
+        }
+
+        .course-badge {
+            
+        }
+
+        /* Improved table layout */
+        .table {
+            table-layout: fixed;
+        }
+
+        .table th:nth-child(1) { width: 12%; } /* Student ID */
+        .table th:nth-child(2) { width: 20%; } /* Name */
+        .table th:nth-child(3) { width: 15%; } /* Program */
+        .table th:nth-child(4) { width: 10%; } /* Level */
+        .table th:nth-child(5) { width: 43%; } /* Enrolled Courses */
+
+        /* Custom scrollbar for courses container */
+        .enrolled-courses-container::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .enrolled-courses-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .enrolled-courses-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        .enrolled-courses-container::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+    </style>

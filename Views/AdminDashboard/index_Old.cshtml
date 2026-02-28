@@ -1,0 +1,106 @@
+
+@model PWCEPortal.ViewModel.Dashboard.AdminDashboardViewModel
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "_AdminLayout"; 
+}
+<div class="card mt-4">
+    <div class="container-fluid">
+        <h2 class="mt-3">Admin Dashboard</h2>
+        <div class="row mt-4">
+            <!-- Total Students -->
+            <div class="col-md-3">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Students</h5>
+                        <p class="card-text display-6">@Model.TotalStudents</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Fees Collected -->
+            <div class="col-md-3">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Fees Collected</h5>
+                        <p class="card-text display-6">GHS @Model.TotalFeesCollected.ToString("N2")</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Outstanding Fees -->
+            <div class="col-md-3">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Outstanding Fees</h5>
+                        <p class="card-text display-6">GHS @Model.OutstandingFees.ToString("N2")</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Pending Verifications -->
+            <div class="col-md-3">
+                <div class="card text-white bg-danger mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Pending Verifications</h5>
+                        <p class="card-text display-6">@Model.PendingVerifications</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <!-- Active Academic Year -->
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    <strong>Active Academic Year:</strong> @Model.ActiveAcademicYear
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<div class="card mt-4">
+    <div class="container-fluid">
+        <h2 class="mt-3">Fees Collected</h2>
+        <div class="row">
+            <!-- Sample Chart for Fee Collection Trends -->
+            <div class="col-md-12">
+                <canvas id="feeChart" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Sample data for fee collection trends (replace with real data if available)
+        var ctx = document.getElementById('feeChart').getContext('2d');
+        var feeChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"], // Sample months
+                datasets: [{
+                    label: 'Fees Collected (GHS)',
+                    // Simulated data: adjust as necessary or load real data via AJAX.
+                    data: [
+                        @Model.TotalFeesCollected * 0.8,
+                        @Model.TotalFeesCollected * 0.85,
+                        @Model.TotalFeesCollected * 0.9,
+                        @Model.TotalFeesCollected,
+                        @Model.TotalFeesCollected * 1.1,
+                        @Model.TotalFeesCollected * 1.2
+                    ],
+                    backgroundColor: 'rgba(30, 58, 138, 0.2)',
+                    borderColor: 'rgba(30, 58, 138, 1)',
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    </script>
+}

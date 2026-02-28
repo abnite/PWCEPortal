@@ -1,0 +1,179 @@
+@model PWCEPortal.Models.Academic.Course
+@{
+    ViewBag.Title = "Delete Course";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Delete Course</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("ManageCourses", "AdminDashboard")">Courses</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Delete</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm border-danger">
+        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">
+                <i class="fas fa-exclamation-triangle me-2"></i>Confirm Course Deletion
+            </h3>
+            <div class="badge bg-white text-danger">
+                @Model.CourseCode
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">
+                    <i class="fas fa-exclamation-circle me-2"></i>Warning: Irreversible Action
+                </h4>
+                <p>You are about to permanently delete <strong class="text-danger">@Model.CourseName (@Model.CourseCode)</strong> from <strong>@Model.CollegeProgram.ProgramName</strong> program.</p>
+                <hr>
+                <p class="mb-0"><strong>This will affect all associated class sections and student enrollments.</strong></p>
+            </div>
+
+            <div class="card mb-4 border-warning">
+                <div class="card-header bg-warning bg-opacity-10">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Course Details</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Course Code:</dt>
+                        <dd class="col-sm-9">@Model.CourseCode</dd>
+
+                        <dt class="col-sm-3">Course Name:</dt>
+                        <dd class="col-sm-9">@Model.CourseName</dd>
+
+                        <dt class="col-sm-3">Program:</dt>
+                        <dd class="col-sm-9">@Model.CollegeProgram.ProgramName</dd>
+
+                        <dt class="col-sm-3">Level/Semester:</dt>
+                        <dd class="col-sm-9">Level @Model.Level, Semester @Model.Semester</dd>
+
+                        <dt class="col-sm-3">Course Type:</dt>
+                        <dd class="col-sm-9">
+                            <span class="custom-badge @(Model.CourseType == "Core" ? "bg-success" : "bg-info")">
+                                @Model.CourseType
+                            </span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <form asp-action="DeleteCourse" method="post" id="deleteForm">
+                @Html.HiddenFor(model => model.Id)
+                @Html.AntiForgeryToken()
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="@Url.Action("ManageCourses", "AdminDashboard")" class="btn btn-outline-secondary me-md-2">
+                        <i class="fas fa-times me-1"></i> Cancel
+                    </a>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                        <i class="fas fa-trash-alt me-1"></i> Confirm Deletion
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Enhanced Confirmation Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content border-danger">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="confirmationModalLabel">
+                    <i class="fas fa-radiation me-2"></i>Final Confirmation Required
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger mb-0">
+                    <i class="fas fa-skull-crossbones me-2"></i>
+                    <strong>Last Warning!</strong> You are about to permanently delete:
+                    <ul class="mt-2 mb-0">
+                        <li><strong>@Model.CourseCode: @Model.CourseName</strong></li>
+                        <li>From program: <strong>@Model.CollegeProgram.ProgramName</strong></li>
+                    </ul>
+                    <p class="mt-2 mb-0"><strong>This will affect all related academic records and cannot be undone!</strong></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-arrow-left me-1"></i> Go Back
+                </button>
+                <button type="button" class="btn btn-danger" id="finalConfirmBtn">
+                    <i class="fas fa-fire me-1"></i> Delete Permanently
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            const finalConfirmBtn = document.getElementById('finalConfirmBtn');
+            const deleteForm = document.getElementById('deleteForm');
+            const confirmationModal = new bootstrap.Modal('#confirmationModal');
+
+            // First confirmation click
+            confirmDeleteBtn.addEventListener('click', function() {
+                confirmationModal.show();
+            });
+
+            // Final confirmation click
+            finalConfirmBtn.addEventListener('click', function() {
+                // Show loading state
+                confirmDeleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Deleting...';
+                confirmDeleteBtn.disabled = true;
+
+                // Submit the form
+                deleteForm.submit();
+            });
+        });
+    </script>
+
+    <style>
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .border-danger {
+            border-left: 4px solid #dc3545;
+        }
+
+        .border-warning {
+            border-left: 4px solid #ffc107;
+        }
+
+        .badge {
+            font-weight: 500;
+            padding: 0.5em 0.75em;
+        }
+
+        #confirmDeleteBtn {
+            transition: all 0.2s ease;
+        }
+
+        #confirmDeleteBtn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.25);
+        }
+
+        .modal-content {
+            border: 2px solid #dc3545;
+        }
+
+        dt {
+            font-weight: 500;
+            color: #6c757d;
+        }
+    </style>
+}

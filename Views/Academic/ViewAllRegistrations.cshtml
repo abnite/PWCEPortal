@@ -1,0 +1,380 @@
+@model PWCEPortal.ApplicationClass.PaginatedList<PWCEPortal.Models.StudentInfo.Student>
+@{
+    ViewData["Title"] = "Student Course Registrations";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4><i class="fas fa-list-alt"></i> Student Course Registrations</h4>
+                <a asp-action="ExportRegistrationsToExcel" 
+                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                   asp-route-levelFilter="@ViewData["CurrentLevelFilter"]"
+                   asp-route-academicYearFilter="@ViewData["CurrentAcademicYearFilter"]"
+                   asp-route-programFilter="@ViewData["CurrentProgramFilter"]"
+                   class="btn btn-success">
+                    <i class="fas fa-file-excel"></i> Export to Excel
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- Search and Filter -->
+            <form asp-action="ViewAllRegistrations" method="get" class="mb-4">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="searchString"
+                               value="@ViewData["CurrentFilter"]" placeholder="Search students...">
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" name="levelFilter">
+                            <option value="">All Levels</option>
+                            @for (int i = 100; i <= 400; i += 100)
+                            {
+                                <option value="@i" selected="@(ViewData["CurrentLevelFilter"]?.ToString() == i.ToString())">Level @i</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" name="programFilter">
+                            <option value="">All Programs</option>
+                            @foreach (var program in ViewBag.Programs)
+                            {
+                                <option value="@program.ProgramName" selected="@(ViewData["CurrentProgramFilter"]?.ToString() == program.ProgramName)">
+                                    @program.ProgramName
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" name="academicYearFilter">
+                            <option value="">All Academic Years</option>
+                            @foreach (var year in ViewBag.AcademicYears)
+                            {
+                                <option value="@year" selected="@(ViewData["CurrentAcademicYearFilter"]?.ToString() == year)">
+                                    @year
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary me-2">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                        <a asp-action="ViewAllRegistrations" class="btn btn-outline-secondary">
+                            <i class="fas fa-sync-alt"></i> Reset
+                        </a>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Registrations Table -->
+            <!-- Registrations Table -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped">
+                    <thead class="table-dark">
+                    <tr>
+                        <td>#</td>
+                        <th>Student</th>
+                        <th>Application No.</th>
+                        <th>Student ID No.</th>
+                        <th>Program</th>
+                        <th>Level</th>
+                        <th>Academic Year</th>
+                        <th>Semester</th>
+                        <th class="text-center">Courses</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if (Model.Any())
+                    {
+                        <!-- FIX: Calculate starting count for the page -->
+                        int count = (Model.PageIndex - 1) * Model.PageSize + 1;
+
+                        @foreach (var student in Model)
+                        {
+                            var registrations = student.StudentCourseRegistrations
+                                .Where(r => r.IsRegistered && r.Semester != null && r.Semester.AcademicYear != null)
+                                .OrderByDescending(r => r.Semester.RegistrationStartDate)
+                                .ToList();
+
+                            var semesterGroups = registrations
+                                .GroupBy(r => new {
+                                    r.Semester.Id,
+                                    AcademicYear = r.Semester.AcademicYear.Year,
+                                    r.Semester.SemesterName
+                                })
+                                .OrderByDescending(g => g.Key.AcademicYear)
+                                .ThenBy(g => g.Key.SemesterName);
+
+                            @foreach (var group in semesterGroups)
+                            {
+                                <tr>
+                                    <td>@count</td>
+                                    <td>@student.Surname, @student.OtherNames</td>
+                                    <td>@student.ApplicationNumber</td>
+                                    <td>@(student.StudentID??"N/A")</td>
+                                    <td>@student.CollegeProgram?.ProgramName</td>
+                                    <td>Level @student.CurrentLevel</td>
+                                    <td>@group.Key.AcademicYear</td>
+                                    <td>@group.Key.SemesterName</td>
+                                    <td class="text-center">
+                                        <span class="custom-badge bg-primary rounded-pill">@group.Count()</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-primary view-courses-btn"
+                                                data-student-id="@student.Id"
+                                                data-semester-id="@group.Key.Id"
+                                                title="View Courses">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                count++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="10" class="text-center">No records found</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+                // Define how many page numbers to show around the current page
+                int pagesToShow = 5;
+                int startPage = Math.Max(1, Model.PageIndex - pagesToShow);
+                int endPage = Math.Min(Model.TotalPages, Model.PageIndex + pagesToShow);
+            }
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center mt-3">
+                    <li class="page-item @prevDisabled">
+                        <a class="page-link"
+                           asp-action="ViewAllRegistrations"
+                           asp-route-pageNumber="1"
+                           asp-route-searchString="@ViewData["CurrentFilter"]"
+                           asp-route-levelFilter="@ViewData["CurrentLevelFilter"]"
+                           asp-route-academicYearFilter="@ViewData["CurrentAcademicYearFilter"]"
+                           asp-route-programFilter="@ViewData["CurrentProgramFilter"]">
+                            <i class="fas fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item @prevDisabled">
+                        <a class="page-link"
+                           asp-action="ViewAllRegistrations"
+                           asp-route-pageNumber="@(Model.PageIndex - 1)"
+                           asp-route-searchString="@ViewData["CurrentFilter"]"
+                           asp-route-levelFilter="@ViewData["CurrentLevelFilter"]"
+                           asp-route-academicYearFilter="@ViewData["CurrentAcademicYearFilter"]"
+                           asp-route-programFilter="@ViewData["CurrentProgramFilter"]">
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </a>
+                    </li>
+
+                    @if (startPage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                               asp-action="ViewAllRegistrations"
+                               asp-route-pageNumber="1"
+                               asp-route-searchString="@ViewData["CurrentFilter"]"
+                               asp-route-levelFilter="@ViewData["CurrentLevelFilter"]"
+                               asp-route-academicYearFilter="@ViewData["CurrentAcademicYearFilter"]"
+                               asp-route-programFilter="@ViewData["CurrentProgramFilter"]">
+                                1
+                            </a>
+                        </li>
+                        @if (startPage > 2)
+                        {
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        }
+                    }
+
+                    @for (int i = startPage; i <= endPage; i++)
+                    {
+                        <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                            <a class="page-link"
+                               asp-action="ViewAllRegistrations"
+                               asp-route-pageNumber="@i"
+                               asp-route-searchString="@ViewData["CurrentFilter"]"
+                               asp-route-levelFilter="@ViewData["CurrentLevelFilter"]"
+                               asp-route-academicYearFilter="@ViewData["CurrentAcademicYearFilter"]"
+                               asp-route-programFilter="@ViewData["CurrentProgramFilter"]">
+                                @i
+                            </a>
+                        </li>
+                    }
+
+                    @if (endPage < Model.TotalPages)
+                    {
+                        @if (endPage < Model.TotalPages - 1)
+                        {
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        }
+                        <li class="page-item">
+                            <a class="page-link"
+                               asp-action="ViewAllRegistrations"
+                               asp-route-pageNumber="@Model.TotalPages"
+                               asp-route-searchString="@ViewData["CurrentFilter"]"
+                               asp-route-levelFilter="@ViewData["CurrentLevelFilter"]"
+                               asp-route-academicYearFilter="@ViewData["CurrentAcademicYearFilter"]"
+                               asp-route-programFilter="@ViewData["CurrentProgramFilter"]">
+                                @Model.TotalPages
+                            </a>
+                        </li>
+                    }
+
+                    <li class="page-item @nextDisabled">
+                        <a class="page-link"
+                           asp-action="ViewAllRegistrations"
+                           asp-route-pageNumber="@(Model.PageIndex + 1)"
+                           asp-route-searchString="@ViewData["CurrentFilter"]"
+                           asp-route-levelFilter="@ViewData["CurrentLevelFilter"]"
+                           asp-route-academicYearFilter="@ViewData["CurrentAcademicYearFilter"]"
+                           asp-route-programFilter="@ViewData["CurrentProgramFilter"]">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                    <li class="page-item @nextDisabled">
+                        <a class="page-link"
+                           asp-action="ViewAllRegistrations"
+                           asp-route-pageNumber="@Model.TotalPages"
+                           asp-route-searchString="@ViewData["CurrentFilter"]"
+                           asp-route-levelFilter="@ViewData["CurrentLevelFilter"]"
+                           asp-route-academicYearFilter="@ViewData["CurrentAcademicYearFilter"]"
+                           asp-route-programFilter="@ViewData["CurrentProgramFilter"]">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Page info -->
+                <div class="text-center text-muted mt-2">
+                    Page @Model.PageIndex of @Model.TotalPages
+                    (Showing @((Model.PageIndex - 1) * Model.PageSize + 1) to @Math.Min(Model.PageIndex * Model.PageSize, Model.TotalItems) of @Model.TotalItems. records)
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Courses Modal -->
+<div class="modal fade" id="coursesModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Registered Courses</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="student-info mb-3 p-3 bg-light rounded">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><strong>Student:</strong> <span id="modalStudentName"></span></h6>
+                            <h6><strong>Program:</strong> <span id="modalProgram"></span></h6>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><strong>Academic Year:</strong> <span id="modalAcademicYear"></span></h6>
+                            <h6><strong>Semester:</strong> <span id="modalSemester"></span></h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="coursesTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Course Code</th>
+                                <th>Course Name</th>
+                                <th>Type</th>
+                                <th>Registered On</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function() {
+            // View courses button click handler
+            $('.view-courses-btn').click(async function() {
+                const studentId = $(this).data('student-id');
+                const semesterId = $(this).data('semester-id');
+                const btn = $(this);
+
+                // Show loading state
+                btn.html('<i class="fas fa-spinner fa-spin"></i>');
+                btn.prop('disabled', true);
+                $('#coursesTable tbody').html('<tr><td colspan="4" class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading courses...</td></tr>');
+
+                try {
+                    // Fetch student and course data via AJAX
+                    const response = await fetch(`/Academic/GetStudentCourses?studentId=${studentId}&semesterId=${semesterId}`);
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    
+                    const data = await response.json();
+
+                    if (data.success) {
+                        // Populate modal header
+                        $('#modalStudentName').text(data.studentName);
+                        $('#modalProgram').text(data.programName);
+                        $('#modalAcademicYear').text(data.academicYear);
+                        $('#modalSemester').text(data.semesterName);
+
+                        // Populate courses table
+                        const tbody = $('#coursesTable tbody');
+                        tbody.empty();
+
+                        if (data.courses.length > 0) {
+                            data.courses.forEach(course => {
+                                tbody.append(`
+                                    <tr>
+                                        <td>${course.courseCode}</td>
+                                        <td>${course.courseName}</td>
+                                        <td>${course.courseType}</td>
+                                        <td>${new Date(course.registrationDate).toLocaleDateString()}</td>
+                                    </tr>
+                                `);
+                            });
+                        } else {
+                            tbody.append('<tr><td colspan="4" class="text-center">No courses registered for this semester</td></tr>');
+                        }
+
+                        // Show modal
+                        new bootstrap.Modal(document.getElementById('coursesModal')).show();
+                    } else {
+                        toastr.error(data.message || 'Failed to load course data');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    toastr.error('An error occurred while loading course data');
+                } finally {
+                    btn.html('<i class="fas fa-eye"></i>');
+                    btn.prop('disabled', false);
+                }
+            });
+        });
+    </script>
+}

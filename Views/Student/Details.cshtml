@@ -1,0 +1,481 @@
+@using PWCEPortal.Models.StudentInfo
+@model PWCEPortal.Models.StudentInfo.Student
+@{
+    ViewBag.Title = "Student Profile";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Student Profile</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "AdminDashboard")">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Student")">Students</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Profile</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">
+                <i class="fas fa-user-graduate me-2"></i>@Model.Surname, @Model.OtherNames
+            </h3>
+            <div>
+                <button onclick="printDiv('Print')" class="btn btn-light me-2">
+                    <i class="fas fa-print me-1"></i> Print
+                </button>
+                @if (User.IsInRole("System Admin")|| User.IsInRole("Student Records Officer"))
+                {
+                    <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-warning">
+                        <i class="fas fa-edit me-1"></i> Edit
+                    </a>
+                }
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div id="Print">
+                <!-- Student Summary Card -->
+                <div class="card mb-4 border-primary">
+                    <div class="card-header bg-primary bg-opacity-10">
+                        <h4 class="mb-0">
+                            <i class="fas fa-id-card me-2"></i>Student Summary
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-2 text-center mb-3">
+                                <div class="profile-image-placeholder bg-light rounded-circle d-flex align-items-center justify-content-center"
+                                     style="width: 120px; height: 120px; margin: 0 auto;">
+                                    @if (!string.IsNullOrEmpty(Model.PassportPicturePath))
+                                    {
+                                        <img src="@Model.PassportPicturePath" alt="Passport Picture" class="img-thumbnail" />
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-user fa-3x text-secondary"></i>
+                                    }
+                                   
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <dl class="row">
+                                            <dt class="col-sm-4">Application No:</dt>
+                                            <dd class="col-sm-8">
+                                                <span class="custom-badge bg-primary">@(Model.ApplicationNumber ?? "N/A")</span>
+                                            </dd>
+                                            <dt class="col-sm-4">Student ID No:</dt>
+                                            <dd class="col-sm-8">
+                                                <span class="custom-badge bg-primary">@(Model.StudentID ?? "N/A")</span>
+                                            </dd>
+
+                                            <dt class="col-sm-4">Full Name:</dt>
+                                            <dd class="col-sm-8">@(Model.Title + " " + Model.Surname + " " + Model.OtherNames)</dd>
+
+                                            <dt class="col-sm-4">Program:</dt>
+                                            <dd class="col-sm-8">@(Model.CollegeProgram?.ProgramName ?? "N/A")</dd>
+
+                                            <dt class="col-sm-4">Level:</dt>
+                                            <dd class="col-sm-8">
+                                                <span class="custom-badge bg-info">Level @Model.CurrentLevel</span>
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <dl class="row">
+                                            <dt class="col-sm-4">Contact:</dt>
+                                            <dd class="col-sm-8">@Model.PhoneNo</dd>
+
+                                            <dt class="col-sm-4">Email:</dt>
+                                            <dd class="col-sm-8">@Model.Email</dd>
+
+                                            <dt class="col-sm-4">Enrollment:</dt>
+                                            <dd class="col-sm-8">@Model.EnrolmentYear</dd>
+
+                                            <dt class="col-sm-4">Status:</dt>
+                                            <dd class="col-sm-8">
+                                                <span class="custom-badge bg-success">Active</span>
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Information -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h4 class="mb-0">
+                            <i class="fas fa-user-circle me-2"></i>Personal Information
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <dl class="row">
+                                    <dt class="col-sm-4">Date of Birth:</dt>
+                                    <dd class="col-sm-8">@(Model.DateOfBirth.ToShortDateString() ?? "N/A")</dd>
+
+                                    <dt class="col-sm-4">Gender:</dt>
+                                    <dd class="col-sm-8">@Model.Gender</dd>
+
+                                    <dt class="col-sm-4">Marital Status:</dt>
+                                    <dd class="col-sm-8">@Model.MaritalStatus</dd>
+                                </dl>
+                            </div>
+                            <div class="col-md-6">
+                                <dl class="row">
+                                    <dt class="col-sm-4">Religion:</dt>
+                                    <dd class="col-sm-8">@Model.Religion</dd>
+
+                                    <dt class="col-sm-4">Denomination:</dt>
+                                    <dd class="col-sm-8">@Model.ReligiousDenom</dd>
+
+                                    <dt class="col-sm-4">Disability:</dt>
+                                    <dd class="col-sm-8">@(Model.DisabilityStatus.HasValue ? (Model.DisabilityStatus.Value ? "Yes" : "No") : "N/A")</dd>
+                                </dl>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <dl class="row">
+                                    <dt class="col-sm-2">Address:</dt>
+                                    <dd class="col-sm-10">@Model.ContactAddress</dd>
+
+                                    <dt class="col-sm-2">Languages:</dt>
+                                    <dd class="col-sm-10">@Model.GhanaianLanguagesSpoken</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certificate Information -->
+                <div class="card mb-4 no-print">
+                    <div class="card-header bg-light">
+                        <h4 class="mb-0">
+                            <i class="fas fa-certificate me-2"></i>Certificate
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        @if (!string.IsNullOrEmpty(Model.CertificateFilePath))
+                        {
+                            <div class="alert alert-success d-flex align-items-center">
+                                <i class="fas fa-check-circle fa-2x me-3 text-success"></i>
+                                <div>
+                                    <h5 class="alert-heading mb-1">Certificate Uploaded</h5>
+                                    <p class="mb-0">Student has submitted their certificate.</p>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center mt-3">
+                                <i class="fas fa-file-pdf fa-3x text-danger me-3"></i>
+                                <div>
+                                    <h5>Certificate File</h5>
+                                    <a href="@Model.CertificateFilePath" target="_blank" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-download me-1"></i> Download Certificate
+                                    </a>
+                                    <div class="text-muted small mt-1">PDF file - @(System.IO.Path.GetFileName(Model.CertificateFilePath))</div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning d-flex align-items-center">
+                                <i class="fas fa-exclamation-circle fa-2x me-3 text-warning"></i>
+                                <div>
+                                    <h5 class="alert-heading mb-1">No Certificate Uploaded</h5>
+                                    <p class="mb-0">This student hasn't uploaded a certificate yet.</p>
+                                </div>
+                            </div>
+
+                            @if (User.IsInRole("System Admin"))
+                            {
+                                <div class="mt-3">
+                                    <a href="@Url.Action("Edit", new { id = Model.Id })#certificate-section" class="btn btn-outline-primary">
+                                        <i class="fas fa-upload me-1"></i> Upload Certificate
+                                    </a>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <!-- Family Information -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h4 class="mb-0">
+                            <i class="fas fa-users me-2"></i>Family Information
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        @if (ViewBag.Parents != null && ((List<ParentGuardian>)ViewBag.Parents).Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Relationship</th>
+                                        <th>Contact</th>
+                                        <th>Occupation</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var parent in (List<ParentGuardian>)ViewBag.Parents)
+                                    {
+                                        <tr>
+                                            <td>@parent.FullName</td>
+                                            <td>@parent.Relationship</td>
+                                            <td>
+                                                <div>@parent.Telephone</div>
+                                                <small class="text-muted">@parent.Email</small>
+                                            </td>
+                                            <td>@parent.Occupation</td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-info mb-0">
+                                <i class="fas fa-info-circle me-2"></i> No parent/guardian information available
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Academic Information -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h4 class="mb-0">
+                            <i class="fas fa-graduation-cap me-2"></i>Academic Information
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h5>Current Program</h5>
+                                <dl class="row">
+                                    <dt class="col-sm-4">Program:</dt>
+                                    <dd class="col-sm-8">@(Model.CollegeProgram?.ProgramName ?? "N/A")</dd>
+
+                                    <dt class="col-sm-4">Entry Level:</dt>
+                                    <dd class="col-sm-8">@Model.LevelOfEntry</dd>
+
+                                    <dt class="col-sm-4">Current Level:</dt>
+                                    <dd class="col-sm-8">@Model.CurrentLevel</dd>
+                                </dl>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Academic Timeline</h5>
+                                <dl class="row">
+                                    <dt class="col-sm-4">Enrollment Year:</dt>
+                                    <dd class="col-sm-8">@Model.EnrolmentYear</dd>
+
+                                    <dt class="col-sm-4">Expected Completion:</dt>
+                                    <dd class="col-sm-8">@Model.ExpectedCompletionYear</dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                        @if (ViewBag.EducationHistories != null && ((List<EducationHistory>)ViewBag.EducationHistories).Any())
+                        {
+                            <h5 class="mb-3">Education History</h5>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th>Institution</th>
+                                        <th>Period</th>
+                                        <th>Leadership</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var history in (List<EducationHistory>)ViewBag.EducationHistories)
+                                    {
+                                        <tr>
+                                            <td>@history.SchoolName</td>
+                                            <td>
+                                                @history.FromDate.ToShortDateString() -
+                                                @history.ToDate.ToShortDateString()
+                                            </td>
+                                            <td>@history.OfficeHeld</td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-info mb-0">
+                                <i class="fas fa-info-circle me-2"></i> No education history available
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Financial Information -->
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h4 class="mb-0">
+                            <i class="fas fa-wallet me-2"></i>Financial Information
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        @if (ViewBag.FinancialInfo != null && ((List<FinancialInfo>)ViewBag.FinancialInfo).Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th>SSNIT Number</th>
+                                        <th>EZwich Account</th>
+                                        <th>Account Number</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var financialInfo in (List<FinancialInfo>)ViewBag.FinancialInfo)
+                                    {
+                                        <tr>
+                                            <td>@financialInfo.SSNITNumber</td>
+                                            <td>@financialInfo.EZwichAccountName</td>
+                                            <td>@financialInfo.EZwichAccountNumber</td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-info mb-0">
+                                <i class="fas fa-info-circle me-2"></i> No financial information available
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function printDiv(divId) {
+            const printContents = document.getElementById(divId).innerHTML;
+            const originalContents = document.body.innerHTML;
+
+            // Create a temporary div to manipulate the content
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = printContents;
+
+            // Remove all elements with class 'no-print'
+            const noPrintElements = tempDiv.querySelectorAll('.no-print');
+            noPrintElements.forEach(el => el.remove());
+
+            document.body.innerHTML = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Student Profile - @Model.Surname, @Model.OtherNames</title>
+            <style>
+                body { font-family: Arial, sans-serif; }
+                .card { border: 1px solid #ddd; margin-bottom: 20px; }
+                .card-header { background-color: #f8f9fa; padding: 10px; font-weight: bold; }
+                table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                th { background-color: #f8f9fa; }
+                .badge { padding: 3px 6px; border-radius: 3px; font-size: 12px; }
+                .bg-primary { background-color: #007bff!important; color: white; }
+                .bg-info { background-color: #17a2b8!important; color: white; }
+                .bg-success { background-color: #28a745!important; color: white; }
+                .alert { padding: 10px; margin-bottom: 15px; border: 1px solid transparent; }
+                .alert-info { background-color: #d1ecf1; border-color: #bee5eb; color: #0c5460; }
+                .text-center { text-align: center; }
+                .text-muted { color: #6c757d; }
+                .profile-image-placeholder { 
+                    width: 120px; 
+                    height: 120px; 
+                    border-radius: 60px; 
+                    background-color: #f8f9fa;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-bottom: 15px;
+                }
+                @@page { size: A4; margin: 1cm; }
+                
+                /* Hide no-print elements */
+                .no-print { display: none !important; }
+            </style>
+        </head>
+        <body>
+            ${tempDiv.innerHTML}
+            <div class="text-muted text-center mt-4">
+                Printed on @DateTime.Now.ToString("MMMM dd, yyyy hh:mm tt")
+            </div>
+        </body>
+        </html>
+    `;
+
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+    </script>
+
+    <style>
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            border-bottom: none;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+
+        .badge {
+            font-size: 0.85em;
+            font-weight: 500;
+            padding: 0.35em 0.65em;
+        }
+
+        .profile-image-placeholder {
+            width: 120px;
+            height: 120px;
+            border-radius: 60px;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        dt {
+            font-weight: 500;
+            color: #6c757d;
+        }
+
+        @@media print {
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+}

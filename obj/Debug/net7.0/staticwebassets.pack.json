@@ -1,0 +1,385 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/obj/Debug/net7.0/scopedcss/projectbundle/PWCEPortal.bundle.scp.css",
+      "PackagePath": "staticwebassets/PWCEPortal.bundle.scp.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/Certificates/APP12345612354_Certificate_20250415_172257.pdf",
+      "PackagePath": "staticwebassets/Certificates/APP12345612354_Certificate_20250415_172257.pdf"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/Certificates/APP12345678_Certificate_20250415_171948.pdf",
+      "PackagePath": "staticwebassets/Certificates/APP12345678_Certificate_20250415_171948.pdf"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/Certificates/APP123456_Certificate_20250415_175317.pdf",
+      "PackagePath": "staticwebassets/Certificates/APP123456_Certificate_20250415_175317.pdf"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/css/site.css",
+      "PackagePath": "staticwebassets/css/site.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/css/styles.css",
+      "PackagePath": "staticwebassets/css/styles.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/css/styles_OLD.css",
+      "PackagePath": "staticwebassets/css/styles_OLD.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/favicon.ico",
+      "PackagePath": "staticwebassets/favicon.ico"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/images/PWCELogo.png",
+      "PackagePath": "staticwebassets/images/PWCELogo.png"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/images/background.jpeg",
+      "PackagePath": "staticwebassets/images/background.jpeg"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/images/user.png",
+      "PackagePath": "staticwebassets/images/user.png"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/js/script.js",
+      "PackagePath": "staticwebassets/js/script.js"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/js/site.js",
+      "PackagePath": "staticwebassets/js/site.js"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/LICENSE",
+      "PackagePath": "staticwebassets/lib/bootstrap"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.css.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.min.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.min.css.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.rtl.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.css.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.min.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.css.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.min.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.css.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.min.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.min.css.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.rtl.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.rtl.css.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.rtl.min.css"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.bundle.js"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.bundle.js.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.esm.js"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.esm.js.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.esm.min.js"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.esm.min.js.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.js"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.js.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.js.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.min.js"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.min.js.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt",
+      "PackagePath": "staticwebassets/lib/jquery-validation-unobtrusive/LICENSE.txt"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "PackagePath": "staticwebassets/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+      "PackagePath": "staticwebassets/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery-validation/LICENSE.md",
+      "PackagePath": "staticwebassets/lib/jquery-validation/LICENSE.md"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery-validation/dist/additional-methods.js",
+      "PackagePath": "staticwebassets/lib/jquery-validation/dist/additional-methods.js"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery-validation/dist/additional-methods.min.js",
+      "PackagePath": "staticwebassets/lib/jquery-validation/dist/additional-methods.min.js"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "PackagePath": "staticwebassets/lib/jquery-validation/dist/jquery.validate.js"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
+      "PackagePath": "staticwebassets/lib/jquery-validation/dist/jquery.validate.min.js"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery/LICENSE.txt",
+      "PackagePath": "staticwebassets/lib/jquery/LICENSE.txt"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery/dist/jquery.js",
+      "PackagePath": "staticwebassets/lib/jquery/dist/jquery.js"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery/dist/jquery.min.js",
+      "PackagePath": "staticwebassets/lib/jquery/dist/jquery.min.js"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/lib/jquery/dist/jquery.min.map",
+      "PackagePath": "staticwebassets/lib/jquery/dist/jquery.min.map"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250322222601.pdf",
+      "PackagePath": "staticwebassets/receipts/APP123456_20242025_20250322222601.pdf"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250322222715.pdf",
+      "PackagePath": "staticwebassets/receipts/APP123456_20242025_20250322222715.pdf"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250322222759.pdf",
+      "PackagePath": "staticwebassets/receipts/APP123456_20242025_20250322222759.pdf"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250322224906.pdf",
+      "PackagePath": "staticwebassets/receipts/APP123456_20242025_20250322224906.pdf"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250322225918.png",
+      "PackagePath": "staticwebassets/receipts/APP123456_20242025_20250322225918.png"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250322225942.png",
+      "PackagePath": "staticwebassets/receipts/APP123456_20242025_20250322225942.png"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20242025_20250327150929.pdf",
+      "PackagePath": "staticwebassets/receipts/APP123456_20242025_20250327150929.pdf"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250330220928.pdf",
+      "PackagePath": "staticwebassets/receipts/APP123456_20252026_20250330220928.pdf"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401121000.webp",
+      "PackagePath": "staticwebassets/receipts/APP123456_20252026_20250401121000.webp"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401121335.jpeg",
+      "PackagePath": "staticwebassets/receipts/APP123456_20252026_20250401121335.jpeg"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401141000.pdf",
+      "PackagePath": "staticwebassets/receipts/APP123456_20252026_20250401141000.pdf"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401141348.pdf",
+      "PackagePath": "staticwebassets/receipts/APP123456_20252026_20250401141348.pdf"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401151507.pdf",
+      "PackagePath": "staticwebassets/receipts/APP123456_20252026_20250401151507.pdf"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401151911.pdf",
+      "PackagePath": "staticwebassets/receipts/APP123456_20252026_20250401151911.pdf"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250401155044.pdf",
+      "PackagePath": "staticwebassets/receipts/APP123456_20252026_20250401155044.pdf"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250411055640.txt",
+      "PackagePath": "staticwebassets/receipts/APP123456_20252026_20250411055640.txt"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20252026_20250415134419.png",
+      "PackagePath": "staticwebassets/receipts/APP123456_20252026_20250415134419.png"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20262027_20250415134014.jpeg",
+      "PackagePath": "staticwebassets/receipts/APP123456_20262027_20250415134014.jpeg"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP123456_20272028_20250420194851.jpeg",
+      "PackagePath": "staticwebassets/receipts/APP123456_20272028_20250420194851.jpeg"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/receipts/APP1234_20252026_20251118211152.pdf",
+      "PackagePath": "staticwebassets/receipts/APP1234_20252026_20251118211152.pdf"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal/PWCEPortal/wwwroot/uploads/passports/205e80cd-02eb-4f6c-93df-866b627ac470_background.jpeg",
+      "PackagePath": "staticwebassets/uploads/passports/205e80cd-02eb-4f6c-93df-866b627ac470_background.jpeg"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.PWCEPortal.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.build.PWCEPortal.props",
+      "PackagePath": "build\\PWCEPortal.props"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.buildMultiTargeting.PWCEPortal.props",
+      "PackagePath": "buildMultiTargeting\\PWCEPortal.props"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.buildTransitive.PWCEPortal.props",
+      "PackagePath": "buildTransitive\\PWCEPortal.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

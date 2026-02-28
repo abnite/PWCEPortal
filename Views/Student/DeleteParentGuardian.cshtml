@@ -1,0 +1,158 @@
+@model PWCEPortal.ViewModel.Student.ParentGuardianViewModel
+@{
+    ViewBag.Title = "Delete Parent/Guardian";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Delete Parent/Guardian</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item"><a asp-action="Index">Students</a></li>
+                <li class="breadcrumb-item"><a asp-action="ParentGuardians" asp-route-studentId="@Model.StudentId">Parents/Guardians</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Delete</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm border-danger">
+        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">
+                <i class="fas fa-user-times me-2"></i>Confirm Deletion
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Warning! Permanent Action
+                </h4>
+                <p>You are about to permanently delete <strong>@Model.FullName</strong> (@Model.Relationship)</p>
+                <hr>
+                <p class="mb-0"><strong>This action cannot be undone</strong> and will remove all contact information for this parent/guardian.</p>
+            </div>
+
+            <div class="card mb-4 border-warning">
+                <div class="card-header bg-warning bg-opacity-10">
+                    <h5 class="mb-0"><i class="fas fa-id-card me-2"></i>Parent/Guardian Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Full Name:</dt>
+                                <dd class="col-sm-8">@Model.FullName</dd>
+
+                                <dt class="col-sm-4">Relationship:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="custom-badge bg-primary">@Model.Relationship</span>
+                                </dd>
+
+                                <dt class="col-sm-4">Occupation:</dt>
+                                <dd class="col-sm-8">@Model.Occupation</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Contact Email:</dt>
+                                <dd class="col-sm-8">@Model.Email</dd>
+
+                                <dt class="col-sm-4">Telephone:</dt>
+                                <dd class="col-sm-8">@Model.Telephone</dd>
+
+                                <dt class="col-sm-4">Address:</dt>
+                                <dd class="col-sm-8">@Model.ContactAddress</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form asp-action="DeleteParentGuardian" method="post" id="deleteForm">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="StudentId" />
+                @Html.AntiForgeryToken()
+                
+                <div class="form-group mt-4">
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="confirmDelete" required>
+                        <label class="form-check-label text-danger fw-bold" for="confirmDelete">
+                            I understand this action cannot be undone and all contact information will be permanently deleted
+                        </label>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a asp-action="ParentGuardians" asp-route-studentId="@Model.StudentId" class="btn btn-outline-secondary me-md-2">
+                        <i class="fas fa-arrow-left me-1"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-danger" id="deleteButton" disabled>
+                        <i class="fas fa-trash-alt me-1"></i> Delete Permanently
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const confirmCheckbox = document.getElementById('confirmDelete');
+            const deleteButton = document.getElementById('deleteButton');
+            const deleteForm = document.getElementById('deleteForm');
+            
+            // Enable/disable delete button based on confirmation
+            confirmCheckbox.addEventListener('change', function() {
+                deleteButton.disabled = !this.checked;
+            });
+            
+            // Final confirmation before submission
+            deleteForm.addEventListener('submit', function(e) {
+                if (!confirm('Are you absolutely sure you want to permanently delete this parent/guardian record?')) {
+                    e.preventDefault();
+                } else {
+                    // Show loading state
+                    deleteButton.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Deleting...';
+                    deleteButton.disabled = true;
+                }
+            });
+        });
+    </script>
+    
+    <style>
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .border-danger {
+            border-left: 4px solid #dc3545;
+        }
+        
+        .border-warning {
+            border-left: 4px solid #ffc107;
+        }
+        
+        .badge {
+            font-weight: 500;
+            padding: 0.5em 0.75em;
+        }
+        
+        #deleteButton {
+            transition: all 0.2s ease;
+        }
+        
+        #deleteButton:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.25);
+        }
+        
+        .form-check-input:checked {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+    </style>
+}

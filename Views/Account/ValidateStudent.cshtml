@@ -1,0 +1,27 @@
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_LoginLayout";
+}
+
+
+        <div class="login-header">
+            <h2>Validate Student Account</h2>
+            <p>Please log in to access your account.</p>
+        </div>
+        <form  asp-action="ValidateStudent" method="post" asp-controller="Account">
+            <div class="form-group">
+                <label for="applicationNumber">Application No / School ID No</label>
+                <input type="text" id="applicationNumber" name="applicationNumber" placeholder="Enter your School ID Number" required>
+            </div>
+            <div class="form-group">
+                <label for="dateOfBirth">Date of Birth</label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth" placeholder="Enter your Date Of Birth" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn-create">Validate Account</button>
+            </div>
+        </form>
+        <div class="login-footer">
+            <a asp-action="Login" asp-controller="Account">Back To Login</a>
+        </div>

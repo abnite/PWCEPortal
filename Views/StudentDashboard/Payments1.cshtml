@@ -1,0 +1,179 @@
+@model IEnumerable<PWCEPortal.Models.Payment.Payment>
+@{
+    ViewBag.Title = "Payment History";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid py-4">
+    <div class="card shadow-lg border-0 rounded-lg">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3">
+            <h3 class="card-title mb-0">
+                <i class="fas fa-history me-2"></i>Payment History
+            </h3>
+            <div>
+                <a href="@Url.Action("Index", "StudentDashboard")" class="btn btn-outline-light btn-sm">
+                    <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+        
+        <div class="card-body p-4">
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center py-4">
+                    <i class="fas fa-info-circle fa-2x mb-3"></i>
+                    <h4>No Payment History Found</h4>
+                    <p class="mb-0">You haven't made any payments yet.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped" id="paymentHistoryTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th><i class="fas fa-calendar me-1"></i> Date</th>
+                                <th><i class="fas fa-money-bill-wave me-1"></i> Amount</th>
+                                <th><i class="fas fa-hashtag me-1"></i> Reference</th>
+                                <th><i class="fas fa-bank me-1"></i> Bank Ref</th>
+                                <th><i class="fas fa-bank me-1"></i> AG Receipt</th>
+                                <th><i class="fas fa-check-circle me-1"></i> Status</th>
+                                <th><i class="fas fa-receipt me-1"></i> Receipt</th>
+                                <th><i class="fas fa-cog me-1"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var payment in Model)
+                            {
+                                <tr class="@(payment.IsVerified ? "table-success" : "table-warning")">
+                                    <td>@payment.PaymentDate.ToString("dd MMM yyyy")</td>
+                                    <td class="fw-bold">GHS @payment.AmountPaid.ToString("N2")</td>
+                                    <td><span class="custom-badge bg-primary">@payment.PaymentReference</span></td>
+                                    <td>
+                                        @if (string.IsNullOrEmpty(payment.BankReferenceNumber))
+                                        {
+                                            <span class="text-muted">N/A</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="custom-badge bg-info">@payment.BankReferenceNumber</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (string.IsNullOrEmpty(payment.AccountantReceipt))
+                                        {
+                                            <span class="text-muted">N/A</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="custom-badge bg-info">@payment.AccountantReceipt</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (payment.IsVerified)
+                                        {
+                                            <span class="custom-badge bg-success">
+                                                <i class="fas fa-check-circle me-1"></i> Verified
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="custom-badge bg-warning text-dark">
+                                                <i class="fas fa-clock me-1"></i> Pending
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(payment.ReceiptFilePath))
+                                        {
+                                            <a href="@payment.ReceiptFilePath" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye me-1"></i> View
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">No Receipt</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!payment.IsVerified)
+                                        {
+                                            <a class="btn btn-sm btn-warning" 
+                                               href="@Url.Action("UploadReceipt", "StudentDashboard", new { paymentId = payment.Id })"
+                                               title="Upload Receipt">
+                                                <i class="fas fa-upload me-1"></i> Upload
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-sm btn-success"
+                                               href="@Url.Action("PaymentReceipt", "StudentDashboard", new { paymentId = payment.Id })"
+                                               title="View Payment Receipt">
+                                                <i class="fas fa-upload me-1"></i> View Receipt
+                                            </a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-4 d-flex justify-content-between align-items-center">
+                    <div class="text-muted">
+                        Showing @Model.Count() payment records
+                    </div>
+                    <a href="@Url.Action("Index", "StudentDashboard")" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .card {
+        border-radius: 0.5rem;
+        border: none;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    }
+    .card-header {
+        border-radius: 0.5rem 0.5rem 0 0 !important;
+    }
+    .table th {
+        white-space: nowrap;
+        border-top: none;
+    }
+    .table td {
+        vertical-align: middle;
+    }
+    .badge {
+        font-weight: 500;
+        padding: 0.35em 0.65em;
+    }
+    .table-hover tbody tr:hover {
+        transform: translateX(2px);
+        transition: transform 0.2s ease;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable if needed
+            $('#paymentHistoryTable').DataTable({
+                responsive: true,
+                order: [[0, 'desc']], // Sort by date descending
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search payments...",
+                },
+                dom: '<"top"f>rt<"bottom"lip><"clear">'
+            });
+        });
+    </script>
+}

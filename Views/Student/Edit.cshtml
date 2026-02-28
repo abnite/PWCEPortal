@@ -1,0 +1,275 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model PWCEPortal.ViewModel.Student.StudentViewModel
+
+@{
+    ViewBag.Title = "Edit Student";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Edit Student Record</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item"><a asp-action="Index">Students</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">
+                <i class="fas fa-user-edit me-2"></i>Student Information
+            </h3>
+            <div class="badge bg-white text-primary">
+                ID: @Model.Id
+            </div>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" method="post" class="needs-validation" novalidate enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="row g-3">
+
+                    <!-- Title, Surname, Other Names -->
+                    <div class="col-md-2">
+                        <div class="form-floating mb-4">
+                            <select asp-for="Title" class="form-select">
+                                <option value="">Select Title</option>
+                                <option value="Mr">Mr</option>
+                                <option value="Mrs">Mrs</option>
+                                <option value="Miss">Miss</option>
+                                <option value="Dr">Dr</option>
+                                <option value="Prof">Prof</option>
+                            </select>
+                            <label asp-for="Title"></label>
+                            <span asp-validation-for="Title" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-floating mb-4">
+                            <input asp-for="Surname" class="form-control" placeholder=" " />
+                            <label asp-for="Surname"></label>
+                            <span asp-validation-for="Surname" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-floating mb-4">
+                            <input asp-for="OtherNames" class="form-control" placeholder=" " />
+                            <label asp-for="OtherNames"></label>
+                            <span asp-validation-for="OtherNames" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Application Number -->
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input asp-for="ApplicationNumber" class="form-control" placeholder=" "/>
+                            <label asp-for="ApplicationNumber"></label>
+                            <span asp-validation-for="ApplicationNumber" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input asp-for="StudentId" class="form-control" placeholder="Enter Student ID No"/>
+                            <label asp-for="StudentId">Student ID No.</label>
+                            <span asp-validation-for="StudentId" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+
+
+                    <!-- Email and Phone -->
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input asp-for="Email" type="email" class="form-control" placeholder=" "/>
+                            <label asp-for="Email"></label>
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                            <div class="form-text">Official student email address</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input asp-for="PhoneNo" class="form-control" placeholder=" "/>
+                            <label asp-for="PhoneNo"></label>
+                            <span asp-validation-for="PhoneNo" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <!-- Date of Birth and Gender -->
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input asp-for="DateOfBirth" type="date" class="form-control"/>
+                            <label asp-for="DateOfBirth"></label>
+                            <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <select asp-for="Gender" class="form-select">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                                <option value="Prefer not to say">Prefer not to say</option>
+                            </select>
+                            <label asp-for="Gender"></label>
+                            <span asp-validation-for="Gender" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <!-- Program and Enrolment Year -->
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <select asp-for="CollegeProgramId" class="form-select" asp-items="Model.CollegePrograms">
+                                <option value="">Select Program</option>
+                            </select>
+                            <label asp-for="CollegeProgramId"></label>
+                            <span asp-validation-for="CollegeProgramId" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <input asp-for="EnrolmentYear" class="form-control" placeholder=" "/>
+                            <label asp-for="EnrolmentYear"></label>
+                            <span asp-validation-for="EnrolmentYear" class="text-danger small"></span>
+                            <div class="form-text">Year of first enrolment (e.g., 2023)</div>
+                        </div>
+                    </div>
+
+                    <!-- Entry Level and Current Level -->
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <select asp-for="EntryLevel" class="form-select">
+                                <option value="">Select Entry Level</option>
+                                <option value="100">100</option>
+                                <option value="200">200</option>
+                                <option value="300">300</option>
+                                <option value="400">400</option>
+                            </select>
+                            <label asp-for="EntryLevel"></label>
+                            <span asp-validation-for="EntryLevel" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-4">
+                            <select asp-for="CurrentLevel" class="form-select">
+                                <option value="">Select Current Level</option>
+                                <option value="100">100</option>
+                                <option value="200">200</option>
+                                <option value="300">300</option>
+                                <option value="400">400</option>
+                            </select>
+                            <label asp-for="CurrentLevel"></label>
+                            <span asp-validation-for="CurrentLevel" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Certificate Upload Section -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-12">
+                        <h5 class="border-bottom pb-2">
+                            <i class="fas fa-file-pdf me-2"></i>Certificate Upload
+                        </h5>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="CertificateFile" class="form-label">Upload Certificate (PDF only)</label>
+                            <input asp-for="CertificateFile" type="file" class="form-control" accept=".pdf" />
+                            <span asp-validation-for="CertificateFile" class="text-danger small"></span>
+                            <div class="form-text">Maximum file size: 5MB</div>
+                            @if (!string.IsNullOrEmpty(Model.CertificateFilePath))
+                            {
+                                <div class="mt-2">
+                                    <a href="@Model.CertificateFilePath" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye me-1"></i> View Current Certificate
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <a asp-action="Index" class="btn btn-outline-secondary me-md-2">
+                        <i class="fas fa-arrow-left me-1"></i> Back to List
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Client-side validation
+        (function () {
+            'use strict'
+            
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+            
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+    
+    <style>
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-header {
+            border-bottom: none;
+            padding: 1.25rem 1.5rem;
+        }
+        
+        .form-floating label {
+            color: #6c757d;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+        }
+        
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.9rem;
+        }
+        
+        .was-validated .form-control:invalid, 
+        .was-validated .form-select:invalid {
+            border-color: #dc3545;
+        }
+        
+        .was-validated .form-control:valid, 
+        .was-validated .form-select:valid {
+            border-color: #198754;
+        }
+    </style>
+}

@@ -1,0 +1,165 @@
+@model IEnumerable<PWCEPortal.Models.StudentInfo.FinancialInfo>
+@{
+    ViewBag.Title = "Financial Information";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Financial Information</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdminDashboard">>Dashboard</a></li>
+                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Student">Students</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Financial Info</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">
+                <i class="fas fa-wallet me-2"></i>Financial Records
+            </h3>
+            <div class="d-flex">
+                <a asp-action="AddFinancialInfo" asp-route-studentId="@ViewBag.StudentId" class="btn btn-success">
+                    <i class="fas fa-plus-circle me-1"></i> Add Financial Record
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table id="financialInfoTable" class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>SSNIT Number</th>
+                                <th>EZwich Account</th>
+                                <th>Account Number</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.SSNITNumber))
+                                        {
+                                            <span class="custom-badge bg-info">@item.SSNITNumber</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Not provided</span>
+                                        }
+                                    </td>
+                                    <td>@item.EZwichAccountName</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.EZwichAccountNumber))
+                                        {
+                                            <code>@item.EZwichAccountNumber</code>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Not provided</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a asp-action="EditFinancialInfo" asp-route-id="@item.Id" class="btn btn-outline-primary" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a  asp-action="DeleteFinancialInfo" asp-route-id="@item.Id" class="btn btn-outline-danger btn-delete" title="Delete">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>No financial records found for this student.
+                </div>
+                <div class="d-grid gap-2 col-md-4 mx-auto">
+                    <a asp-action="AddFinancialInfo" asp-route-studentId="@ViewBag.StudentId" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i> Add First Record
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable if records exist
+            @if (Model.Any())
+            {
+                <text>
+                $('#financialInfoTable').DataTable({
+                    responsive: true,
+                    dom: '<"top"f>rt<"bottom"lip><"clear">',
+                    language: {
+                        search: "_INPUT_",
+                        searchPlaceholder: "Search financial records..."
+                    },
+                    columnDefs: [
+                        { orderable: false, targets: [3] } // Disable sorting on actions column
+                    ]
+                });
+                </text>
+            }
+            
+            // Delete confirmation modal
+            $('.btn-delete').click(function() {
+                var recordId = $(this).data('record-id');
+                var deleteUrl = '@Url.Action("DeleteFinancialInfo")/' + recordId;
+                $('#deleteForm').attr('action', deleteUrl);
+                $('#deleteModal').modal('show');
+            });
+        });
+    </script>
+    
+    <style>
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-header {
+            border-bottom: none;
+            padding: 1.25rem 1.5rem;
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+        
+        .btn-outline-primary:hover, .btn-outline-danger:hover {
+            color: white;
+        }
+        
+        .badge {
+            font-size: 0.85em;
+            font-weight: 500;
+            padding: 0.35em 0.65em;
+        }
+        
+        code {
+            color: #d63384;
+            background-color: #f8f9fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+    </style>
+}

@@ -1,0 +1,63 @@
+@model PWCEPortal.ApplicationClass.PaginatedList<PWCEPortal.Models.Payment.Payment>
+@{
+    ViewBag.Title = "Payment Summary Report";
+    Layout = "_AdminLayout";
+}
+<div class="container-fluid px-4">
+    <h2 class="mt-4">Payment Summary Report</h2>
+    <form method="get" asp-action="PaymentSummaryReport">
+        <div class="row">
+            <div class="col-md-3">
+                <label>Start Date:</label>
+                <input type="date" name="startDate" value="@(ViewBag.StartDate != null ? ((DateTime)ViewBag.StartDate).ToString("yyyy-MM-dd") : "")" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label>End Date:</label>
+                <input type="date" name="endDate" value="@(ViewBag.EndDate != null ? ((DateTime)ViewBag.EndDate).ToString("yyyy-MM-dd") : "")" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label>Search:</label>
+                <input type="text" name="searchTerm" value="@(ViewBag.SearchTerm)" class="form-control" placeholder="Search by name or reference" />
+            </div>
+            <div class="col-md-2 d-grid">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </div>
+    </form>
+    <table class="table table-bordered mt-3">
+        <thead>
+        <tr>
+            <th>Payment Date</th>
+            <th>Student</th>
+            <th>Amount Paid</th>
+            <th>Payment Reference</th>
+            <th>Bank Reference</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var payment in Model)
+        {
+            <tr>
+                <td>@payment.PaymentDate.ToString("dd MMM yyyy")</td>
+                <td>@payment.Student?.Surname @payment.Student?.OtherNames</td>
+                <td>@payment.AmountPaid</td>
+                <td>@payment.PaymentReference</td>
+                <td>@payment.BankReferenceNumber</td>
+                <td>@(payment.IsVerified ? "Verified" : "Pending")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div class="pagination">
+        @if (Model.HasPreviousPage)
+        {
+            <a class="btn btn-secondary" href="@Url.Action("PaymentSummaryReport", new { pageIndex = Model.PageIndex - 1, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate, searchTerm = ViewBag.SearchTerm })">Previous</a>
+        }
+        <span>Page @Model.PageIndex of @Model.TotalPages</span>
+        @if (Model.HasNextPage)
+        {
+            <a class="btn btn-secondary" href="@Url.Action("PaymentSummaryReport", new { pageIndex = Model.PageIndex + 1, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate, searchTerm = ViewBag.SearchTerm })">Next</a>
+        }
+    </div>
+</div>

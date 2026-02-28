@@ -1,0 +1,279 @@
+@using System.Text.Json
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model PWCEPortal.ApplicationClass.PaginatedList<PWCEPortal.Models.AuditLog>
+@{
+    ViewBag.Title = "Audit Log Report";
+    Layout = "_AdminLayout";
+}
+
+@functions {
+    public string FormatJson(string json)
+    {
+        if (string.IsNullOrEmpty(json))
+        {
+            return "<span class='text-muted'>No data</span>";
+        }
+        try
+        {
+            using (var doc = JsonDocument.Parse(json))
+            {
+                string result = "<div class='json-container'>";
+                foreach (var property in doc.RootElement.EnumerateObject())
+                {
+                    result += $"<div class='json-item'><span class='json-key'>{property.Name}:</span> <span class='json-value'>{property.Value}</span></div>";
+                }
+                result += "</div>";
+                return result;
+            }
+        }
+        catch
+        {
+            return $"<div class='json-raw'>{json}</div>";
+        }
+    }
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Audit Log Report</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Audit Logs</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">
+                <i class="fas fa-clipboard-list me-2"></i>System Activity Log
+            </h3>
+        </div>
+        <div class="card-body">
+            <form method="get" asp-action="AuditLogReport" class="mb-4">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <div class="form-floating">
+                            <input type="date" name="startDate" 
+                                   value="@(ViewBag.StartDate != null ? ((DateTime)ViewBag.StartDate).ToString("yyyy-MM-dd") : "")" 
+                                   class="form-control" id="startDate" />
+                            <label for="startDate">Start Date</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-floating">
+                            <input type="date" name="endDate" 
+                                   value="@(ViewBag.EndDate != null ? ((DateTime)ViewBag.EndDate).ToString("yyyy-MM-dd") : "")" 
+                                   class="form-control" id="endDate" />
+                            <label for="endDate">End Date</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="text" name="searchTerm" 
+                                   value="@ViewBag.SearchTerm" 
+                                   class="form-control" 
+                                   id="searchTerm"
+                                   placeholder="Search by action or user" />
+                            <label for="searchTerm">Search Term</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-grid">
+                        <button type="submit" class="btn btn-primary h-100">
+                            <i class="fas fa-filter me-1"></i> Apply Filters
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Timestamp</th>
+                        <th>User</th>
+                        <th>Action</th>
+                        <th>IP Address</th>
+                        <th>Changes</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @{
+                        int count = Model.FirstItemOnPage;
+                    }
+                    @foreach (var log in Model)
+                    {
+                        <tr>
+                            <td>@count</td>
+                            <td>
+                                <span class="text-nowrap">@log.DateAdded?.ToString("dd MMM yyyy")</span>
+                                <small class="text-muted d-block">@log.DateAdded?.ToString("HH:mm:ss")</small>
+                            </td>
+                            <td>@GetUserDisplayName(log) </td>
+                            <td>
+                                <span class="custom-badge @GetActionBadgeClass(log.ActionPerformed)">
+                                    @log.ActionPerformed
+                                </span>
+                            </td>
+                            <td>@log.IPAddress</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-info" data-bs-toggle="collapse"
+                                        data-bs-target="#changes-@log.Id" aria-expanded="false">
+                                    <i class="fas fa-eye"></i> View Changes
+                                </button>
+                                <div class="collapse mt-2" id="changes-@log.Id">
+                                    <div class="card card-body p-2">
+                                        <h6 class="text-muted">Old Values:</h6>
+                                        @Html.Raw(FormatJson(log.OldValues))
+                                        <hr>
+                                        <h6 class="text-muted">New Values:</h6>
+                                        @Html.Raw(FormatJson(log.NewValues))
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                <i class="fas fa-info-circle fa-2x mb-3"></i>
+                                <p>No audit logs found matching your criteria</p>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+                        <a class="page-link"
+                           href="@Url.Action("AuditLogReport", new { pageIndex = Model.PageIndex - 1, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate, searchTerm = ViewBag.SearchTerm })">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+
+                    @{
+                        int currentPage = Model.PageIndex;
+                        int totalPages = Model.TotalPages;
+                        int range = 2; // Number of pages to show around current page
+
+                        // Always show first page
+                        <li class="page-item @(1 == currentPage ? "active" : "")">
+                            <a class="page-link"
+                               href="@Url.Action("AuditLogReport", new { pageIndex = 1, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate, searchTerm = ViewBag.SearchTerm })">
+                                1
+                            </a>
+                        </li>
+
+                        // Show ellipsis if needed after first page
+                        if (currentPage - range > 2)
+                        {
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        }
+
+                        // Show pages around current page
+                        for (int i = Math.Max(2, currentPage - range); i <= Math.Min(totalPages - 1, currentPage + range); i++)
+                        {
+                            <li class="page-item @(i == currentPage ? "active" : "")">
+                                <a class="page-link"
+                                   href="@Url.Action("AuditLogReport", new { pageIndex = i, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate, searchTerm = ViewBag.SearchTerm })">
+                                    @i
+                                </a>
+                            </li>
+                        }
+
+                        // Show ellipsis if needed before last page
+                        if (currentPage + range < totalPages - 1)
+                        {
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        }
+
+                        // Always show last page if there's more than one page
+                        if (totalPages > 1)
+                        {
+                            <li class="page-item @(totalPages == currentPage ? "active" : "")">
+                                <a class="page-link"
+                                   href="@Url.Action("AuditLogReport", new { pageIndex = totalPages, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate, searchTerm = ViewBag.SearchTerm })">
+                                    @totalPages
+                                </a>
+                            </li>
+                        }
+                    }
+
+                    <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+                        <a class="page-link"
+                           href="@Url.Action("AuditLogReport", new { pageIndex = Model.PageIndex + 1, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate, searchTerm = ViewBag.SearchTerm })">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+@functions {
+    public string GetActionBadgeClass(string action)
+    {
+        switch (action.ToLower())
+        {
+            case "create": return "bg-success";
+            case "update": return "bg-warning text-dark";
+            case "delete": return "bg-danger";
+            default: return "bg-info";
+        }
+    }
+    
+    public string GetUserDisplayName(PWCEPortal.Models.AuditLog log)
+    {
+        if (log.User != null)
+        {
+            return $"{log.User.FirstName} {log.User.LastName}";
+        }
+        return "System / Unknown";
+    }
+}
+
+
+
+<style>
+        .json-container {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        .json-item {
+            margin-bottom: 0.25rem;
+        }
+        .json-key {
+            font-weight: 600;
+            color: #6c757d;
+        }
+        .json-value {
+            color: #0d6efd;
+        }
+        .json-raw {
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .table-hover tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+        .badge {
+            font-weight: 500;
+        }
+    </style>

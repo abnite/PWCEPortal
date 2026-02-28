@@ -1,0 +1,41 @@
+@model IEnumerable<PWCEPortal.Models.Payment.PartPaymentConfig>
+@{
+    ViewBag.Title = "Manage Part Payment Configurations";
+    Layout = "_AdminLayout";
+}
+<div class="card mt-4">
+    <div class="card-header">
+        <h3>Manage Part Payment Configurations</h3>
+    </div>
+    <div class="card-body">
+        <a class="btn btn-success mb-3" href="@Url.Action("CreatePartPaymentConfig", "AdminDashboard")">Create New Configuration</a>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Academic Year</th>
+                <th>Part Payment Percentage (%)</th>
+                <th>Date Added</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var config in Model)
+            {
+                <tr>
+                    <td>@config.AcademicYear?.Year</td>
+                    <td>@config.PartPaymentPercentage</td>
+                    <td>@config.DateAdded?.ToString("dd MMM yyyy")</td>
+                    <td>
+                        @if (config.AcademicYear.IsActive)
+                        {
+                            <a class="btn btn-sm btn-primary" href="@Url.Action("EditPartPaymentConfig", "AdminDashboard", new { id = config.Id })">Edit</a>
+
+                        }
+                    </td>
+                    
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

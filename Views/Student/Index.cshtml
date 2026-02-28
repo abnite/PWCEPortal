@@ -1,0 +1,521 @@
+@model IEnumerable<PWCEPortal.Models.StudentInfo.Student>
+@{
+    ViewBag.Title = "Student Management";
+    Layout = "_AdminLayout";
+    int currentPage1 = ViewBag.Page;
+    int pageSize = ViewBag.PageSize;
+    int totalCount = ViewBag.TotalCount;
+    int startRecord = ((currentPage1 - 1) * pageSize) + 1;
+    int endRecord = Math.Min(currentPage1 * pageSize, totalCount);
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Student Management</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Students</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">
+                <i class="fas fa-user-graduate me-2"></i>Student Records
+            </h3>
+            <div class="d-flex">
+                <a asp-action="Download" asp-route-searchQuery="@ViewBag.SearchQuery" asp-route-level="@ViewBag.Level"
+                   class="btn btn-success me-2">
+                    <i class="fas fa-file-export me-1"></i> Export
+                </a>
+                @if (User.IsInRole("System Admin"))
+                {
+                    <a asp-action="Create" class="btn btn-success">
+                        <i class="fas fa-user-plus me-1"></i> New Student
+                    </a>
+                }
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- Search and Filter Section -->
+            <form method="get" asp-action="Index" class="mb-4">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+                            <input type="text" name="searchQuery" value="@ViewBag.SearchQuery"
+                                   placeholder="Search by name or application number"
+                                   class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="level" class="form-select">
+                            <option value="">All Levels</option>
+                            @foreach (var level in new int[] { 100, 200, 300, 400 })
+                            {
+                                <option value="@level" selected="@(ViewBag.Level == level)">Level @level</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="status" class="form-select">
+                            <option value="">All Statuses</option>
+                            <option value="Active" selected="@(ViewBag.Status == "Active")">Active</option>
+                            <option value="Transferred" selected="@(ViewBag.Status == "Transferred")">Transferred</option>
+                            <option value="Deferred" selected="@(ViewBag.Status == "Deferred")">Deferred</option>
+                            <option value="Dropped Out" selected="@(ViewBag.Status == "Dropped Out")">Dropped Out</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-grid gap-2 d-md-flex">
+                        <button type="submit" class="btn btn-primary me-md-2">
+                            <i class="fas fa-search me-1"></i> Search
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="fas fa-sync-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Student Table -->
+            <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                    <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Application No</th>
+                        <th>Student ID No.</th>
+                        <th>Student Name</th>
+                        <th>Contact</th>
+                        <th>Level</th>
+                        <th>Status</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                   
+                    
+                    @{
+                        int startRow = ((ViewBag.Page ?? 1) - 1) * (ViewBag.PageSize ?? 10) + 1;
+                        int count = startRow;
+                    }
+                    
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@count</td>
+                            <td>
+                                <span class="custom-badge bg-primary">@item.ApplicationNumber</span>
+                            </td>
+                            <td>
+                                <span class="custom-badge bg-success">@(item.StudentID ??"NA")</span>
+                            </td>
+                            <td>
+                                <strong>@item.Surname, @item.OtherNames</strong>
+                                <div class="text-muted small">@item.Email</div>
+                            </td>
+                            <td>@item.PhoneNo</td>
+                            <td>
+                                <span class="custom-badge bg-info">Level @item.CurrentLevel</span>
+                            </td>
+                            <td>
+                                @{
+                                    var statusBadgeClass = item.Status switch
+                                    {
+                                        "Active" => "bg-success",
+                                        "Transferred" => "bg-warning",
+                                        "Deferred" => "bg-info",
+                                        "Dropped Out" => "bg-danger",
+                                        _ => "bg-secondary"
+                                    };
+                                }
+                                <span class="custom-badge @statusBadgeClass">@item.Status</span>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    @if (User.IsInRole("System Admin")|| User.IsInRole("Student Records Officer") || User.IsInRole("Registrar"))
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    }
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info" title="Details">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    @if (User.IsInRole("System Admin"))
+                                    {
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger" title="Delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    }
+                                    @if (User.IsInRole("System Admin") || User.IsInRole("Registrar"))
+                                    {
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button type="button" class="btn btn-outline-secondary dropdown-toggle"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a class="dropdown-item" asp-action="ParentGuardians" asp-route-studentId="@item.Id">
+                                                        <i class="fas fa-users me-1"></i> Parents/Guardians
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" asp-action="FinancialInfo" asp-route-studentId="@item.Id">
+                                                        <i class="fas fa-wallet me-1"></i> Financial Info
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" asp-action="EducationHistories" asp-route-studentId="@item.Id">
+                                                        <i class="fas fa-graduation-cap me-1"></i> Education History
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    }
+                                    @if (User.IsInRole("System Admin") || User.IsInRole("Registrar"))
+                                    {
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button type="button" class="btn btn-outline-secondary dropdown-toggle"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fas fa-user-cog"></i> Status
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a class="dropdown-item status-action" href="#"
+                                                       data-student-id="@item.Id" data-status="Active">
+                                                        <i class="fas fa-check-circle text-success me-1"></i> Set Active
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item status-action" href="#"
+                                                       data-student-id="@item.Id" data-status="Transferred">
+                                                        <i class="fas fa-exchange-alt text-warning me-1"></i> Transfer
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item status-action" href="#"
+                                                       data-student-id="@item.Id" data-status="Deferred">
+                                                        <i class="fas fa-pause-circle text-info me-1"></i> Defer
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item status-action" href="#"
+                                                       data-student-id="@item.Id" data-status="Dropped Out">
+                                                        <i class="fas fa-times-circle text-danger me-1"></i> Drop Out
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                <i class="fas fa-user-graduate fa-2x mb-3"></i>
+                                <p>No students found matching your criteria</p>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-footer">
+                <div class="table-footer-info">
+                    Showing @startRecord to @endRecord of @totalCount records
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            @if (ViewBag.TotalCount > ViewBag.PageSize)
+            {
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        @{
+                            int currentPage = ViewBag.Page;
+                            int totalPages = (int)Math.Ceiling((double)ViewBag.TotalCount / ViewBag.PageSize);
+                            int startPage = Math.Max(1, currentPage - 2);
+                            int endPage = Math.Min(totalPages, currentPage + 2);
+
+                            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                                <a class="page-link" asp-action="Index"
+                                   asp-route-searchQuery="@ViewBag.SearchQuery"
+                                   asp-route-level="@ViewBag.Level"
+                                   asp-route-page="@(currentPage - 1)">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            </li>
+
+                            if (startPage > 1)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-action="Index"
+                                       asp-route-searchQuery="@ViewBag.SearchQuery"
+                                       asp-route-level="@ViewBag.Level"
+                                       asp-route-page="1">1</a>
+                                </li>
+                                if (startPage > 2)
+                                {
+                                    <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                }
+                            }
+
+                            for (int i = startPage; i <= endPage; i++)
+                            {
+                                <li class="page-item @(i == currentPage ? "active" : "")">
+                                    <a class="page-link" asp-action="Index"
+                                       asp-route-searchQuery="@ViewBag.SearchQuery"
+                                       asp-route-level="@ViewBag.Level"
+                                       asp-route-page="@i">@i</a>
+                                </li>
+                            }
+
+                            if (endPage < totalPages)
+                            {
+                                if (endPage < totalPages - 1)
+                                {
+                                    <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                }
+                                <li class="page-item">
+                                    <a class="page-link" asp-action="Index"
+                                       asp-route-searchQuery="@ViewBag.SearchQuery"
+                                       asp-route-level="@ViewBag.Level"
+                                       asp-route-page="@totalPages">@totalPages</a>
+                                </li>
+                            }
+
+                            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                                <a class="page-link" asp-action="Index"
+                                   asp-route-searchQuery="@ViewBag.SearchQuery"
+                                   asp-route-level="@ViewBag.Level"
+                                   asp-route-page="@(currentPage + 1)">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function() {
+            // Status change handler
+            $('.status-action').click(function(e) {
+                e.preventDefault();
+                const studentId = $(this).data('student-id');
+                const status = $(this).data('status');
+
+                if (status === 'Transferred') {
+                    showTransferDialog(studentId);
+                } 
+                else if (status === 'Deferred' || status === 'Dropped Out') {
+                    showReasonDialog(studentId, status);
+                }
+                else {
+                    updateStudentStatus(studentId, status);
+                }
+            });
+
+            // Show transfer dialog
+            function showTransferDialog(studentId) {
+                Swal.fire({
+                    title: 'Transfer Student',
+                    html: `
+                        <div class="mb-3">
+                            <label for="transferInstitution" class="form-label">Institution Name</label>
+                            <input id="transferInstitution" class="form-control" placeholder="Enter institution name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="statusDate" class="form-label">Transfer Date</label>
+                            <input id="statusDate" class="form-control" type="date">
+                        </div>
+                        <div class="mb-3">
+                            <label for="reason" class="form-label">Reason</label>
+                            <textarea id="reason" class="form-control"></textarea>
+                        </div>
+                    `,
+                    focusConfirm: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'Confirm Transfer',
+                    cancelButtonText: 'Cancel',
+                    preConfirm: () => {
+                        return {
+                            institution: $('#transferInstitution').val(),
+                            date: $('#statusDate').val(),
+                            reason:$('#reason').val()
+                        };
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        updateStudentStatus(studentId, 'Transferred', {
+                            institution: result.value.institution,
+                            date: result.value.date,
+                            reason:result.value.reason
+                        });
+                    }
+                });
+            }
+
+            // Show reason dialog for defer/drop out
+            function showReasonDialog(studentId, status) {
+                const action = status === 'Deferred' ? 'Defer' : 'Drop Out';
+                Swal.fire({
+                    title: `${action} Student`,
+                    input: 'textarea',
+                    inputLabel: 'Reason',
+                    inputPlaceholder: `Enter reason for ${status.toLowerCase()}...`,
+                    inputAttributes: {
+                        'aria-label': `Reason for ${status.toLowerCase()}`
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: `Confirm ${action}`,
+                    cancelButtonText: 'Cancel',
+                    inputValidator: (value) => {
+                        if (!value) {
+                            return 'You need to enter a reason!';
+                        }
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        updateStudentStatus(studentId, status, {
+                            reason: result.value
+                        });
+                    }
+                });
+            }
+
+            // Update student status via AJAX
+            function updateStudentStatus(studentId, status, additionalData = {}) {
+                // Prepare the data object
+                const requestData = {
+                    studentId: studentId,
+                    status: status
+                };
+
+                // Add additional properties based on status
+                if (status === 'Transferred') {
+                    requestData.transferInstitution = additionalData.institution;
+                    requestData.reason = additionalData.reason;
+                    requestData.statusDate = additionalData.date ? new Date(additionalData.date).toISOString() : new Date().toISOString();
+                    // If you need to handle the date on server:
+                    // requestData.TransferDate = additionalData.date;
+                } else if (status === 'Deferred' || status === 'Dropped Out') {
+                    requestData.reason = additionalData.reason;
+                    requestData.statusDate = new Date().toISOString();
+                }
+
+                // Show loading indicator
+                Swal.fire({
+                    title: 'Updating Status',
+                    html: 'Please wait...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // Make AJAX request
+                $.ajax({
+                    url: '/Student/UpdateStatus',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(requestData),
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Student status updated successfully',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            location.reload(); // Refresh the page
+                        });
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: xhr.responseText || 'Failed to update student status',
+                            confirmButtonText: 'OK'
+                        });
+                    },
+                    complete: function() {
+                        Swal.close();
+                    }
+                });
+            }
+        });
+    </script>
+
+    <style>
+        /* Your existing styles */
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            border-bottom: none;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+
+        .btn-outline-primary:hover,
+        .btn-outline-secondary:hover,
+        .btn-outline-danger:hover,
+        .btn-outline-warning:hover,
+        .btn-outline-info:hover {
+            color: white;
+        }
+
+        .badge {
+            font-size: 0.85em;
+            font-weight: 500;
+            padding: 0.35em 0.65em;
+        }
+
+        .dropdown-menu {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        }
+
+        .page-item.active .page-link {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+
+        /* SweetAlert2 customizations */
+        .swal2-popup {
+            border-radius: 10px;
+        }
+
+        .swal2-title {
+            font-size: 1.5rem;
+        }
+
+        .swal2-content {
+            font-size: 1rem;
+        }
+    </style>
+}

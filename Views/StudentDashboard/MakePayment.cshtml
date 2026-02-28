@@ -1,0 +1,134 @@
+@model PWCEPortal.ViewModel.PaymentVM.MakePaymentViewModel
+@{
+    ViewBag.Title = "Make Payment";
+    Layout = "_AdminLayout";
+}
+
+<div class="container py-4">
+    <div class="card border-primary shadow-lg">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3">
+            <h3 class="card-title mb-0">
+                <i class="fas fa-credit-card me-2"></i>Make Payment
+            </h3>
+            <a href="@Url.Action("Index", "StudentDashboard")" class="btn btn-outline-light btn-sm">
+                <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+            </a>
+        </div>
+        
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <h5 class="border-bottom pb-2 mb-3"><i class="fas fa-user-graduate me-2"></i>Student Information</h5>
+                        <div class="ps-2">
+                            <p class="mb-2"><strong>Name:</strong> @Model.StudentName</p>
+                            <p class="mb-0"><strong>Outstanding Balance:</strong> <span class="custom-badge bg-danger">GHS @Model.OutstandingFee.ToString("N2")</span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <h5 class="border-bottom pb-2 mb-3"><i class="fas fa-info-circle me-2"></i>Payment Instructions</h5>
+                        <ul class="mb-0 ps-3">
+                            <li>Minimum payment: GHS 50.00</li>
+                            <li>Excess payments will be credited to your account</li>
+                            <li>Bank payment is the only accepted method</li>
+                            <li>Keep your transaction receipt</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <form asp-action="MakePayment" method="post" class="mt-4">
+                <input asp-for="StudentId" type="hidden" value="@Model.StudentId"/>
+                
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title text-center mb-4"><i class="fas fa-money-bill-wave me-2"></i>Payment Details</h5>
+                                
+                                <div class="mb-4">
+                                    <label asp-for="AmountToPay" class="form-label fw-bold">
+                                        <i class="fas fa-money-check-alt me-2"></i>Amount to Pay (GHS)
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">GHS</span>
+                                        <input asp-for="AmountToPay" class="form-control form-control-lg" 
+                                               step="0.01" min="50" 
+                                               placeholder="Enter amount" required/>
+                                    </div>
+                                    <span asp-validation-for="AmountToPay" class="text-danger small"></span>
+                                    <div class="form-text">Minimum payment: GHS 50.00. Any excess will be credited to your account.</div>
+                                </div>
+
+                                <div class="alert alert-warning">
+                                    <h6><i class="fas fa-exclamation-triangle me-2"></i>Important Notice</h6>
+                                    <p class="mb-0">
+                                        Please make payment to our bank account and submit your bank receipt to the Accounts Office. Once you receive the official Accountant General’s Receipt, upload it here for verification. Excess amounts will be credited to your student account.
+                                    </p>
+                                </div>
+
+                                <!--<div class="alert alert-warning">
+                                    <h6><i class="fas fa-exclamation-triangle me-2"></i>Important Notice</h6>
+                                    <p class="mb-0">Please make payment to our bank account and upload the receipt for verification. Excess amounts will be credited to your student account.</p>
+                                </div>-->
+
+                                <div class="d-grid gap-2 mt-4">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-paper-plane me-2"></i>Generate Payment Slip
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    .card-header {
+        border-radius: 0.5rem 0.5rem 0 0 !important;
+    }
+    .form-control-lg {
+        padding: 0.75rem 1rem;
+        font-size: 1.1rem;
+    }
+    .input-group-text {
+        background-color: #e9ecef;
+    }
+    .border-primary {
+        border-color: #0d6efd !important;
+    }
+    .alert-warning {
+        border-left: 4px solid #ffc107;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function() {
+            // Validate minimum amount
+            $('form').submit(function() {
+                const amount = parseFloat($('#AmountToPay').val());
+                const minAmount = 50;
+                
+                if (amount < minAmount) {
+                    alert('Minimum payment amount is GHS ' + minAmount.toFixed(2));
+                    return false;
+                }
+                return true;
+            });
+        });
+    </script>
+}

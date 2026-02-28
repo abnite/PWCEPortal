@@ -1,0 +1,143 @@
+@model AcademicYear
+
+@{
+    ViewBag.Title = "Academic Year Management";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Create Academic Year</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdminDashboard">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="#">Academic Settings</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Create Year</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Create Academic Year Card -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">
+                <i class="fas fa-calendar-alt me-2"></i>New Academic Year
+            </h3>
+            <i class="fas fa-plus-circle fa-lg"></i>
+        </div>
+        <div class="card-body">
+            <form asp-action="CreateAcademicYear" method="post" class="needs-validation" novalidate>
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <div class="form-floating">
+                            <input asp-for="Year" class="form-control" 
+                                   placeholder="2024/2025" 
+                                   pattern="\d{4}/\d{4}" 
+                                   title="Please use format YYYY/YYYY (e.g., 2024/2025)"
+                                   required />
+                            <label asp-for="Year">Academic Year</label>
+                            <div class="invalid-feedback">
+                                Please provide a valid academic year in format YYYY/YYYY
+                            </div>
+                            <div class="form-text">
+                                Enter the academic year in format "YYYY/YYYY" (e.g., 2024/2025)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <!-- Status Toggle -->
+                        <div class="form-check form-switch mt-3 pt-3">
+                            <input class="form-check-input" type="checkbox" id="activateYear" checked>
+                            <label class="form-check-label" for="activateYear">
+                                Activate Immediately
+                            </label>
+                            <div class="form-text">
+                                Activating will set this as the current academic year
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <a asp-action="AcademicYears" class="btn btn-outline-secondary me-md-2">
+                        <i class="fas fa-arrow-left me-1"></i> Back to List
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Create Academic Year
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Client-side validation
+        (function () {
+            'use strict'
+            
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+            
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+        
+        // Format year input automatically
+        document.getElementById('Year').addEventListener('input', function(e) {
+            var value = e.target.value.replace(/\D/g, '');
+            if (value.length > 4) {
+                value = value.substring(0, 4) + '/' + value.substring(4, 8);
+            }
+            e.target.value = value;
+        });
+    </script>
+
+    <style>
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-header {
+            border-bottom: none;
+            padding: 1.25rem 1.5rem;
+        }
+        
+        .form-floating label {
+            color: #6c757d;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+        }
+        
+        .form-check-input:checked {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.9rem;
+        }
+        
+        .form-text {
+            font-size: 0.85rem;
+        }
+    </style>
+}

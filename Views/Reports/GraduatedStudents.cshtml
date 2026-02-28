@@ -1,0 +1,138 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using PWCEPortal.ViewModel.Reports
+@model PWCEPortal.ApplicationClass.PaginatedList<PWCEPortal.Models.StudentInfo.Student>
+
+@{
+    Layout = "_AdminLayout";
+    var getStudentExpectedYear = await _Context.Students
+        .Where(i => i.HasGraduated)
+        .Select(i => i.ExpectedCompletionYear)
+        .Distinct()
+        .OrderBy(year=>year)
+        .ToListAsync();
+}
+<div class="container-fluid px-4">
+    <div class="card shadow-lg rounded-lg">
+        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+            <h4><i class="fas fa-graduation-cap me-2"></i>Graduated Students</h4>
+            <div>
+                <a asp-action="ExportGraduatedToExcel"
+                   asp-all-route-data="@Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString())"
+                   class="btn btn-light btn-sm">
+                    <i class="fas fa-file-excel me-1"></i> Export to Excel
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- Filter Panel -->
+            <form method="get" class="mb-4 p-3 bg-light rounded">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label ></label>
+                        <input type="text" class="form-control" name="searchString"
+                               value="@ViewData["CurrentFilter"]" placeholder="Search students...">
+                    </div>
+                    <div class="col-md-3">
+                        <label ></label>
+                        <select class="form-select" name="programFilter">
+                            <option value="">All Programs</option>
+                            @foreach (var program in ViewBag.Programs)
+                            {
+                                <option value="@program" selected="@(program == ViewData["ProgramFilter"])">
+                                    @program
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="fromDate">From:</label>
+                        <select id="fromDate" name="fromDate" class="form-select">
+                            <option value="">-- Select Year --</option>
+                            @foreach (var year in getStudentExpectedYear)
+                            {
+                                <option value="@year">@year</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="toDate">To:</label>
+                        <select id="toDate" name="toDate" class="form-control">
+                            <option value="">-- Select Year --</option>
+                            @foreach (var year in getStudentExpectedYear)
+                            {
+                                <option value="@year">@year</option>
+                            }
+                        </select>
+                        
+                    </div>
+                    <div class="col-md-1">
+                        <label></label>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-filter"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Students Table -->
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Application No</th>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Program</th>
+                        <th>Year of Graduation</th>
+                        <th>Graduate Date</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @{
+                        int count = ((Model.PageIndex - 1) * Model.PageSize) + 1;
+                    }
+                    @foreach (var student in Model)
+                    {
+                        <tr>
+                            <td>@count</td>
+                            <td>@student.ApplicationNumber</td>
+                            <td>@(student.StudentID??"N/A")</td>
+                            <td>@student.Surname, @student.OtherNames</td>
+                            <td>@student.CollegeProgram?.ProgramName</td>
+                            <td>@student.ExpectedCompletionYear.ToString()</td>
+                            <td>@student.StatusChangeDate?.ToString("d")</td>
+                            <td>
+                                <a asp-action="Details" asp-controller="Student" asp-route-id="@student.Id"
+                                   class="btn btn-sm btn-info">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                    </tbody>
+                </table>
+            </div>
+            @{
+                var start = ((Model.PageIndex - 1) * Model.PageSize) + 1;
+                var end = Math.Min(start + Model.Count - 1, Model.TotalItems);
+            }
+            <p class="text-muted">
+                Showing @start to @end of @Model.TotalItems records
+            </p>
+
+
+            <!-- Pagination -->
+            @await Html.PartialAsync("_PaginationPartial", new PaginationViewModel
+            {
+                PageIndex = Model.PageIndex,
+                TotalPages = Model.TotalPages,
+                TotalItems = Model.TotalItems,
+                HasPreviousPage = Model.HasPreviousPage,
+                HasNextPage = Model.HasNextPage
+            })
+        </div>
+    </div>
+</div>

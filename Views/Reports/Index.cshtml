@@ -1,0 +1,349 @@
+@model PWCEPortal.ViewModel.Reports.StudentMetricsDashboardViewModel
+@{
+    ViewBag.Title = "Student Metrics Dashboard";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">
+            <i class="fas fa-chart-line me-2"></i>Student Metrics Dashboard
+        </h1>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-start border-5 border-primary shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">Total Enrolled</h6>
+                            <h3 class="mb-0">@Model.TotalStudentsEnrolled</h3>
+                        </div>
+                        <div class="bg-primary bg-opacity-10 p-3 rounded">
+                            <i class="fas fa-users text-primary fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-start border-5 border-warning shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">Deferred</h6>
+                            <h3 class="mb-0">@Model.DeferredCount</h3>
+                        </div>
+                        <div class="bg-warning bg-opacity-10 p-3 rounded">
+                            <i class="fas fa-pause-circle text-warning fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-start border-5 border-danger shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">Dropped Out</h6>
+                            <h3 class="mb-0">@Model.DroppedOutCount</h3>
+                        </div>
+                        <div class="bg-danger bg-opacity-10 p-3 rounded">
+                            <i class="fas fa-user-minus text-danger fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-start border-5 border-info shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">Transferred</h6>
+                            <h3 class="mb-0">@Model.TransferredCount</h3>
+                        </div>
+                        <div class="bg-info bg-opacity-10 p-3 rounded">
+                            <i class="fas fa-exchange-alt text-info fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts and Tables Section -->
+    <div class="row g-4 mb-4">
+        <!-- Enrolment by Programme -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white border-bottom-0 py-3">
+                    <h5 class="mb-0">
+                        <i class="fas fa-graduation-cap me-2"></i>Enrolment by Programme
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                            <tr>
+                                <th>Programme</th>
+                                <th>Total Enrolled</th>
+                                <th>% of Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var item in Model.ProgramMetrics)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@item.ProgramName</strong>
+                                    </td>
+                                    <td>@item.TotalEnrolled</td>
+                                    <td>
+                                        @{
+                                            var percentage = (item.TotalEnrolled * 100) / Model.TotalStudentsEnrolled;
+                                        }
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: @percentage%;" aria-valuenow="@percentage" aria-valuemin="0" aria-valuemax="100">@percentage%</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                            @if (!Model.ProgramMetrics.Any())
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">
+                                        <i class="fas fa-database fa-2x mb-3"></i>
+                                        <p>No programme data available</p>
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Enrollment by Level -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white border-bottom-0 py-3">
+                    <h5 class="mb-0">
+                        <i class="fas fa-layer-group me-2"></i>Enrollment by Level
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <canvas id="levelChart" height="250"></canvas>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th>Level</th>
+                                        <th>Students</th>
+                                        <th>%</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var item in Model.LevelMetrics.OrderBy(l => l.Level))
+                                    {
+                                        var percentage = Model.TotalStudentsEnrolled > 0 ?
+                                            (item.TotalEnrolled * 100) / Model.TotalStudentsEnrolled : 0;
+                                        <tr>
+                                            <td>Level @item.Level</td>
+                                            <td>@item.TotalEnrolled</td>
+                                            <td>
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar bg-info"
+                                                         role="progressbar"
+                                                         style="width: @percentage%;"
+                                                         aria-valuenow="@percentage"
+                                                         aria-valuemin="0"
+                                                         aria-valuemax="100">
+                                                        @percentage%
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Quick Stats -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-12">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white border-bottom-0 py-3">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-pie me-2"></i>Status Distribution
+                    </h5>
+                </div>
+                <div class="card-body d-flex align-items-center justify-content-center">
+                    <!-- Change this to canvas element -->
+                    <canvas id="statusChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Reports Section -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white border-bottom-0 py-3">
+            <h5 class="mb-0">
+                <i class="fas fa-file-alt me-2"></i>Quick Reports
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <a href="@Url.Action("PaymentReport", "Reports")" class="card card-hover h-100 text-decoration-none">
+                        <div class="card-body text-center">
+                            <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                                <i class="fas fa-credit-card text-primary fa-2x"></i>
+                            </div>
+                            <h5 class="mb-1">Payment Reports</h5>
+                            <p class="text-muted mb-0">View all payment transactions</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="@Url.Action("OutstandingFees", "FinanceDashboard")" class="card card-hover h-100 text-decoration-none">
+                        <div class="card-body text-center">
+                            <div class="bg-warning bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                                <i class="fas fa-exclamation-circle text-warning fa-2x"></i>
+                            </div>
+                            <h5 class="mb-1">Outstanding Balances</h5>
+                            <p class="text-muted mb-0">Students with unpaid fees</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="@Url.Action("Index", "Student")" class="card card-hover h-100 text-decoration-none">
+                        <div class="card-body text-center">
+                            <div class="bg-info bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                                <i class="fas fa-chart-bar text-info fa-2x"></i>
+                            </div>
+                            <h5 class="mb-1">Enrollment Trends</h5>
+                            <p class="text-muted mb-0">Historical enrollment data</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if canvas exists
+            const canvas = document.getElementById('statusChart');
+            if (!canvas) {
+                console.error('Chart canvas not found');
+                return;
+            }
+            
+            // Calculate active students
+            const activeCount = @Model.TotalStudentsEnrolled - @Model.DeferredCount - @Model.DroppedOutCount - @Model.TransferredCount;
+            
+            // Create chart
+            new Chart(canvas, {  // Note: We pass the canvas element directly
+                type: 'doughnut',
+                data: {
+                    labels: ['Active', 'Deferred', 'Dropped Out', 'Transferred'],
+                    datasets: [{
+                        data: [activeCount, @Model.DeferredCount, @Model.DroppedOutCount, @Model.TransferredCount],
+                        backgroundColor: [
+                            '#28a745', // Green
+                            '#ffc107', // Yellow
+                            '#dc3545', // Red
+                            '#17a2b8'  // Teal
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        });
+        // Level Chart
+        const levelCtx = document.getElementById('levelChart');
+        if (levelCtx) {
+            const levelLabels = @Html.Raw(Json.Serialize(Model.LevelMetrics.OrderBy(l => l.Level).Select(l => "Level " + l.Level)));
+            const levelData = @Html.Raw(Json.Serialize(Model.LevelMetrics.OrderBy(l => l.Level).Select(l => l.TotalEnrolled)));
+
+            new Chart(levelCtx, {
+                type: 'bar',
+                data: {
+                    labels: levelLabels,
+                    datasets: [{
+                        label: 'Students',
+                        data: levelData,
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(255, 159, 64, 0.7)',
+                            'rgba(153, 102, 255, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+}

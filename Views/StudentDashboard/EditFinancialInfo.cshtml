@@ -1,0 +1,108 @@
+@model PWCEPortal.ViewModel.Student.FinancialInfoViewModel
+@{
+    ViewBag.Title = "Edit Financial Info";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="card border-0 shadow-lg rounded-lg overflow-hidden">
+        <div class="card-header bg-gradient-primary text-white d-flex justify-content-between align-items-center py-3">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-wallet fa-2x me-3"></i>
+                <h4 class="mb-0">Edit Financial Information</h4>
+            </div>
+            <a asp-action="EditProfile" asp-route-studentId="@Model.StudentId" class="btn btn-outline-light btn-sm">
+                <i class="fas fa-arrow-left me-1"></i> Back
+            </a>
+        </div>
+        
+        <div class="card-body p-4">
+            <form asp-action="EditFinancialInfo" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="StudentId" />
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="SSNITNumber" class="form-label fw-bold">
+                                <i class="fas fa-id-card me-2"></i>SSNIT Number
+                            </label>
+                            <input asp-for="SSNITNumber" class="form-control form-control-lg" placeholder="Enter SSNIT number" />
+                            <span asp-validation-for="SSNITNumber" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="EZwichAccountName" class="form-label fw-bold">
+                                <i class="fas fa-user-circle me-2"></i>EZwich Account Name
+                            </label>
+                            <input asp-for="EZwichAccountName" class="form-control form-control-lg" placeholder="Account name as it appears" />
+                            <span asp-validation-for="EZwichAccountName" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="EZwichAccountNumber" class="form-label fw-bold">
+                                <i class="fas fa-credit-card me-2"></i>EZwich Account Number
+                            </label>
+                            <input asp-for="EZwichAccountNumber" class="form-control form-control-lg" placeholder="Enter account number" />
+                            <span asp-validation-for="EZwichAccountNumber" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end mt-4 gap-3">
+                    <a asp-action="EditProfile" asp-route-studentId="@Model.StudentId" class="btn btn-secondary px-4">
+                        <i class="fas fa-times me-1"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="fas fa-save me-1"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    .card-header {
+        border-radius: 0 !important;
+    }
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #3f51b5 0%, #2196f3 100%);
+    }
+    .table th {
+        white-space: nowrap;
+        border-top: none;
+    }
+    .table td {
+        vertical-align: middle;
+    }
+    .badge {
+        font-weight: 500;
+        padding: 0.5em 0.75em;
+    }
+    .table-hover tbody tr:hover {
+        background-color: rgba(13, 110, 253, 0.05) !important;
+    }
+    .course-checkbox {
+        transform: scale(1.3);
+    }
+    #selectAll {
+        transform: scale(1.2);
+    }
+</style>

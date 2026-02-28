@@ -1,0 +1,139 @@
+@model PWCEPortal.ViewModel.Student.ParentGuardianViewModel
+@{
+    ViewBag.Title = "Edit Parent/Guardian";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="card border-0 shadow-lg rounded-lg overflow-hidden">
+        <div class="card-header bg-gradient-primary text-white d-flex justify-content-between align-items-center py-3">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-user-edit fa-2x me-3"></i>
+                <h4 class="mb-0">Edit Parent/Guardian</h4>
+            </div>
+            <a asp-action="EditProfile" asp-route-studentId="@Model.StudentId" class="btn btn-outline-light btn-sm">
+                <i class="fas fa-arrow-left me-1"></i> Back
+            </a>
+        </div>
+        
+        <div class="card-body p-4">
+            <form asp-action="EditParentGuardian" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="StudentId" />
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="FullName" class="form-label fw-bold">
+                                <i class="fas fa-user me-2"></i>Full Name
+                            </label>
+                            <input asp-for="FullName" class="form-control form-control-lg" placeholder="Enter full name" />
+                            <span asp-validation-for="FullName" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="Relationship" class="form-label fw-bold">
+                                <i class="fas fa-heart me-2"></i>Relationship
+                            </label>
+                            <input asp-for="Relationship" class="form-control form-control-lg" placeholder="E.g. Father, Mother, Guardian" />
+                            <span asp-validation-for="Relationship" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="Email" class="form-label fw-bold">
+                                <i class="fas fa-envelope me-2"></i>Email
+                            </label>
+                            <input asp-for="Email" class="form-control form-control-lg" placeholder="Enter email address" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="Telephone" class="form-label fw-bold">
+                                <i class="fas fa-phone me-2"></i>Phone Number
+                            </label>
+                            <input asp-for="Telephone" class="form-control form-control-lg" placeholder="Enter phone number" />
+                            <span asp-validation-for="Telephone" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="Occupation" class="form-label fw-bold">
+                                <i class="fas fa-briefcase me-2"></i>Occupation
+                            </label>
+                            <input asp-for="Occupation" class="form-control form-control-lg" placeholder="Enter occupation" />
+                            <span asp-validation-for="Occupation" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="ContactAddress" class="form-label fw-bold">
+                                <i class="fas fa-map-marker-alt me-2"></i>Contact Address
+                            </label>
+                            <input asp-for="ContactAddress" class="form-control form-control-lg" placeholder="Enter full address" />
+                            <span asp-validation-for="ContactAddress" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end mt-4 gap-3">
+                    <a asp-action="EditProfile" asp-route-studentId="@Model.StudentId" class="btn btn-secondary px-4">
+                        <i class="fas fa-times me-1"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="fas fa-save me-1"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    .card-header {
+        border-radius: 0 !important;
+    }
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #3f51b5 0%, #2196f3 100%);
+    }
+    .table th {
+        white-space: nowrap;
+        border-top: none;
+    }
+    .table td {
+        vertical-align: middle;
+    }
+    .badge {
+        font-weight: 500;
+        padding: 0.5em 0.75em;
+    }
+    .table-hover tbody tr:hover {
+        background-color: rgba(13, 110, 253, 0.05) !important;
+    }
+    .course-checkbox {
+        transform: scale(1.3);
+    }
+    #selectAll {
+        transform: scale(1.2);
+    }
+</style>

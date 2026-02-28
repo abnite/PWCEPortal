@@ -1,0 +1,325 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model PWCEPortal.ViewModel.Student.StudentViewModel
+
+@{
+    ViewBag.Title = "Edit Student";
+    Layout = "_AdminLayout";
+
+    var getClass = await _Context.collegeClasses.Where(i => i.IsDeleted == false).ToListAsync();
+    var getHall = await _Context.CollegeHalls.Where(i => i.IsDeleted == false).ToListAsync();
+}
+
+<div class="card mt-4">
+    <div class="card-header bg-primary text-white">
+        <h3 class="card-title">Edit Student</h3>
+    </div>
+    <div class="card-body">
+        <form asp-action="EditStudent" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="CollegeProgramId"/>
+            <input type="hidden" asp-for="CurrentLevel"/>
+            <input type="hidden" asp-for="EntryLevel"/>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id"/>
+
+            <!-- Row 1: Application Number and Surname -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ApplicationNumber" class="control-label"></label>
+                        <input asp-for="ApplicationNumber" class="form-control"/>
+                        <span asp-validation-for="ApplicationNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="StudentId" class="control-label">Student ID Number</label>
+                        <input asp-for="StudentId" class="form-control"/>
+                        <span asp-validation-for="StudentId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Title, Surname, and Other Names -->
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label"></label>
+                        <select class="form-control" asp-for="Title">
+                            <option value="">Select Title</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Miss">Miss</option>
+                        </select>
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Surname" class="control-label"></label>
+                        <input asp-for="Surname" class="form-control"/>
+                        <span asp-validation-for="Surname" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="OtherNames" class="control-label"></label>
+                        <input asp-for="OtherNames" class="form-control"/>
+                        <span asp-validation-for="OtherNames" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 3: Email and Phone Number -->
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control"/>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="PhoneNo" class="control-label"></label>
+                        <input asp-for="PhoneNo" class="form-control"/>
+                        <span asp-validation-for="PhoneNo" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 4: Date of Birth and Gender -->
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="DateOfBirth" class="control-label"></label>
+                        <input asp-for="DateOfBirth" type="date" class="form-control"/>
+                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Gender" class="control-label"></label>
+                        <select asp-for="Gender" class="form-control">
+                            <option value="">-- Select Gender --</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="PlaceofBirth" class="control-label">Place of Birth</label>
+                        <input asp-for="PlaceofBirth" type="text" class="form-control"/>
+
+                        <span asp-validation-for="PlaceofBirth" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="EnrolmentYear" class="control-label"></label>
+                        <input asp-for="EnrolmentYear" class="form-control"/>
+                        <span asp-validation-for="EnrolmentYear" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Religion" class="control-label">Religion</label>
+                        <select class="form-control" asp-for="Religion">
+                            <option value="">Select Religion</option>
+                            <option value="Christianity">Christianity</option>
+                            <option value="Islam">Islam</option>
+                            <option value="Traditional">Traditional</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="Religion" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ReligiousDenomination" class="control-label">Religious Denomination</label>
+                        <select asp-for="ReligiousDenomination" class="form-control">
+                            <option value="">Select Religious Denomination</option>
+
+                            <!-- Christianity -->
+                            <optgroup label="Christianity">
+                                <option value="Catholic">Catholic</option>
+                                <option value="Presbyterian">Presbyterian</option>
+                                <option value="Methodist">Methodist</option>
+                                <option value="Anglican">Anglican</option>
+                                <option value="Pentecostal">Pentecostal</option>
+                                <option value="Charismatic">Charismatic</option>
+                                <option value="Seventh-Day Adventist">Seventh-Day Adventist</option>
+                                <option value="Church of Pentecost">Church of Pentecost</option>
+                                <option value="Latter-Day Saints (Mormon)">Latter-Day Saints (Mormon)</option>
+                                <option value="Jehovah's Witnesses">Jehovah's Witnesses</option>
+                                <option value="Other Christian">Other Christian</option>
+                            </optgroup>
+
+                            <!-- Islam -->
+                            <optgroup label="Islam">
+                                <option value="Sunni">Sunni</option>
+                                <option value="Shia">Shia</option>
+                                <option value="Ahmadiyya">Ahmadiyya</option>
+                                <option value="Other Muslim">Other Muslim</option>
+                            </optgroup>
+
+                            <!-- Traditional Religion -->
+                            <optgroup label="Traditional Religion">
+                                <option value="African Traditional Religion">African Traditional Religion</option>
+                                <option value="Other Traditional Belief">Other Traditional Belief</option>
+                            </optgroup>
+
+                            <!-- Other Religions -->
+                            <optgroup label="Other">
+                                <option value="Hinduism">Hinduism</option>
+                                <option value="Buddhism">Buddhism</option>
+                                <option value="Other">Other</option>
+                            </optgroup>
+
+                        </select>
+                        <span asp-validation-for="ReligiousDenomination" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="DisabilityStatus" class="control-label">Do you have a disability?</label>
+                        <div class="form-check">
+                            <input asp-for="DisabilityStatus" class="form-check-input" type="checkbox"/>
+                            <label class="form-check-label" asp-for="DisabilityStatus">
+                                Yes
+                            </label>
+                        </div>
+                        <span asp-validation-for="DisabilityStatus" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="District" class="control-label">District</label>
+                        <input asp-for="District" class="form-control"/>
+                        <span asp-validation-for="District" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ContactAddress" class="control-label">Contact Address</label>
+                        <textarea asp-for="ContactAddress" class="form-control" ></textarea>
+                        <span asp-validation-for="ContactAddress" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="HomeTown" class="control-label">Hometown</label>
+                        <input asp-for="HomeTown" class="form-control"/>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="MaritalStatus" class="control-label">Marital Status</label>
+                        <select asp-for="MaritalStatus" required="required" class="form-control">
+                            <option value="">Select Marital Status</option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Seperated">Seperated</option>
+                            <option value="Divorced">Divorced</option>
+                        </select>
+                        <span asp-validation-for="MaritalStatus" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="GhanaianlanguagesSpoken" class="control-label">Ghanaian languages Spoken</label>
+                        <input asp-for="GhanaianlanguagesSpoken" class="form-control"/>
+                        <span asp-validation-for="GhanaianlanguagesSpoken" class="text-danger"></span>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CollegeClassId" class="control-label">Class</label>
+                        <select asp-for="CollegeClassId" required="required" class="form-control">
+                            <option value="">Select Your Class</option>
+                            @{
+                                foreach (var c in getClass)
+                                {
+                                    <option value="@c.Id">@c.ClassName</option>
+                                }
+                            }
+                            
+                        </select>
+                        <span asp-validation-for="CollegeClassId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CollegeHallId" class="control-label">Class</label>
+                        <select asp-for="CollegeHallId" required="required" class="form-control">
+                            <option value="">Select Your Hall</option>
+                            @{
+                                foreach (var c in getHall)
+                                {
+                                    <option value="@c.Id">@c.HallName</option>
+                                }
+                            }
+
+                        </select>
+                        <span asp-validation-for="CollegeHallId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Row for Passport Picture -->
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="PassportPicture" class="control-label"></label>
+                        <input type="file" asp-for="PassportPicture" class="form-control" accept=".jpg,.jpeg,.png" />
+                        <span asp-validation-for="PassportPicture" class="text-danger"></span>
+                        @if (!string.IsNullOrEmpty(Model.ExistingPassportPicturePath))
+                        {
+                            <div class="mt-2">
+                                <img src="@Model.ExistingPassportPicturePath" alt="Passport Picture" class="img-thumbnail" style="max-height: 150px;" />
+                                <p class="small text-muted">Current passport picture</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+                <a asp-action="EditProfile" asp-route-studentId="@Model.Id" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to List
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

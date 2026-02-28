@@ -1,0 +1,240 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model PWCEPortal.ApplicationClass.PaginatedList<PWCEPortal.Models.StudentInfo.Student>
+@{
+    ViewData["Title"] = "Student Promotion";
+    Layout = "_AdminLayout";
+
+    // Calculate page range for pagination
+    int currentPage = Model.PageIndex;
+    int totalPages = Model.TotalPages;
+    int startPage = Math.Max(1, currentPage - 3);
+    int endPage = Math.Min(totalPages, currentPage + 3);
+}
+
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5><i class="fas fa-user-graduate"></i> Student Promotion</h5>
+            <!-- <form asp-action="PromoteAllEligibleStudents" method="post">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-arrow-up"></i> Promote All Eligible Students
+                </button>
+            </form>-->
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#promotionConfirmationModal">
+                <i class="fas fa-arrow-up"></i> Promote All Eligible Students
+            </button>
+        </div>
+        <div class="card-body">
+            <!-- Success/Error Messages -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+
+            <!-- Search and Filter Form -->
+            <form asp-action="PromoteStudents" method="get" class="mb-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control"
+                                   name="searchString" value="@ViewData["CurrentFilter"]"
+                                   placeholder="Search by name or ID...">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-control" name="levelFilter"
+                                onchange="this.form.submit()">
+                            <option value="">All Levels</option>
+                            <option value="100" selected="@(ViewData["CurrentLevelFilter"]?.ToString() == "100")">Level 100</option>
+                            <option value="200" selected="@(ViewData["CurrentLevelFilter"]?.ToString() == "200")">Level 200</option>
+                            <option value="300" selected="@(ViewData["CurrentLevelFilter"]?.ToString() == "300")">Level 300</option>
+                            <option value="400" selected="@(ViewData["CurrentLevelFilter"]?.ToString() == "400")">Level 400</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <a asp-action="PromoteStudents" class="btn btn-outline-danger btn-block">
+                            <i class="fas fa-sync-alt"></i> Reset
+                        </a>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Students Table -->
+            <div class="table-responsive">
+                <table class="table table-bordered" id="promotionTable">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>App Number</th>
+                        <th>Student Name</th>
+                        <th>Current Level</th>
+                        <th>Program</th>
+                        <th>Promotion Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var student in Model)
+                    {
+                        <tr>
+                            <td>@student.ApplicationNumber</td>
+                            <td>@student.Surname @student.OtherNames</td>
+                            <td>@student.CurrentLevel</td>
+                            <td>@student.CollegeProgram?.ProgramName</td>
+                            <td>
+                                @if (student.IsPromotionEligible)
+                                {
+                                    <span class="custom-badge bg-success">Eligible</span>
+                                }
+                                else
+                                {
+                                    <span class="custom-badge bg-danger">Not Eligible</span>
+                                }
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-toggle-eligibility @(student.IsPromotionEligible ? "btn-warning" : "btn-info")"
+                                        data-student-id="@student.Id">
+                                    @(student.IsPromotionEligible ? "Exclude" : "Include")
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Enhanced Pagination -->
+            @if (Model.TotalPages > 1)
+            {
+                <nav aria-label="Promotion pagination">
+                    <ul class="pagination justify-content-center">
+                        <!-- First Page -->
+                        <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                            <a asp-action="PromoteStudents"
+                               asp-route-pageNumber="1"
+                               asp-route-searchString="@ViewData["CurrentFilter"]"
+                               asp-route-levelFilter="@ViewData["CurrentLevelFilter"]"
+                               class="page-link">
+                                <i class="fas fa-angle-double-left"></i>
+                            </a>
+                        </li>
+
+                        <!-- Previous Page -->
+                        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                            <a asp-action="PromoteStudents"
+                               asp-route-pageNumber="@(Model.PageIndex - 1)"
+                               asp-route-searchString="@ViewData["CurrentFilter"]"
+                               asp-route-levelFilter="@ViewData["CurrentLevelFilter"]"
+                               class="page-link">
+                                <i class="fas fa-angle-left"></i>
+                            </a>
+                        </li>
+
+                        <!-- Page Numbers -->
+                        @for (int i = startPage; i <= endPage; i++)
+                        {
+                            <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                                <a asp-action="PromoteStudents"
+                                   asp-route-pageNumber="@i"
+                                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                                   asp-route-levelFilter="@ViewData["CurrentLevelFilter"]"
+                                   class="page-link">
+                                    @i
+                                </a>
+                            </li>
+                        }
+
+                        <!-- Next Page -->
+                        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                            <a asp-action="PromoteStudents"
+                               asp-route-pageNumber="@(Model.PageIndex + 1)"
+                               asp-route-searchString="@ViewData["CurrentFilter"]"
+                               asp-route-levelFilter="@ViewData["CurrentLevelFilter"]"
+                               class="page-link">
+                                <i class="fas fa-angle-right"></i>
+                            </a>
+                        </li>
+
+                        <!-- Last Page -->
+                        <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                            <a asp-action="PromoteStudents"
+                               asp-route-pageNumber="@Model.TotalPages"
+                               asp-route-searchString="@ViewData["CurrentFilter"]"
+                               asp-route-levelFilter="@ViewData["CurrentLevelFilter"]"
+                               class="page-link">
+                                <i class="fas fa-angle-double-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            }
+
+            <div class="text-center text-muted mt-2">
+                Showing page @Model.PageIndex of @Model.TotalPages
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="promotionConfirmationModal" tabindex="-1" aria-labelledby="promotionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title" id="promotionModalLabel">Confirm Promotion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to promote all eligible students?</p>
+                <p class="text-muted"><small>This action cannot be undone.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form asp-action="PromoteAllEligibleStudents" method="post">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check"></i> Confirm Promotion
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Toggle promotion eligibility
+            $('.btn-toggle-eligibility').click(function () {
+                var button = $(this);
+                var studentId = button.data('student-id');
+
+                $.post('@Url.Action("TogglePromotionEligibility")', {
+                    studentId: studentId,
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                }, function (data) {
+                    if (data.success) {
+                        // Update button appearance
+                        if (data.isEligible) {
+                            button.removeClass('btn-info').addClass('btn-warning').text('Exclude');
+                            button.closest('tr').find('td:nth-child(5)').html('<span class="custom-badge bg-success">Eligible</span>');
+                        } else {
+                            button.removeClass('btn-warning').addClass('btn-info').text('Include');
+                            button.closest('tr').find('td:nth-child(5)').html('<span class="custom-badge bg-danger">Not Eligible</span>');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}
