@@ -39,7 +39,7 @@
                         {
                             <option value="@a.Id">
                                 @a.Course?.CourseName — @(a.Lecturer?.User?.FirstName + " " + a.Lecturer?.User?.LastName)
-                                (@a.AcademicSemester?.Name @a.AcademicSemester?.AcademicYear?.Year)
+                                (@a.AcademicSemester?.SemesterName @a.AcademicSemester?.AcademicYear?.Year)
                             </option>
                         }
                     </select>
@@ -66,7 +66,9 @@
                         <option value="">— Select year —</option>
                         @foreach (var y in years)
                         {
-                            <option value="@y.Id" @(y.IsActive ? "selected" : "")>@y.Year</option>
+                            <option value="@y.Id" selected="@(y.IsActive ? "selected" : null)">
+                                @y.Year
+                                </option>
                         }
                     </select>
                 </div>

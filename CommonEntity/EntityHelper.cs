@@ -8,9 +8,13 @@ public class EntityHelper
     [Key]
     public Guid Id { get; set; }
     public DateTime? DateAdded { get; set; }
+    
+    public string? AddedById { get; set; } 
     public  ApplicationUser? AddedBy { get; set; }
     public Boolean? IsDeleted { get; set; }
     public DateTime? DateDeleted { get; set; }
+    
+    public string? DeletedById { get; set; }  
     public ApplicationUser? DeletedBy { get; set; }
     public string? Token { get; set; }
 

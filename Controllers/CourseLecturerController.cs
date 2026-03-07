@@ -16,12 +16,14 @@ public class CourseLecturerController : Controller
     private readonly ICourseLecturerService _service;
     private readonly PortalDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly RoleManager<ApplicationRole> _roleManager;
 
-    public CourseLecturerController(ICourseLecturerService service, PortalDbContext context, UserManager<ApplicationUser> userManager)
+    public CourseLecturerController(ICourseLecturerService service, PortalDbContext context, UserManager<ApplicationUser> userManager,RoleManager<ApplicationRole> roleManager)
     {
         _service = service;
         _context = context;
         _userManager = userManager;
+        _roleManager = roleManager;
     }
 
     // ── Departments ──────────────────────────────────────────────────────────
@@ -97,9 +99,16 @@ public class CourseLecturerController : Controller
     public async Task<IActionResult> CreateLecturer()
     {
         ViewBag.Departments = await _service.GetAllDepartmentsAsync();
-        ViewBag.Users = await _userManager.Users
-            .Where(u => !_context.Lecturers.Any(l => l.UserId == u.Id && l.IsDeleted != true))
+        var lectureUsers = await _userManager.GetUsersInRoleAsync("Lecturer");
+
+        var lecturerIds = await _context.Lecturers
+            .Where(l => l.IsDeleted != true)
+            .Select(l => l.UserId)
             .ToListAsync();
+
+        ViewBag.Users = lectureUsers
+            .Where(u => !lecturerIds.Contains(u.Id))
+            .ToList();
         return View(new LecturerViewModel());
     }
 

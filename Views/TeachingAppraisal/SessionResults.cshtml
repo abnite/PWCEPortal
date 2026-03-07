@@ -109,10 +109,11 @@
         </div>
 
         <!-- Individual remarks -->
-        @{
+        {
             var withRemarks = submissions.Where(s => !string.IsNullOrWhiteSpace(s.Remarks)).ToList();
-        }
-        @if (withRemarks.Any())
+        
+        
+        if (withRemarks.Any())
         {
             <div class="card shadow-sm">
                 <div class="card-header">
@@ -128,6 +129,7 @@
                     }
                 </div>
             </div>
+        }
         }
     }
 

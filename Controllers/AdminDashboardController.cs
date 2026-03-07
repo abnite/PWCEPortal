@@ -571,6 +571,43 @@ public class AdminDashboardController : Controller
 
         return RedirectToAction("ManageAcademicSemesters");
     }
+    
+    
+    public async Task<IActionResult> ActivateSemester(Guid id)
+    {
+        var semester = await _context.AcademicSemesters.Include(i=>i.AcademicYear).FirstOrDefaultAsync(i=>i.Id==id);
+        if (semester == null)
+            return NotFound();
+        return View(semester);
+    }
+
+    [Authorize(Roles = "System Admin")]
+    [HttpPost, ActionName("ActivateAcademicSemester")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ActivateAcademicSemesterConfirmed(Guid id)
+    {
+        try
+        {
+            var semester = await _context.AcademicSemesters.FindAsync(id);
+            if (semester != null)
+            {
+                semester.IsDeleted = false;
+                semester.DateDeleted = null;
+                semester.IsRegistrationActive = true;
+                _context.AcademicSemesters.Update(semester);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Academic Semester Activated successfully.";
+            }
+        }
+        catch (Exception e)
+        {
+            TempData["ErrorMessage"] = e.Message;
+
+        }
+
+        return RedirectToAction("ManageAcademicSemesters");
+    }
+
 
     
     
