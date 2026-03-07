@@ -53,6 +53,25 @@
                     </select>
                     <span asp-validation-for="Role" class="text-danger"></span>
                 </div>
+                <div class="form-group col-md-6" id="departmentSection">
+                    <label asp-for="DepartmentId" class="form-label">
+                        Department / Unit
+                        <small class="text-muted">(required for HOD and Unit Head)</small>
+                    </label>
+                    <select asp-for="DepartmentId" class="form-control">
+                        <option value="">-- None --</option>
+                        @if (ViewBag.Departments is IEnumerable<PWCEPortal.Models.Academic.Department> depts)
+                        {
+                            @foreach (var dept in depts)
+                            {
+                                <option value="@dept.Id">@dept.DepartmentName</option>
+                            }
+                        }
+                    </select>
+                    <span class="form-text text-muted">
+                        Assigning a department scopes this user to only manage staff/lecturers in that department.
+                    </span>
+                </div>
             </div>
             <hr/>
             <button type="submit" class="btn btn-success">Update User</button>

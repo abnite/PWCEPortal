@@ -205,6 +205,7 @@
                     <ul class="submenu">
                         @if (User.HasClaim("Permission", "Permissions.MarksEntry.ViewOwn"))
                         {
+                            <li><a asp-action="MyStudents" asp-controller="MarksEntry"><i class="fas fa-users"></i> My Students</a></li>
                             <li><a asp-action="Index" asp-controller="MarksEntry"><i class="fas fa-keyboard"></i> Enter Marks</a></li>
                         }
                         @if (User.HasClaim("Permission", "Permissions.TeachingAppraisal.ViewOwn"))
@@ -249,6 +250,33 @@
                         @if (User.HasClaim("Permission", "Permissions.TeachingAppraisal.ConductAsHOD"))
                         {
                             <li><a asp-action="Sessions" asp-controller="TeachingAppraisal"><i class="fas fa-clipboard-check"></i> Appraisal Sessions</a></li>
+                        }
+                    </ul>
+                </li>
+            }
+
+            <!-- Phase 2: Unit Head (Non-Teaching Staff in their dept) -->
+            @if (User.IsInRole("Unit Head") || (User.HasClaim("Permission", "Permissions.NonTeachingStaff.View") && !User.HasClaim("Permission", "Permissions.TeachingAppraisal.ViewAll") && !User.IsInRole("HR Officer")))
+            {
+                <li class="dropdown @(ViewContext.RouteData.Values["Controller"].ToString() == "NonTeachingStaff" ? "active" : "")">
+                    <a href="#">
+                        <i class="fas fa-users-cog"></i>
+                        <span>Unit Head</span>
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="submenu">
+                        @if (User.HasClaim("Permission", "Permissions.NonTeachingStaff.View"))
+                        {
+                            <li><a asp-action="Index" asp-controller="NonTeachingStaff"><i class="fas fa-id-badge"></i> My Department Staff</a></li>
+                        }
+                        @if (User.HasClaim("Permission", "Permissions.NonTeachingStaff.Appraise"))
+                        {
+                            <li><a asp-action="StartAppraisal" asp-controller="NonTeachingStaff"><i class="fas fa-play-circle"></i> Start Appraisal</a></li>
+                            <li><a asp-action="Appraisals" asp-controller="NonTeachingStaff"><i class="fas fa-clipboard-list"></i> Appraisal Records</a></li>
+                        }
+                        @if (User.HasClaim("Permission", "Permissions.NonTeachingStaff.Manage"))
+                        {
+                            <li><a asp-action="Create" asp-controller="NonTeachingStaff"><i class="fas fa-user-plus"></i> Add Staff Member</a></li>
                         }
                     </ul>
                 </li>

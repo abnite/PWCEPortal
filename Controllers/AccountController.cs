@@ -556,15 +556,22 @@ public class AccountController : Controller
         var userRoles = await _userManager.GetRolesAsync(user);
         var currentRole = userRoles.FirstOrDefault();
 
+        // Populate departments for HOD/Unit Head dropdown
+        ViewBag.Departments = await _context.Departments
+            .Where(d => d.IsDeleted != true)
+            .OrderBy(d => d.DepartmentName)
+            .ToListAsync();
+
         // Populate the view model
         var model = new UserRegistrationViewModel
         {
-            Id =Guid.Parse(user.Id),
+            Id = Guid.Parse(user.Id),
             FirstName = user.FirstName,
             LastName = user.LastName,
             EmailAddress = user.Email,
             PhoneNumber = user.PhoneNumber,
-            Role = currentRole
+            Role = currentRole,
+            DepartmentId = user.DepartmentId
         };
 
         return View(model);

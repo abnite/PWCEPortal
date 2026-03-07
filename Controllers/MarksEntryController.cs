@@ -52,6 +52,90 @@ public class MarksEntryController : Controller
         return View(assignments);
     }
 
+    /// <summary>
+    /// Lecturer: view all courses they are assigned to for the current semester,
+    /// with a link to see the full student roster for each course.
+    /// </summary>
+    [Authorize(Policy = Permissions.MarksEntry.ViewOwn)]
+    public async Task<IActionResult> MyStudents()
+    {
+        var user = await _userManager.GetUserAsync(User);
+
+        // Find the current/active semester (registration open OR most recent)
+        var activeSemester = await _context.AcademicSemesters
+            .Include(s => s.AcademicYear)
+            .Where(s => s.IsDeleted != true)
+            .OrderByDescending(s => s.IsRegistrationActive)
+            .ThenByDescending(s => s.AcademicYear!.Year)
+            .ThenByDescending(s => s.SemesterName)
+            .FirstOrDefaultAsync();
+
+        if (activeSemester is null)
+        {
+            ViewBag.Message = "No semester found.";
+            return View(new List<CourseLecturerAssignment>());
+        }
+
+        ViewBag.Semester = activeSemester;
+
+        var assignments = await _context.CourseLecturerAssignments
+            .Include(a => a.Course).ThenInclude(c => c!.CollegeProgram)
+            .Include(a => a.AcademicSemester).ThenInclude(s => s!.AcademicYear)
+            .Where(a => a.IsDeleted != true
+                     && a.AcademicSemesterId == activeSemester.Id
+                     && _context.Lecturers.Any(l => l.UserId == user!.Id && l.Id == a.LecturerId && l.IsDeleted != true))
+            .ToListAsync();
+
+        // Attach the registered student count for each assignment
+        var courseIds = assignments.Select(a => a.CourseId).Distinct().ToList();
+        var studentCounts = await _context.StudentCourseRegistrations
+            .Where(r => courseIds.Contains(r.CourseId)
+                     && r.SemesterId == activeSemester.Id
+                     && r.IsRegistered)
+            .GroupBy(r => r.CourseId)
+            .Select(g => new { CourseId = g.Key, Count = g.Count() })
+            .ToListAsync();
+
+        ViewBag.StudentCounts = studentCounts.ToDictionary(x => x.CourseId, x => x.Count);
+        return View(assignments);
+    }
+
+    /// <summary>
+    /// Lecturer: view all students registered for a specific course in the current semester.
+    /// </summary>
+    [Authorize(Policy = Permissions.MarksEntry.ViewOwn)]
+    public async Task<IActionResult> CourseStudents(Guid assignmentId)
+    {
+        var user = await _userManager.GetUserAsync(User);
+
+        var assignment = await _context.CourseLecturerAssignments
+            .Include(a => a.Course).ThenInclude(c => c!.CollegeProgram)
+            .Include(a => a.AcademicSemester).ThenInclude(s => s!.AcademicYear)
+            .Include(a => a.Lecturer)
+            .FirstOrDefaultAsync(a => a.Id == assignmentId && a.IsDeleted != true);
+
+        if (assignment is null) return NotFound();
+
+        // Security: ensure the lecturer owns this assignment
+        var lecturerRecord = await _context.Lecturers
+            .FirstOrDefaultAsync(l => l.UserId == user!.Id && l.IsDeleted != true);
+        if (lecturerRecord is null || lecturerRecord.Id != assignment.LecturerId)
+            return Forbid();
+
+        var registrations = await _context.StudentCourseRegistrations
+            .Include(r => r.Student).ThenInclude(s => s!.CollegeProgram)
+            .Include(r => r.Student).ThenInclude(s => s!.CollegeClass)
+            .Where(r => r.CourseId == assignment.CourseId
+                     && r.SemesterId == assignment.AcademicSemesterId
+                     && r.IsRegistered)
+            .OrderBy(r => r.Student!.Surname)
+            .ThenBy(r => r.Student!.OtherNames)
+            .ToListAsync();
+
+        ViewBag.Assignment = assignment;
+        return View(registrations);
+    }
+
     [Authorize(Policy = Permissions.MarksEntry.EnterMarks)]
     public async Task<IActionResult> EnterMarks(Guid assignmentId)
     {
@@ -62,13 +146,25 @@ public class MarksEntryController : Controller
 
         if (assignment is null) return NotFound();
 
-        // Get assessment components for this course
-        var structures = await _context.AssessmentStructures
+        // Get assessment components for this course – priority: specific > partial > default
+        // 1. Program + Level specific
+        // 2. Program only (any level)
+        // 3. Level only (any program)
+        // 4. Default (any program, any level)
+        var allStructures = await _context.AssessmentStructures
             .Include(s => s.Components)
-            .Where(s => (s.CollegeProgramId == assignment.Course!.CollegeProgramId || s.CollegeProgramId == null)
-                     && (s.ApplicableLevel == null || s.ApplicableLevel == assignment.Course!.Level)
-                     && s.IsDeleted != true)
-            .FirstOrDefaultAsync();
+            .Where(s => s.IsDeleted != true)
+            .ToListAsync();
+
+        var programId = assignment.Course!.CollegeProgramId;
+        var level = assignment.Course!.Level;
+
+        var structures =
+            allStructures.FirstOrDefault(s => s.CollegeProgramId == programId && s.ApplicableLevel == level)
+            ?? allStructures.FirstOrDefault(s => s.CollegeProgramId == programId && s.ApplicableLevel == null)
+            ?? allStructures.FirstOrDefault(s => s.CollegeProgramId == null && s.ApplicableLevel == level)
+            ?? allStructures.FirstOrDefault(s => s.CollegeProgramId == null && s.ApplicableLevel == null && s.IsDefault)
+            ?? allStructures.FirstOrDefault(s => s.CollegeProgramId == null && s.ApplicableLevel == null);
 
         var components = structures?.Components?.Where(c => c.IsDeleted != true)
             .OrderBy(c => c.DisplayOrder).ToList() ?? new List<AssessmentComponent>();

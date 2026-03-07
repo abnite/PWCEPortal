@@ -1,0 +1,122 @@
+@model IEnumerable<PWCEPortal.Models.Academic.StudentCourseRegistration>
+@{
+    ViewBag.Title = "Course Students";
+    Layout = "_AdminLayout";
+    var assignment = ViewBag.Assignment as PWCEPortal.Models.Academic.CourseLecturerAssignment;
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">
+            Students &ndash; @assignment?.Course?.CourseName
+        </h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a asp-action="MyStudents">My Students</a>
+                </li>
+                <li class="breadcrumb-item active">@assignment?.Course?.CourseCode</li>
+            </ol>
+        </nav>
+    </div>
+
+    @if (assignment != null)
+    {
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card border-0 bg-primary text-white text-center py-3">
+                    <div class="fs-4 fw-bold">@Model.Count()</div>
+                    <div class="small">Registered Students</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 bg-info text-white text-center py-3">
+                    <div class="fs-5 fw-bold">@assignment.Course?.CourseCode</div>
+                    <div class="small">Course Code</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 bg-secondary text-white text-center py-3">
+                    <div class="fs-5 fw-bold">Level @assignment.Course?.Level</div>
+                    <div class="small">Level</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 bg-success text-white text-center py-3">
+                    <div class="fs-5 fw-bold">@assignment.AcademicSemester?.AcademicYear?.Year</div>
+                    <div class="small">@assignment.AcademicSemester?.SemesterName</div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fas fa-users me-2"></i>Registered Students</h5>
+            @if (assignment != null && User.HasClaim("Permission", "Permissions.MarksEntry.EnterMarks"))
+            {
+                <a asp-action="EnterMarks" asp-route-assignmentId="@assignment.Id"
+                   class="btn btn-sm btn-primary">
+                    <i class="fas fa-pencil-alt me-1"></i>Enter Marks
+                </a>
+            }
+        </div>
+        <div class="card-body">
+            @if (!Model.Any())
+            {
+                <div class="text-center text-muted py-4">
+                    <i class="fas fa-user-slash fa-2x mb-2"></i>
+                    <p>No students have registered for this course in the current semester.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table id="table1" class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Student ID</th>
+                                <th>Full Name</th>
+                                <th>Programme</th>
+                                <th>Level</th>
+                                <th>Class</th>
+                                <th>Gender</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{int rowNum = 1;}
+                            @foreach (var reg in Model)
+                            {
+                                var student = reg.Student!;
+                                <tr>
+                                    <td>@rowNum</td>
+                                    <td><span class="badge bg-secondary">@(student.StudentID ?? student.ApplicationNumber)</span></td>
+                                    <td><strong>@student.Surname @student.OtherNames</strong></td>
+                                    <td>@(student.CollegeProgram?.ProgramName ?? "-")</td>
+                                    <td>Level @student.CurrentLevel</td>
+                                    <td>@(student.CollegeClass?.ClassName ?? "-")</td>
+                                    <td>@(student.Gender ?? "-")</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(student.Email))
+                                        {
+                                            <a href="mailto:@student.Email" class="text-muted small">@student.Email</a>
+                                        }
+                                    </td>
+                                </tr>
+                                rowNum++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a asp-action="MyStudents" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i>Back to My Courses
+        </a>
+    </div>
+</div>

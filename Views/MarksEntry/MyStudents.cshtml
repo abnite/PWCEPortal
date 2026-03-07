@@ -1,0 +1,89 @@
+@model IEnumerable<PWCEPortal.Models.Academic.CourseLecturerAssignment>
+@{
+    ViewBag.Title = "My Students";
+    Layout = "_AdminLayout";
+    var semester = ViewBag.Semester as PWCEPortal.Models.Academic.AcademicSemester;
+    var studentCounts = ViewBag.StudentCounts as Dictionary<Guid, int> ?? new Dictionary<Guid, int>();
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">My Students</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active">My Students</li>
+            </ol>
+        </nav>
+    </div>
+
+    @if (semester != null)
+    {
+        <div class="alert alert-info mb-3">
+            <i class="fas fa-calendar-alt me-2"></i>
+            Showing courses for: <strong>@semester.AcademicYear?.Year &ndash; @semester.SemesterName</strong>
+        </div>
+    }
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="card shadow-sm">
+            <div class="card-body text-center py-5 text-muted">
+                <i class="fas fa-users fa-3x mb-3"></i>
+                <p class="mb-0">No courses have been assigned to you for the current semester.</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-3">
+            @foreach (var assignment in Model)
+            {
+                var count = studentCounts.ContainsKey(assignment.CourseId) ? studentCounts[assignment.CourseId] : 0;
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100 border-0">
+                        <div class="card-header bg-primary text-white">
+                            <h6 class="mb-0">
+                                <span class="badge bg-light text-primary me-2">@assignment.Course?.CourseCode</span>
+                                @assignment.Course?.CourseName
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center mb-3">
+                                <div class="col-4">
+                                    <div class="fw-bold text-muted small">LEVEL</div>
+                                    <div class="fs-5">@assignment.Course?.Level</div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="fw-bold text-muted small">SEMESTER</div>
+                                    <div class="fs-5">@assignment.Course?.Semester</div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="fw-bold text-muted small">STUDENTS</div>
+                                    <div class="fs-5 text-primary fw-bold">@count</div>
+                                </div>
+                            </div>
+                            <div class="text-muted small">
+                                <i class="fas fa-graduation-cap me-1"></i>
+                                @(assignment.Course?.CollegeProgram?.ProgramName ?? "General")
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a asp-action="CourseStudents" asp-route-assignmentId="@assignment.Id"
+                               class="btn btn-outline-primary btn-sm w-100">
+                                <i class="fas fa-users me-1"></i>View Students (@count)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

@@ -85,6 +85,8 @@ public class UserCreationService:IUserCreation
         user.UserName = model.EmailAddress;
         user.PhoneNumber = model.PhoneNumber;
         user.AccountType = model.Role;
+        // DepartmentId scopes HOD / Unit Head to their department
+        user.DepartmentId = model.DepartmentId;
 
         // Update the user
         var result = await _userManager.UpdateAsync(user);

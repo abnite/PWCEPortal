@@ -50,12 +50,23 @@ public class AssessmentStructureController : Controller
             return View(model);
         }
 
+        // If setting as default, clear the flag from any existing default
+        if (model.IsDefault)
+        {
+            var existingDefaults = await _context.AssessmentStructures
+                .Where(s => s.IsDefault && s.IsDeleted != true)
+                .ToListAsync();
+            foreach (var d in existingDefaults) d.IsDefault = false;
+            await _context.SaveChangesAsync();
+        }
+
         var structure = new AssessmentStructure
         {
             Name = model.Name,
             Description = model.Description,
             CollegeProgramId = model.CollegeProgramId,
-            ApplicableLevel = model.ApplicableLevel
+            ApplicableLevel = model.ApplicableLevel,
+            IsDefault = model.IsDefault
         };
         await _service.CreateStructureAsync(structure);
 
@@ -96,6 +107,7 @@ public class AssessmentStructureController : Controller
             Description = structure.Description,
             CollegeProgramId = structure.CollegeProgramId,
             ApplicableLevel = structure.ApplicableLevel,
+            IsDefault = structure.IsDefault,
             Programs = await _context.CollegePrograms.Where(p => p.IsDeleted != true).ToListAsync(),
             Components = structure.Components?.Select(c => new ComponentInputViewModel
             {
@@ -122,10 +134,21 @@ public class AssessmentStructureController : Controller
         var structure = await _service.GetStructureByIdAsync(id);
         if (structure is null) return NotFound();
 
+        // If setting as default, clear the flag from other structures first
+        if (model.IsDefault && !structure.IsDefault)
+        {
+            var existingDefaults = await _context.AssessmentStructures
+                .Where(s => s.IsDefault && s.Id != id && s.IsDeleted != true)
+                .ToListAsync();
+            foreach (var d in existingDefaults) d.IsDefault = false;
+            await _context.SaveChangesAsync();
+        }
+
         structure.Name = model.Name;
         structure.Description = model.Description;
         structure.CollegeProgramId = model.CollegeProgramId;
         structure.ApplicableLevel = model.ApplicableLevel;
+        structure.IsDefault = model.IsDefault;
         await _service.UpdateStructureAsync(structure);
 
         // Refresh components: remove old, re-add new
@@ -153,6 +176,23 @@ public class AssessmentStructureController : Controller
     {
         await _service.DeleteStructureAsync(id);
         TempData["SuccessMessage"] = "Assessment structure deleted.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    /// <summary>Mark one structure as the default fallback for all courses.</summary>
+    [HttpPost, ValidateAntiForgeryToken]
+    [Authorize(Policy = Permissions.AssessmentStructure.Configure)]
+    public async Task<IActionResult> SetDefaultStructure(Guid id)
+    {
+        // Clear existing defaults
+        var allStructures = await _context.AssessmentStructures
+            .Where(s => s.IsDeleted != true)
+            .ToListAsync();
+        foreach (var s in allStructures) s.IsDefault = false;
+        var target = allStructures.FirstOrDefault(s => s.Id == id);
+        if (target is not null) target.IsDefault = true;
+        await _context.SaveChangesAsync();
+        TempData["SuccessMessage"] = "Default assessment structure updated.";
         return RedirectToAction(nameof(Index));
     }
 

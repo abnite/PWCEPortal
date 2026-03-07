@@ -16,6 +16,9 @@ public class AssessmentStructureViewModel
 
     public int? ApplicableLevel { get; set; }
 
+    /// <summary>Mark this as the default fallback structure for all programmes/levels.</summary>
+    public bool IsDefault { get; set; }
+
     public List<ComponentInputViewModel> Components { get; set; } = new();
     public List<CollegeProgram> Programs { get; set; } = new();
 }

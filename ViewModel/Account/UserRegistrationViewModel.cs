@@ -21,4 +21,11 @@ public class UserRegistrationViewModel : EntityHelper
     [Display(Name = "Phone Number")]
     [Phone(ErrorMessage = "Invalid phone number format")]
     public string? PhoneNumber { get; set; }
+
+    /// <summary>
+    /// For HOD and Unit Head users: the department/unit they oversee.
+    /// Set by System Admin so the user is scoped to that department.
+    /// </summary>
+    [Display(Name = "Department / Unit")]
+    public Guid? DepartmentId { get; set; }
 }

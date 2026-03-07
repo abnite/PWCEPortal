@@ -35,6 +35,7 @@
                             <th>Name</th>
                             <th>Programme</th>
                             <th>Level</th>
+                            <th>Scope</th>
                             <th>Components</th>
                             <th>Total Weight</th>
                             <th class="text-center">Actions</th>
@@ -44,10 +45,32 @@
                         @foreach (var s in Model)
                         {
                             var totalWeight = s.Components?.Sum(c => c.WeightPercent) ?? 0;
-                            <tr>
-                                <td><strong>@s.Name</strong></td>
-                                <td>@(s.CollegeProgram?.ProgramName ?? "<em>All Programmes</em>")</td>
-                                <td>@(s.ApplicableLevel.HasValue ? $"Level {s.ApplicableLevel}" : "All Levels")</td>
+                            <tr class="@(s.IsDefault ? "table-primary" : "")">
+                                <td>
+                                    <strong>@s.Name</strong>
+                                    @if (s.IsDefault)
+                                    {
+                                        <span class="badge bg-primary ms-1" title="Used as fallback when no specific structure matches">
+                                            <i class="fas fa-star me-1"></i>Default
+                                        </span>
+                                    }
+                                </td>
+                                <td>@(s.CollegeProgram?.ProgramName ?? "<em class='text-muted'>All Programmes</em>")</td>
+                                <td>@(s.ApplicableLevel.HasValue ? $"Level {s.ApplicableLevel}" : "<em class='text-muted'>All Levels</em>")</td>
+                                <td>
+                                    @if (s.CollegeProgramId == null && s.ApplicableLevel == null)
+                                    {
+                                        <span class="badge bg-dark">Global</span>
+                                    }
+                                    else if (s.CollegeProgramId != null && s.ApplicableLevel != null)
+                                    {
+                                        <span class="badge bg-success">Specific</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">Partial</span>
+                                    }
+                                </td>
                                 <td><span class="badge bg-info text-dark">@(s.Components?.Count ?? 0)</span></td>
                                 <td>
                                     <span class="badge @(totalWeight == 100 ? "bg-success" : "bg-warning text-dark")">
@@ -63,6 +86,17 @@
                                         <a asp-action="Edit" asp-route-id="@s.Id" class="btn btn-sm btn-outline-primary me-1">
                                             <i class="fas fa-edit"></i>
                                         </a>
+                                        @if (!s.IsDefault)
+                                        {
+                                            <form asp-action="SetDefaultStructure" method="post" class="d-inline"
+                                                  onsubmit="return confirm('Set this as the default structure for all courses?')">
+                                                <input type="hidden" name="id" value="@s.Id" />
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-sm btn-outline-warning me-1" title="Set as Default">
+                                                    <i class="fas fa-star"></i>
+                                                </button>
+                                            </form>
+                                        }
                                         <form asp-action="Delete" method="post" class="d-inline"
                                               onsubmit="return confirm('Delete this structure?')">
                                             <input type="hidden" name="id" value="@s.Id" />
@@ -75,7 +109,7 @@
                         }
                         @if (!Model.Any())
                         {
-                            <tr><td colspan="6" class="text-center text-muted">No assessment structures configured yet.</td></tr>
+                            <tr><td colspan="7" class="text-center text-muted">No assessment structures configured yet.</td></tr>
                         }
                     </tbody>
                 </table>

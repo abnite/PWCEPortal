@@ -40,6 +40,17 @@
                             <option value="400">Level 400</option>
                         </select>
                     </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <div class="form-check mb-2">
+                            <input asp-for="IsDefault" class="form-check-input" type="checkbox" />
+                            <label asp-for="IsDefault" class="form-check-label fw-semibold">
+                                Set as Default Structure
+                            </label>
+                            <div class="form-text">
+                                The default is used for any course that has no specific structure defined. Only one structure can be the default.
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-12">
                         <label asp-for="Description" class="form-label"></label>
                         <textarea asp-for="Description" class="form-control" rows="2"></textarea>

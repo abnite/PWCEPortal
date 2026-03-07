@@ -22,6 +22,12 @@ public class AssessmentStructure : EntityHelper
 
     public int? ApplicableLevel { get; set; } // 100, 200, … or null for all
 
+    /// <summary>
+    /// When true, this structure is used as the fallback for any course that has no
+    /// specific (programme + level) structure defined. Only one should be the default.
+    /// </summary>
+    public bool IsDefault { get; set; }
+
     // Navigation
     public ICollection<AssessmentComponent>? Components { get; set; }
 }
