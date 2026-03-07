@@ -10,8 +10,6 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = PWCEPortal
 build_property.RootNamespace = PWCEPortal
 build_property.ProjectDir = /Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/
-build_property.EnableComHosting = 
-build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
@@ -338,12 +336,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFya3NFbnRyeS9CdWxrVXBsb2FkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/MarksEntry/CourseStudents.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFya3NFbnRyeS9Db3Vyc2VTdHVkZW50cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/MarksEntry/EnterMarks.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFya3NFbnRyeS9FbnRlck1hcmtzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/MarksEntry/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFya3NFbnRyeS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/MarksEntry/MyStudents.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFya3NFbnRyeS9NeVN0dWRlbnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/NonTeachingStaff/Appraisals.cshtml]

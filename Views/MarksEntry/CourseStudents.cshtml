@@ -92,7 +92,7 @@
                                 var student = reg.Student!;
                                 <tr>
                                     <td>@rowNum</td>
-                                    <td><span class="badge bg-secondary">@(student.StudentID ?? student.ApplicationNumber)</span></td>
+                                    <td><span class="custom-badge bg-secondary">@(student.StudentID ?? student.ApplicationNumber)</span></td>
                                     <td><strong>@student.Surname @student.OtherNames</strong></td>
                                     <td>@(student.CollegeProgram?.ProgramName ?? "-")</td>
                                     <td>Level @student.CurrentLevel</td>

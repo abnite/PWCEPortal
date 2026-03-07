@@ -25,7 +25,7 @@
                         {
                             <tr>
                                 <td><strong>@t.TemplateName</strong><br /><small class="text-muted">@t.Description</small></td>
-                                <td><span class="badge bg-info text-dark">@(t.Criteria?.Count ?? 0)</span></td>
+                                <td><span class="custom-badge bg-info text-dark">@(t.Criteria?.Count ?? 0)</span></td>
                                 <td>@(t.IsActive ? "Yes" : "No")</td>
                                 <td class="text-center">
                                     <a asp-action="EditTemplate" asp-route-id="@t.Id" class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></a>

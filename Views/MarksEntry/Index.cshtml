@@ -37,7 +37,7 @@
                         {
                             <tr>
                                 <td><strong>@a.Course?.CourseName</strong></td>
-                                <td><span class="badge bg-secondary">@a.Course?.CourseCode</span></td>
+                                <td><span class="custom-badge bg-secondary">@a.Course?.CourseCode</span></td>
                                 <td>Level @a.Course?.Level</td>
                                 <td>Sem @a.Course?.Semester</td>
                                 <td class="text-center">
@@ -55,11 +55,11 @@
                                                 PWCEPortal.Models.Academic.SubmissionStatus.PrincipalApproved => "bg-success",
                                                 _ => "bg-secondary"
                                             };
-                                            <span class="badge @badgeClass">@submission.Status</span>
+                                            <span class="custom-badge @badgeClass">@submission.Status</span>
                                         }
                                         else
                                         {
-                                            <span class="badge bg-light text-muted">Not Started</span>
+                                            <span class="custom-badge bg-light text-muted">Not Started</span>
                                         }
                                     }
                                 </td>

@@ -96,27 +96,30 @@
                             </tbody>
                         </table>
                     </div>
-
-                    @if (!isLocked)
-                    {
-                        <div class="d-flex gap-2 mt-3">
-                            <button type="submit" class="btn btn-success"><i class="fas fa-save me-1"></i>Save Marks</button>
-
-                            @if (User.HasClaim("Permission", "Permissions.MarksEntry.SubmitForReview") &&
-                                (Model.Submission == null || Model.Submission.Status == PWCEPortal.Models.Academic.SubmissionStatus.Draft || Model.Submission.Status == PWCEPortal.Models.Academic.SubmissionStatus.HODRejected))
-                            {
-                                <form asp-controller="MarksEntry" asp-action="SubmitForReview" method="post" class="d-inline"
-                                      onsubmit="return confirm('Submit marks for HOD review? Ensure all marks are entered.')">
-                                    @Html.AntiForgeryToken()
-                                    <input type="hidden" name="assignmentId" value="@Model.Assignment.Id" />
-                                    <button type="submit" class="btn btn-warning">
-                                        <i class="fas fa-paper-plane me-1"></i>Submit for Review
-                                    </button>
-                                </form>
-                            }
-                        </div>
-                    }
                 </form>
+
+                @* Submit for Review form is now a sibling, not nested inside SaveMarks form *@
+                @if (!isLocked)
+                {
+                    <div class="d-flex gap-2 mt-3">
+                        <button type="submit" form="markForm" class="btn btn-success">
+                            <i class="fas fa-save me-1"></i>Save Marks
+                        </button>
+
+                        @if (User.HasClaim("Permission", "Permissions.MarksEntry.SubmitForReview") &&
+                            (Model.Submission == null || Model.Submission.Status == PWCEPortal.Models.Academic.SubmissionStatus.Draft || Model.Submission.Status == PWCEPortal.Models.Academic.SubmissionStatus.HODRejected))
+                        {
+                            <form asp-controller="MarksEntry" asp-action="SubmitForReview" method="post" class="d-inline"
+                                  onsubmit="return confirm('Submit marks for HOD review? Ensure all marks are entered.')">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="assignmentId" value="@Model.Assignment.Id" />
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="fas fa-paper-plane me-1"></i>Submit for Review
+                                </button>
+                            </form>
+                        }
+                    </div>
+                }
             }
         </div>
     </div>

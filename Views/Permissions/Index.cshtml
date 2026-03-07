@@ -60,18 +60,18 @@
                                 </td>
                                 <td class="text-muted small">@row.Description</td>
                                 <td class="text-center">
-                                    <span class="badge @(row.PermissionCount > 0 ? "bg-success" : "bg-secondary")">
+                                    <span class="custom-badge @(row.PermissionCount > 0 ? "bg-success" : "bg-secondary")">
                                         @row.PermissionCount
                                     </span>
                                 </td>
                                 <td class="text-center">
                                     @if (row.IsPhase2Role)
                                     {
-                                        <span class="badge bg-info text-dark">Phase 2</span>
+                                        <span class="custom-badge bg-info text-dark">Phase 2</span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-light text-dark border">Phase 1</span>
+                                        <span class="custom-badge bg-light text-dark border">Phase 1</span>
                                     }
                                 </td>
                                 <td class="text-center">

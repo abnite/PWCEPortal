@@ -21,7 +21,7 @@
                                 <td>@a.AcademicYear?.Year</td>
                                 <td>@a.ConductedBy?.LastName @a.ConductedBy?.FirstName</td>
                                 <td>@(a.TotalScore.HasValue ? $"{a.TotalScore} / {a.MaxPossibleScore}" : "—")</td>
-                                <td><span class="badge @(a.Status == PWCEPortal.Models.Staff.AppraisalStatus.Completed ? "bg-success" : "bg-warning text-dark")">@a.Status</span></td>
+                                <td><span class="custom-badge @(a.Status == PWCEPortal.Models.Staff.AppraisalStatus.Completed ? "bg-success" : "bg-warning text-dark")">@a.Status</span></td>
                                 <td>@a.OverallRemarks</td>
                             </tr>
                         }

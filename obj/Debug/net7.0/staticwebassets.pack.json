@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets/PWCEPortal.bundle.scp.css"
     },
     {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/.DS_Store",
+      "PackagePath": "staticwebassets/.DS_Store"
+    },
+    {
       "Id": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/Certificates/APP12345612354_Certificate_20250415_172257.pdf",
       "PackagePath": "staticwebassets/Certificates/APP12345612354_Certificate_20250415_172257.pdf"
     },
@@ -359,6 +363,10 @@
     {
       "Id": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/receipts/APP1234_20252026_20251118211152.pdf",
       "PackagePath": "staticwebassets/receipts/APP1234_20252026_20251118211152.pdf"
+    },
+    {
+      "Id": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/uploads/.DS_Store",
+      "PackagePath": "staticwebassets/uploads/.DS_Store"
     },
     {
       "Id": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/wwwroot/uploads/passports/205e80cd-02eb-4f6c-93df-866b627ac470_background.jpeg",

@@ -37,7 +37,7 @@
                         <dt class="col-sm-5">Submitted</dt>
                         <dd class="col-sm-7">@Model.SubmittedAt?.ToString("dd MMM yyyy HH:mm")</dd>
                         <dt class="col-sm-5">Status</dt>
-                        <dd class="col-sm-7"><span class="badge bg-warning text-dark">@Model.Status</span></dd>
+                        <dd class="col-sm-7"><span class="custom-badge bg-warning text-dark">@Model.Status</span></dd>
                     </dl>
                 </div>
             </div>
@@ -159,7 +159,7 @@
                             <tr>
                                 <td>@log.ActionDate.ToString("dd MMM yyyy HH:mm")</td>
                                 <td>@log.Actor?.LastName @log.Actor?.FirstName</td>
-                                <td><span class="badge bg-secondary">@log.Action</span></td>
+                                <td><span class="custom-badge bg-secondary">@log.Action</span></td>
                                 <td>@log.Comments</td>
                             </tr>
                         }

@@ -28,7 +28,7 @@
             <div class="card-header d-flex justify-content-between align-items-center @(scale.IsDefault ? "bg-success text-white" : "")">
                 <h5 class="mb-0">
                     @scale.ScaleName
-                    @if (scale.IsDefault) { <span class="badge bg-light text-dark ms-2">Default</span> }
+                    @if (scale.IsDefault) { <span class="custom-badge bg-light text-dark ms-2">Default</span> }
                 </h5>
                 <div>
                     @if (User.HasClaim("Permission", "Permissions.GradingScale.Configure"))
@@ -64,7 +64,7 @@
                                 <td><strong>@g.GradeLetter</strong></td>
                                 <td>@g.MinScore</td>
                                 <td>@g.MaxScore</td>
-                                <td><span class="badge bg-primary">@g.GradePoint</span></td>
+                                <td><span class="custom-badge bg-primary">@g.GradePoint</span></td>
                                 <td>@g.Remark</td>
                             </tr>
                         }

@@ -39,11 +39,11 @@
                     <strong>Status:</strong><br />
                     @if (session.IsOpen)
                     {
-                        <span class="badge bg-success">Open (@submissions.Count responses so far)</span>
+                        <span class="custom-badge bg-success">Open (@submissions.Count responses so far)</span>
                     }
                     else
                     {
-                        <span class="badge bg-secondary">Closed — @submissions.Count total responses</span>
+                        <span class="custom-badge bg-secondary">Closed — @submissions.Count total responses</span>
                     }
                 </div>
             </div>

@@ -41,7 +41,7 @@
                                 <td><strong>@s.FullName</strong></td>
                                 <td>@s.Position</td>
                                 <td>@s.Department</td>
-                                <td><span class="badge @(s.IsActive ? "bg-success" : "bg-secondary")">@(s.IsActive ? "Active" : "Inactive")</span></td>
+                                <td><span class="custom-badge @(s.IsActive ? "bg-success" : "bg-secondary")">@(s.IsActive ? "Active" : "Inactive")</span></td>
                                 <td class="text-center">
                                     @if (User.HasClaim("Permission", "Permissions.NonTeachingStaff.Manage"))
                                     {

@@ -41,7 +41,7 @@
                                 <td><strong>@s.CourseLecturerAssignment?.Course?.CourseName</strong></td>
                                 <td>@s.CourseLecturerAssignment?.Lecturer?.User?.LastName @s.CourseLecturerAssignment?.Lecturer?.User?.FirstName</td>
                                 <td>@s.SubmittedAt?.ToString("dd MMM yyyy")</td>
-                                <td><span class="badge @badgeClass">@s.Status</span></td>
+                                <td><span class="custom-badge @badgeClass">@s.Status</span></td>
                                 <td class="text-center">
                                     <a asp-action="Details" asp-route-id="@s.Id" class="btn btn-sm btn-outline-info me-1">
                                         <i class="fas fa-eye me-1"></i>View

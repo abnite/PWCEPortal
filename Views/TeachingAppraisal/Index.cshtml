@@ -64,7 +64,7 @@
                                         <text>@a.TotalScore / @a.MaxPossibleScore</text>
                                     }
                                 </td>
-                                <td><span class="badge @(a.Status == PWCEPortal.Models.Staff.AppraisalStatus.Completed ? "bg-success" : "bg-warning text-dark")">@a.Status</span></td>
+                                <td><span class="custom-badge @(a.Status == PWCEPortal.Models.Staff.AppraisalStatus.Completed ? "bg-success" : "bg-warning text-dark")">@a.Status</span></td>
                                 <td class="text-center">
                                     @if (a.Status == PWCEPortal.Models.Staff.AppraisalStatus.InProgress && User.HasClaim("Permission", "Permissions.TeachingAppraisal.ConductAsHOD"))
                                     {

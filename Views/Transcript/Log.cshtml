@@ -29,7 +29,7 @@
                             <tr>
                                 <td>@r.Student?.Surname @r.Student?.OtherNames</td>
                                 <td>@r.Student?.StudentID</td>
-                                <td><span class="badge @(r.TranscriptType == PWCEPortal.Models.Academic.TranscriptType.Official ? "bg-primary" : "bg-secondary")">@r.TranscriptType</span></td>
+                                <td><span class="custom-badge @(r.TranscriptType == PWCEPortal.Models.Academic.TranscriptType.Official ? "bg-primary" : "bg-secondary")">@r.TranscriptType</span></td>
                                 <td>@r.RequestedBy?.LastName @r.RequestedBy?.FirstName</td>
                                 <td>@r.Purpose</td>
                                 <td>@r.RequestedAt.ToString("dd MMM yyyy HH:mm")</td>

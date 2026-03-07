@@ -50,7 +50,7 @@
                                     <strong>@s.Name</strong>
                                     @if (s.IsDefault)
                                     {
-                                        <span class="badge bg-primary ms-1" title="Used as fallback when no specific structure matches">
+                                        <span class="custom-badge bg-primary ms-1" title="Used as fallback when no specific structure matches">
                                             <i class="fas fa-star me-1"></i>Default
                                         </span>
                                     }
@@ -60,20 +60,20 @@
                                 <td>
                                     @if (s.CollegeProgramId == null && s.ApplicableLevel == null)
                                     {
-                                        <span class="badge bg-dark">Global</span>
+                                        <span class="custom-badge bg-dark">Global</span>
                                     }
                                     else if (s.CollegeProgramId != null && s.ApplicableLevel != null)
                                     {
-                                        <span class="badge bg-success">Specific</span>
+                                        <span class="custom-badge bg-success">Specific</span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-warning text-dark">Partial</span>
+                                        <span class="custom-badge bg-warning text-dark">Partial</span>
                                     }
                                 </td>
-                                <td><span class="badge bg-info text-dark">@(s.Components?.Count ?? 0)</span></td>
+                                <td><span class="custom-badge bg-info text-dark">@(s.Components?.Count ?? 0)</span></td>
                                 <td>
-                                    <span class="badge @(totalWeight == 100 ? "bg-success" : "bg-warning text-dark")">
+                                    <span class="custom-badge @(totalWeight == 100 ? "bg-success" : "bg-warning text-dark")">
                                         @totalWeight%
                                     </span>
                                 </td>
