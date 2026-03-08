@@ -96,6 +96,49 @@ public class NonTeachingStaffService : INonTeachingStaffService
         return appraisal;
     }
 
+    public async Task<int> StartBulkAppraisalAsync(Guid templateId, string conductorUserId, Guid academicYearId, Guid? departmentId)
+    {
+        var template = await _context.AppraisalTemplates
+            .Include(t => t.Criteria)
+            .FirstOrDefaultAsync(t => t.Id == templateId);
+        decimal maxScore = template?.Criteria?.Sum(c => c.MaxScore) ?? 0;
+
+        // Get staff list, scoped to department if provided
+        List<Guid> staffIds;
+        if (departmentId.HasValue)
+            staffIds = await _context.NonTeachingStaffMembers
+                .Where(s => s.IsDeleted != true && s.DepartmentId == departmentId.Value)
+                .Select(s => s.Id).ToListAsync();
+        else
+            staffIds = await _context.NonTeachingStaffMembers
+                .Where(s => s.IsDeleted != true)
+                .Select(s => s.Id).ToListAsync();
+
+        // Exclude staff that already have an in-progress appraisal for this year with this template
+        var alreadyStarted = await _context.NonTeachingAppraisals
+            .Where(a => a.AcademicYearId == academicYearId && a.AppraisalTemplateId == templateId
+                     && a.Status == AppraisalStatus.InProgress && a.IsDeleted != true)
+            .Select(a => a.NonTeachingStaffId)
+            .ToListAsync();
+
+        var toCreate = staffIds.Except(alreadyStarted).ToList();
+        if (!toCreate.Any()) return 0;
+
+        var appraisals = toCreate.Select(staffId => new NonTeachingAppraisal
+        {
+            AppraisalTemplateId = templateId,
+            NonTeachingStaffId = staffId,
+            ConductedById = conductorUserId,
+            AcademicYearId = academicYearId,
+            Status = AppraisalStatus.InProgress,
+            MaxPossibleScore = maxScore
+        }).ToList();
+
+        _context.NonTeachingAppraisals.AddRange(appraisals);
+        await _context.SaveChangesAsync();
+        return appraisals.Count;
+    }
+
     public async Task<bool> SaveAppraisalScoresAsync(Guid appraisalId, Dictionary<Guid, decimal> scores, string remarks)
     {
         var appraisal = await GetAppraisalByIdAsync(appraisalId);

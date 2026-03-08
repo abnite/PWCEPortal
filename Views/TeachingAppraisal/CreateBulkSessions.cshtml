@@ -1,0 +1,98 @@
+@using PWCEPortal.Models.Academic
+@{
+    ViewBag.Title = "Bulk Create Appraisal Sessions";
+    Layout = "_AdminLayout";
+    var templates = (List<PWCEPortal.Models.Staff.AppraisalTemplate>)ViewBag.Templates;
+    var years = (List<AcademicYear>)ViewBag.AcademicYears;
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Bulk Create Appraisal Sessions</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Sessions" asp-controller="TeachingAppraisal">Appraisal Sessions</a></li>
+                <li class="breadcrumb-item active">Bulk Create</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-layer-group me-2"></i>Bulk Session Creation</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-1"></i>
+                        This will create an appraisal session for <strong>every course-lecturer assignment</strong>
+                        in your department that does not already have an open session for the selected academic year.
+                        Students registered in those courses will immediately be able to submit their feedback.
+                    </div>
+
+                    <form asp-action="CreateBulkSessions" asp-controller="TeachingAppraisal" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Appraisal Template <span class="text-danger">*</span></label>
+                            <select name="templateId" class="form-select" required>
+                                <option value="">— Select template —</option>
+                                @foreach (var t in templates)
+                                {
+                                    <option value="@t.Id">@t.TemplateName</option>
+                                }
+                            </select>
+                            <div class="form-text">
+                                All sessions will use this template.
+                                Configure templates in <a asp-action="Templates" asp-controller="TeachingAppraisal">Appraisal Templates</a>.
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Academic Year <span class="text-danger">*</span></label>
+                            <select name="academicYearId" class="form-select" required>
+                                <option value="">— Select year —</option>
+                                @foreach (var y in years)
+                                {
+                                    <option value="@y.Id" selected="@(y.IsActive ? "selected" : null)">@y.Year</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <a asp-action="Sessions" asp-controller="TeachingAppraisal" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-bolt me-1"></i>Create Sessions for All Assignments
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card border-warning shadow-sm">
+                <div class="card-header bg-warning text-dark">
+                    <h6 class="mb-0"><i class="fas fa-lightbulb me-1"></i>When to Use Each Option</h6>
+                </div>
+                <div class="card-body">
+                    <p class="mb-2"><strong>Bulk Create (this page):</strong></p>
+                    <ul class="small mb-3">
+                        <li>Start of appraisal cycle — open sessions for all courses at once</li>
+                        <li>Handles large numbers of course-lecturer assignments automatically</li>
+                        <li>Skips assignments that already have an open session</li>
+                    </ul>
+                    <p class="mb-2"><strong>Individual Create:</strong></p>
+                    <ul class="small mb-0">
+                        <li>Open a session for a specific course only</li>
+                        <li>Use when a new assignment is added mid-cycle</li>
+                        <li>Go to <a asp-action="CreateSession">Create Session</a> for individual creation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -221,6 +221,34 @@ public class NonTeachingStaffController : Controller
     }
 
     [Authorize(Policy = Permissions.NonTeachingStaff.Appraise)]
+    public async Task<IActionResult> StartBulkAppraisal()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        var ntTemplates = await _context.AppraisalTemplates
+            .Where(t => t.TemplateType == AppraisalTemplateType.NonTeaching && t.IsActive && t.IsDeleted != true)
+            .ToListAsync();
+
+        ViewBag.Templates = ntTemplates;
+        ViewBag.AcademicYears = await _context.AcademicYears.Where(y => y.IsDeleted != true).OrderByDescending(y => y.Year).ToListAsync();
+        return View();
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    [Authorize(Policy = Permissions.NonTeachingStaff.Appraise)]
+    public async Task<IActionResult> StartBulkAppraisal(Guid templateId, Guid academicYearId)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        bool isUnitHeadScoped = user!.DepartmentId.HasValue && !User.IsInRole(RoleNames.SystemAdmin) && !User.IsInRole(RoleNames.HROfficer);
+        Guid? deptId = isUnitHeadScoped ? user.DepartmentId : null;
+
+        int created = await _service.StartBulkAppraisalAsync(templateId, user.Id, academicYearId, deptId);
+        TempData["SuccessMessage"] = created > 0
+            ? $"{created} appraisal(s) created for non-teaching staff."
+            : "No new appraisals were needed — all eligible staff already have an in-progress appraisal for this year.";
+        return RedirectToAction(nameof(Appraisals));
+    }
+
+    [Authorize(Policy = Permissions.NonTeachingStaff.Appraise)]
     public async Task<IActionResult> ConductAppraisal(Guid id)
     {
         var appraisal = await _service.GetAppraisalByIdAsync(id);

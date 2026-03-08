@@ -16,6 +16,7 @@ public interface INonTeachingStaffService
     Task<List<NonTeachingAppraisal>> GetAppraisalsAsync(Guid? staffId = null, Guid? academicYearId = null);
     Task<NonTeachingAppraisal?> GetAppraisalByIdAsync(Guid id);
     Task<NonTeachingAppraisal> StartAppraisalAsync(Guid templateId, Guid staffId, string conductorUserId, Guid academicYearId);
+    Task<int> StartBulkAppraisalAsync(Guid templateId, string conductorUserId, Guid academicYearId, Guid? departmentId);
     Task<bool> SaveAppraisalScoresAsync(Guid appraisalId, Dictionary<Guid, decimal> scores, string remarks);
     Task<bool> CompleteAppraisalAsync(Guid appraisalId);
 }

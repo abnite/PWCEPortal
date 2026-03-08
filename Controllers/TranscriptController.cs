@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -43,11 +44,15 @@ public class TranscriptController : Controller
     public async Task<IActionResult> DownloadOwnTranscript(string purpose)
     {
         var user = await _userManager.GetUserAsync(User);
-        var student = await _context.Students.FirstOrDefaultAsync(s => s.Email == user!.Email);
+        var student = await _context.Students
+            .Include(s => s.CollegeProgram)
+            .FirstOrDefaultAsync(s => s.Email == user!.Email);
         if (student is null) return NotFound();
 
         var bytes = await _transcriptService.GenerateTranscriptPdfAsync(student.Id, TranscriptType.Unofficial, user!.Id, purpose);
-        return File(bytes, "text/plain", $"Transcript_{student.StudentID}_{DateTime.UtcNow:yyyyMMdd}.txt");
+        var safeName = SanitizeName($"{student.Surname}{student.OtherNames}");
+        var fileName = $"Unofficial_Transcript_{safeName}_{student.StudentID}_{DateTime.UtcNow:yyyy-MM-dd}.pdf";
+        return File(bytes, "application/pdf", fileName);
     }
 
     // ── Staff: generate official transcript ─────────────────────────────────
@@ -67,11 +72,15 @@ public class TranscriptController : Controller
     public async Task<IActionResult> Generate(Guid studentId, string purpose)
     {
         var user = await _userManager.GetUserAsync(User);
-        var student = await _context.Students.FirstOrDefaultAsync(s => s.Id == studentId);
+        var student = await _context.Students
+            .Include(s => s.CollegeProgram)
+            .FirstOrDefaultAsync(s => s.Id == studentId);
         if (student is null) return NotFound();
 
         var bytes = await _transcriptService.GenerateTranscriptPdfAsync(studentId, TranscriptType.Official, user!.Id, purpose);
-        return File(bytes, "text/plain", $"OfficialTranscript_{student.StudentID}_{DateTime.UtcNow:yyyyMMdd}.txt");
+        var safeName = SanitizeName($"{student.Surname}{student.OtherNames}");
+        var fileName = $"Official_Transcript_{safeName}_{student.StudentID}_{DateTime.UtcNow:yyyy-MM-dd}.pdf";
+        return File(bytes, "application/pdf", fileName);
     }
 
     // ── Transcript log ───────────────────────────────────────────────────────
@@ -82,4 +91,9 @@ public class TranscriptController : Controller
         var logs = await _transcriptService.GetTranscriptLogsAsync();
         return View(logs);
     }
+
+    // ── Helpers ─────────────────────────────────────────────────────────────
+
+    private static string SanitizeName(string name) =>
+        Regex.Replace(name.Trim(), @"[^A-Za-z0-9]", "");
 }

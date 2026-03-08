@@ -6,6 +6,7 @@ public interface IStudentAppraisalService
 {
     // HOD: Session management
     Task<TeachingAppraisalSession> CreateSessionAsync(Guid templateId, Guid assignmentId, Guid academicYearId, string hodUserId);
+    Task<int> CreateBulkSessionsAsync(Guid templateId, Guid academicYearId, string hodUserId, Guid? departmentId);
     Task<List<TeachingAppraisalSession>> GetSessionsByHODAsync(string hodUserId);
     Task<List<TeachingAppraisalSession>> GetSessionsByDepartmentAsync(Guid departmentId);
     Task<TeachingAppraisalSession?> GetSessionByIdAsync(Guid sessionId);

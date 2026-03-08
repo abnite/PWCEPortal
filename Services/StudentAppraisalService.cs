@@ -80,6 +80,41 @@ public class StudentAppraisalService : IStudentAppraisalService
         return await _context.SaveChangesAsync() > 0;
     }
 
+    public async Task<int> CreateBulkSessionsAsync(Guid templateId, Guid academicYearId, string hodUserId, Guid? departmentId)
+    {
+        // Fetch all active assignments, scoped to department if provided
+        var query = _context.CourseLecturerAssignments
+            .Where(a => a.IsDeleted != true);
+
+        if (departmentId.HasValue)
+            query = query.Where(a => a.Lecturer!.DepartmentId == departmentId.Value);
+
+        var assignments = await query.Select(a => a.Id).ToListAsync();
+
+        // Find assignments that already have an open session for this academic year
+        var existingAssignmentIds = await _context.TeachingAppraisalSessions
+            .Where(s => s.AcademicYearId == academicYearId && s.IsOpen && s.IsDeleted != true)
+            .Select(s => s.CourseLecturerAssignmentId)
+            .ToListAsync();
+
+        var toCreate = assignments.Except(existingAssignmentIds).ToList();
+
+        if (!toCreate.Any()) return 0;
+
+        var sessions = toCreate.Select(assignmentId => new TeachingAppraisalSession
+        {
+            AppraisalTemplateId = templateId,
+            CourseLecturerAssignmentId = assignmentId,
+            AcademicYearId = academicYearId,
+            CreatedByHODId = hodUserId,
+            IsOpen = true
+        }).ToList();
+
+        _context.TeachingAppraisalSessions.AddRange(sessions);
+        await _context.SaveChangesAsync();
+        return sessions.Count;
+    }
+
     public async Task<bool> ReopenSessionAsync(Guid sessionId)
     {
         var session = await _context.TeachingAppraisalSessions.FindAsync(sessionId);

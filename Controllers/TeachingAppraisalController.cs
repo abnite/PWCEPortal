@@ -283,6 +283,27 @@ public class TeachingAppraisalController : Controller
         return RedirectToAction(nameof(Sessions));
     }
 
+    /// <summary>HOD creates appraisal sessions for ALL course-lecturer assignments in their department at once.</summary>
+    [Authorize(Policy = Permissions.TeachingAppraisal.ConductAsHOD)]
+    public async Task<IActionResult> CreateBulkSessions()
+    {
+        ViewBag.Templates = await _service.GetTeachingTemplatesAsync();
+        ViewBag.AcademicYears = await _context.AcademicYears.Where(y => y.IsDeleted != true).OrderByDescending(y => y.Year).ToListAsync();
+        return View();
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    [Authorize(Policy = Permissions.TeachingAppraisal.ConductAsHOD)]
+    public async Task<IActionResult> CreateBulkSessions(Guid templateId, Guid academicYearId)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        int created = await _sessionService.CreateBulkSessionsAsync(templateId, academicYearId, user!.Id, user.DepartmentId);
+        TempData["SuccessMessage"] = created > 0
+            ? $"{created} appraisal session(s) created. Students can now fill in their feedback."
+            : "No new sessions were needed — all assignments already have an open session for this year.";
+        return RedirectToAction(nameof(Sessions));
+    }
+
     [HttpPost, ValidateAntiForgeryToken]
     [Authorize(Policy = Permissions.TeachingAppraisal.ConductAsHOD)]
     public async Task<IActionResult> CloseSession(Guid id)

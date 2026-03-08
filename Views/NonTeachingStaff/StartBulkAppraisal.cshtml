@@ -1,0 +1,90 @@
+@using PWCEPortal.Models.Academic
+@{
+    ViewBag.Title = "Bulk Start Non-Teaching Appraisals";
+    Layout = "_AdminLayout";
+    var templates = (List<PWCEPortal.Models.Staff.AppraisalTemplate>)ViewBag.Templates;
+    var years = (List<AcademicYear>)ViewBag.AcademicYears;
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Bulk Start Non-Teaching Appraisals</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Appraisals" asp-controller="NonTeachingStaff">Appraisals</a></li>
+                <li class="breadcrumb-item active">Bulk Start</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-users-cog me-2"></i>Bulk Appraisal Start</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-1"></i>
+                        This will start an appraisal for <strong>all non-teaching staff</strong>
+                        @if (User.IsInRole("UnitHead")) { <span>in your department</span> } else { <span>across the institution</span> }
+                        who do not already have an in-progress appraisal for the selected academic year using this template.
+                        You can then fill in scores for each staff member individually.
+                    </div>
+
+                    <form asp-action="StartBulkAppraisal" asp-controller="NonTeachingStaff" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Appraisal Template <span class="text-danger">*</span></label>
+                            <select name="templateId" class="form-select" required>
+                                <option value="">— Select template —</option>
+                                @foreach (var t in templates)
+                                {
+                                    <option value="@t.Id">@t.TemplateName</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Academic Year <span class="text-danger">*</span></label>
+                            <select name="academicYearId" class="form-select" required>
+                                <option value="">— Select year —</option>
+                                @foreach (var y in years)
+                                {
+                                    <option value="@y.Id" selected="@(y.IsActive ? "selected" : null)">@y.Year</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <a asp-action="Appraisals" asp-controller="NonTeachingStaff" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-bolt me-1"></i>Start Appraisals for All Staff
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card border-info shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h6 class="mb-0"><i class="fas fa-info-circle me-1"></i>How Bulk Appraisal Works</h6>
+                </div>
+                <div class="card-body small">
+                    <ol class="ps-3 mb-0">
+                        <li class="mb-2">Select a template and academic year, then click <strong>Start Appraisals for All Staff</strong>.</li>
+                        <li class="mb-2">The system creates an <em>In Progress</em> appraisal record for each eligible staff member.</li>
+                        <li class="mb-2">Staff who already have an active appraisal for this template and year are skipped automatically.</li>
+                        <li class="mb-2">Go to <a asp-action="Appraisals">Appraisals</a> and click <strong>Conduct</strong> next to each staff member to enter scores.</li>
+                        <li>Mark each appraisal as <strong>Complete</strong> once scores are entered.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

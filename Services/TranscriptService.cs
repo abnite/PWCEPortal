@@ -1,22 +1,23 @@
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using PWCEPortal.Data;
 using PWCEPortal.Interfaces;
 using PWCEPortal.Models.Academic;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 
 namespace PWCEPortal.Services;
 
 public class TranscriptService : ITranscriptService
 {
     private readonly PortalDbContext _context;
-    private readonly IAssessmentStructureService _structureService;
     private readonly IGPAService _gpaService;
 
-    public TranscriptService(PortalDbContext context, IAssessmentStructureService structureService, IGPAService gpaService)
+    public TranscriptService(PortalDbContext context, IGPAService gpaService)
     {
         _context = context;
-        _structureService = structureService;
         _gpaService = gpaService;
+        QuestPDF.Settings.License = LicenseType.Community;
     }
 
     public async Task<byte[]> GenerateTranscriptPdfAsync(
@@ -38,107 +39,209 @@ public class TranscriptService : ITranscriptService
             .OrderByDescending(r => r.ComputedAt)
             .FirstOrDefaultAsync();
 
-        // Load per-course breakdown
         var courseResultsBySemester = await _gpaService.GetCourseResultsBySemesterAsync(studentId);
 
-        var sb = new StringBuilder();
-        const int W = 80;
+        bool isUnofficial = type == TranscriptType.Unofficial;
+        string studentName = student != null ? $"{student.Surname} {student.OtherNames}".Trim() : "Unknown";
 
-        sb.AppendLine(Center("PWCE SCHOOL PORTAL", W));
-        sb.AppendLine(Center("OFFICIAL ACADEMIC TRANSCRIPT", W));
-        sb.AppendLine(new string('=', W));
+        // Compute running cumulative GPA for each semester
+        decimal runningWeightedGP = 0;
+        int runningCredits = 0;
 
-        if (student != null)
+        var pdfBytes = Document.Create(container =>
         {
-            sb.AppendLine($"Student Name  : {student.Surname} {student.OtherNames}");
-            sb.AppendLine($"Student ID    : {student.StudentID}");
-            sb.AppendLine($"Programme     : {student.CollegeProgram?.ProgramName}");
-            sb.AppendLine($"Level of Entry: {student.LevelOfEntry}");
-            sb.AppendLine($"Enrolment Year: {student.EnrolmentYear}");
-        }
-        sb.AppendLine($"Generated     : {DateTime.UtcNow:dd MMM yyyy HH:mm} UTC");
-        sb.AppendLine($"Type          : {(type == TranscriptType.Official ? "Official" : "Unofficial")}");
-        if (!string.IsNullOrEmpty(purpose))
-            sb.AppendLine($"Purpose       : {purpose}");
-
-        sb.AppendLine(new string('=', W));
-        sb.AppendLine();
-
-        // Group by academic year
-        var byYear = semesterResults
-            .GroupBy(r => r.AcademicSemester?.AcademicYear?.Year ?? "Unknown")
-            .OrderBy(g => g.Key);
-
-        decimal cumulativeWeightedGP = 0;
-        int cumulativeCreditHours = 0;
-
-        foreach (var yearGroup in byYear)
-        {
-            sb.AppendLine($"YEAR: {yearGroup.Key}");
-            sb.AppendLine(new string('-', W));
-
-            foreach (var sem in yearGroup)
+            container.Page(page =>
             {
-                sb.AppendLine($"  Semester: {sem.AcademicSemester?.SemesterName}");
-                sb.AppendLine();
+                page.Size(PageSizes.A4);
+                page.Margin(2, Unit.Centimetre);
+                page.DefaultTextStyle(t => t.FontSize(9));
 
-                // Column header
-                sb.AppendLine(
-                    $"  {"Course Code",-12} {"Course Name",-35} {"Cr",3}  {"Score%",7}  {"Grd",4}  {"GP",5}  {"QP",7}");
-                sb.AppendLine("  " + new string('-', W - 2));
-
-                var courses = courseResultsBySemester.TryGetValue(sem.AcademicSemesterId, out var cl)
-                    ? cl
-                    : new List<ViewModel.Results.CourseResultViewModel>();
-
-                decimal semQP = 0;
-                foreach (var c in courses)
+                // Watermark layer for unofficial transcripts
+                if (isUnofficial)
                 {
-                    decimal qp = c.GradePoint * c.CreditHours;
-                    semQP += qp;
-                    sb.AppendLine(
-                        $"  {c.CourseCode,-12} {Truncate(c.CourseName, 35),-35} {c.CreditHours,3}  {c.TotalScore,7:F1}  {c.GradeLetter,4}  {c.GradePoint,5:F2}  {qp,7:F2}");
+                    page.Background().Canvas((canvas, size) =>
+                    {
+                        using var paint = new SkiaSharp.SKPaint
+                        {
+                            Color = SkiaSharp.SKColors.LightGray.WithAlpha(80),
+                            TextSize = 72,
+                            IsAntialias = true,
+                            FakeBoldText = true,
+                            TextAlign = SkiaSharp.SKTextAlign.Center
+                        };
+                        canvas.Save();
+                        canvas.Translate(size.Width / 2, size.Height / 2);
+                        canvas.RotateDegrees(-45);
+                        canvas.DrawText("UNOFFICIAL", 0, 0, paint);
+                        canvas.Restore();
+                    });
                 }
 
-                sb.AppendLine("  " + new string('-', W - 2));
-                sb.AppendLine($"  {"Semester Total",-48} {sem.TotalCreditHours,3}  {"",7}  {"",4}  {"",5}  {semQP,7:F2}");
-                sb.AppendLine($"  Semester GPA: {sem.GPA:F2}");
+                page.Header().Column(col =>
+                {
+                    col.Item().AlignCenter().Text("PWCE SCHOOL PORTAL").Bold().FontSize(16);
+                    col.Item().AlignCenter().Text("OFFICIAL ACADEMIC TRANSCRIPT").Bold().FontSize(12);
+                    if (isUnofficial)
+                        col.Item().AlignCenter().Text("— UNOFFICIAL COPY —").FontColor(Colors.Red.Medium).Bold().FontSize(10);
+                    col.Item().LineHorizontal(1).LineColor(Colors.Black);
+                    col.Item().PaddingTop(6).Table(t =>
+                    {
+                        t.ColumnsDefinition(c => { c.RelativeColumn(); c.RelativeColumn(); });
+                        void Row(string label, string value)
+                        {
+                            t.Cell().Text(label).SemiBold();
+                            t.Cell().Text(value);
+                        }
+                        Row("Student Name:", studentName);
+                        Row("Student ID:", student?.StudentID ?? "-");
+                        Row("Programme:", student?.CollegeProgram?.ProgramName ?? "-");
+                        Row("Level of Entry:", student?.LevelOfEntry?.ToString() ?? "-");
+                        Row("Enrolment Year:", student?.EnrolmentYear ?? "-");
+                        Row("Generated:", DateTime.UtcNow.ToString("dd MMM yyyy HH:mm") + " UTC");
+                        if (!string.IsNullOrEmpty(purpose))
+                            Row("Purpose:", purpose);
+                    });
+                    col.Item().PaddingTop(4).LineHorizontal(1).LineColor(Colors.Black);
+                });
 
-                cumulativeWeightedGP += semQP;
-                cumulativeCreditHours += sem.TotalCreditHours;
-                decimal runningCGPA = cumulativeCreditHours > 0
-                    ? Math.Round(cumulativeWeightedGP / cumulativeCreditHours, 2)
-                    : 0;
-                sb.AppendLine($"  Cumulative GPA: {runningCGPA:F2}");
-                sb.AppendLine();
-            }
-        }
+                page.Content().PaddingTop(8).Column(content =>
+                {
+                    var byYear = semesterResults
+                        .GroupBy(r => r.AcademicSemester?.AcademicYear?.Year ?? "Unknown")
+                        .OrderBy(g => g.Key);
 
-        // Summary
-        sb.AppendLine(new string('=', W));
-        sb.AppendLine(Center("SUMMARY", W));
-        sb.AppendLine(new string('=', W));
-        sb.AppendLine($"Total Credit Hours Attempted : {latestCumulative?.TotalCreditHoursAttempted ?? cumulativeCreditHours}");
-        sb.AppendLine($"Total Credit Hours Earned    : {latestCumulative?.TotalCreditHoursEarned ?? cumulativeCreditHours}");
-        decimal finalCGPA = latestCumulative?.CGPA ??
-            (cumulativeCreditHours > 0 ? Math.Round(cumulativeWeightedGP / cumulativeCreditHours, 2) : 0);
-        sb.AppendLine($"Cumulative GPA               : {finalCGPA:F2}");
-        sb.AppendLine($"Classification               : {latestCumulative?.Classification ?? "-"}");
-        sb.AppendLine(new string('=', W));
+                    foreach (var yearGroup in byYear)
+                    {
+                        content.Item().PaddingTop(6).Text($"ACADEMIC YEAR: {yearGroup.Key}").Bold().FontSize(11);
+                        content.Item().LineHorizontal(0.5f).LineColor(Colors.Grey.Medium);
+
+                        foreach (var sem in yearGroup)
+                        {
+                            var courses = courseResultsBySemester.TryGetValue(sem.AcademicSemesterId, out var cl)
+                                ? cl : new List<ViewModel.Results.CourseResultViewModel>();
+
+                            decimal semQP = courses.Sum(c => c.GradePoint * c.CreditHours);
+                            runningWeightedGP += semQP;
+                            runningCredits += sem.TotalCreditHours;
+                            decimal runningCGPA = runningCredits > 0
+                                ? Math.Round(runningWeightedGP / runningCredits, 2) : 0;
+
+                            content.Item().PaddingTop(4).Text($"Semester: {sem.AcademicSemester?.SemesterName}").SemiBold();
+
+                            content.Item().PaddingTop(2).Table(t =>
+                            {
+                                t.ColumnsDefinition(c =>
+                                {
+                                    c.ConstantColumn(60);  // Code
+                                    c.RelativeColumn(3);   // Course Name
+                                    c.ConstantColumn(30);  // Credits
+                                    c.ConstantColumn(45);  // Score%
+                                    c.ConstantColumn(30);  // Grade
+                                    c.ConstantColumn(35);  // GP
+                                    c.ConstantColumn(40);  // QP
+                                });
+
+                                // Header
+                                static IContainer HeaderCell(IContainer c) =>
+                                    c.Background(Colors.Grey.Lighten3).Padding(3);
+
+                                t.Header(h =>
+                                {
+                                    h.Cell().Element(HeaderCell).Text("Code").SemiBold();
+                                    h.Cell().Element(HeaderCell).Text("Course Name").SemiBold();
+                                    h.Cell().Element(HeaderCell).AlignCenter().Text("Cr").SemiBold();
+                                    h.Cell().Element(HeaderCell).AlignCenter().Text("Score%").SemiBold();
+                                    h.Cell().Element(HeaderCell).AlignCenter().Text("Grd").SemiBold();
+                                    h.Cell().Element(HeaderCell).AlignCenter().Text("GP").SemiBold();
+                                    h.Cell().Element(HeaderCell).AlignCenter().Text("QP").SemiBold();
+                                });
+
+                                static IContainer DataCell(IContainer c) =>
+                                    c.BorderBottom(0.3f).BorderColor(Colors.Grey.Lighten2).Padding(3);
+
+                                foreach (var course in courses)
+                                {
+                                    decimal qp = course.GradePoint * course.CreditHours;
+                                    t.Cell().Element(DataCell).Text(course.CourseCode);
+                                    t.Cell().Element(DataCell).Text(course.CourseName);
+                                    t.Cell().Element(DataCell).AlignCenter().Text(course.CreditHours.ToString());
+                                    t.Cell().Element(DataCell).AlignCenter().Text(course.TotalScore.ToString("F1"));
+                                    t.Cell().Element(DataCell).AlignCenter().Text(course.GradeLetter).Bold();
+                                    t.Cell().Element(DataCell).AlignCenter().Text(course.GradePoint.ToString("F2"));
+                                    t.Cell().Element(DataCell).AlignCenter().Text(qp.ToString("F2"));
+                                }
+
+                                // Totals row
+                                static IContainer TotalCell(IContainer c) =>
+                                    c.Background(Colors.Grey.Lighten4).Padding(3);
+
+                                t.Cell().ColumnSpan(2).Element(TotalCell).AlignRight().Text("Semester Total:").SemiBold();
+                                t.Cell().Element(TotalCell).AlignCenter().Text(sem.TotalCreditHours.ToString()).SemiBold();
+                                t.Cell().Element(TotalCell).Text(string.Empty);
+                                t.Cell().Element(TotalCell).Text(string.Empty);
+                                t.Cell().Element(TotalCell).Text(string.Empty);
+                                t.Cell().Element(TotalCell).AlignCenter().Text(semQP.ToString("F2")).SemiBold();
+                            });
+
+                            content.Item().PaddingLeft(4).Row(row =>
+                            {
+                                row.AutoItem().Text("Semester GPA: ").SemiBold();
+                                row.AutoItem().Text(sem.GPA.ToString("F2")).FontColor(Colors.Blue.Darken2).SemiBold();
+                                row.ConstantItem(20);
+                                row.AutoItem().Text("Cumulative GPA: ").SemiBold();
+                                row.AutoItem().Text(runningCGPA.ToString("F2")).FontColor(Colors.Blue.Darken2).SemiBold();
+                            });
+
+                            content.Item().PaddingBottom(4);
+                        }
+                    }
+
+                    // Summary
+                    content.Item().PaddingTop(8).LineHorizontal(1).LineColor(Colors.Black);
+                    content.Item().PaddingTop(4).Text("ACADEMIC SUMMARY").Bold().FontSize(11);
+                    content.Item().PaddingTop(4).Table(t =>
+                    {
+                        t.ColumnsDefinition(c => { c.RelativeColumn(2); c.RelativeColumn(); });
+                        void Row(string lbl, string val)
+                        {
+                            t.Cell().Padding(3).Text(lbl).SemiBold();
+                            t.Cell().Padding(3).Text(val);
+                        }
+                        Row("Total Credit Hours Attempted:",
+                            (latestCumulative?.TotalCreditHoursAttempted ?? runningCredits).ToString());
+                        Row("Total Credit Hours Earned:",
+                            (latestCumulative?.TotalCreditHoursEarned ?? runningCredits).ToString());
+                        decimal finalCGPA = latestCumulative?.CGPA ??
+                            (runningCredits > 0 ? Math.Round(runningWeightedGP / runningCredits, 2) : 0);
+                        Row("Cumulative GPA:", finalCGPA.ToString("F2"));
+                        Row("Classification:", latestCumulative?.Classification ?? "-");
+                    });
+                });
+
+                page.Footer().AlignCenter().Text(t =>
+                {
+                    t.Span("Page ");
+                    t.CurrentPageNumber();
+                    t.Span(" of ");
+                    t.TotalPages();
+                    t.Span($"  |  {(isUnofficial ? "UNOFFICIAL" : "OFFICIAL")} TRANSCRIPT  |  PWCE School Portal");
+                    t.DefaultTextStyle(s => s.FontSize(8).FontColor(Colors.Grey.Medium));
+                });
+            });
+        }).GeneratePdf();
 
         // Log the request
-        var request = new TranscriptRequest
+        _context.TranscriptRequests.Add(new TranscriptRequest
         {
             StudentId = studentId,
             TranscriptType = type,
             RequestedById = requestedByUserId,
             RequestedAt = DateTime.UtcNow,
             Purpose = purpose
-        };
-        _context.TranscriptRequests.Add(request);
+        });
         await _context.SaveChangesAsync();
 
-        return Encoding.UTF8.GetBytes(sb.ToString());
+        return pdfBytes;
     }
 
     public async Task<List<TranscriptRequest>> GetTranscriptLogsAsync(Guid? studentId = null)
@@ -159,13 +262,4 @@ public class TranscriptService : ITranscriptService
             .Include(r => r.Student)
             .Include(r => r.RequestedBy)
             .FirstOrDefaultAsync(r => r.Id == id);
-
-    private static string Center(string text, int width)
-    {
-        int padding = Math.Max(0, (width - text.Length) / 2);
-        return new string(' ', padding) + text;
-    }
-
-    private static string Truncate(string s, int max) =>
-        s.Length <= max ? s : s[..(max - 1)] + "…";
 }
