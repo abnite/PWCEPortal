@@ -9,10 +9,14 @@ namespace PWCEPortal.Services;
 public class TranscriptService : ITranscriptService
 {
     private readonly PortalDbContext _context;
+    private readonly IAssessmentStructureService _structureService;
+    private readonly IGPAService _gpaService;
 
-    public TranscriptService(PortalDbContext context)
+    public TranscriptService(PortalDbContext context, IAssessmentStructureService structureService, IGPAService gpaService)
     {
         _context = context;
+        _structureService = structureService;
+        _gpaService = gpaService;
     }
 
     public async Task<byte[]> GenerateTranscriptPdfAsync(
@@ -34,11 +38,16 @@ public class TranscriptService : ITranscriptService
             .OrderByDescending(r => r.ComputedAt)
             .FirstOrDefaultAsync();
 
-        // Generate simple HTML-based transcript content (rendered as text bytes)
+        // Load per-course breakdown
+        var courseResultsBySemester = await _gpaService.GetCourseResultsBySemesterAsync(studentId);
+
         var sb = new StringBuilder();
-        sb.AppendLine("PWCE SCHOOL PORTAL");
-        sb.AppendLine("OFFICIAL ACADEMIC TRANSCRIPT");
-        sb.AppendLine(new string('=', 60));
+        const int W = 80;
+
+        sb.AppendLine(Center("PWCE SCHOOL PORTAL", W));
+        sb.AppendLine(Center("OFFICIAL ACADEMIC TRANSCRIPT", W));
+        sb.AppendLine(new string('=', W));
+
         if (student != null)
         {
             sb.AppendLine($"Student Name  : {student.Surname} {student.OtherNames}");
@@ -51,23 +60,71 @@ public class TranscriptService : ITranscriptService
         sb.AppendLine($"Type          : {(type == TranscriptType.Official ? "Official" : "Unofficial")}");
         if (!string.IsNullOrEmpty(purpose))
             sb.AppendLine($"Purpose       : {purpose}");
-        sb.AppendLine(new string('-', 60));
-        sb.AppendLine("SEMESTER RESULTS");
-        sb.AppendLine(new string('-', 60));
 
-        foreach (var result in semesterResults)
+        sb.AppendLine(new string('=', W));
+        sb.AppendLine();
+
+        // Group by academic year
+        var byYear = semesterResults
+            .GroupBy(r => r.AcademicSemester?.AcademicYear?.Year ?? "Unknown")
+            .OrderBy(g => g.Key);
+
+        decimal cumulativeWeightedGP = 0;
+        int cumulativeCreditHours = 0;
+
+        foreach (var yearGroup in byYear)
         {
-            sb.AppendLine($"{result.AcademicSemester?.AcademicYear?.Year} – {result.AcademicSemester?.SemesterName}");
-            sb.AppendLine($"  GPA: {result.GPA:F2}  |  Credit Hours: {result.TotalCreditHours}");
+            sb.AppendLine($"YEAR: {yearGroup.Key}");
+            sb.AppendLine(new string('-', W));
+
+            foreach (var sem in yearGroup)
+            {
+                sb.AppendLine($"  Semester: {sem.AcademicSemester?.SemesterName}");
+                sb.AppendLine();
+
+                // Column header
+                sb.AppendLine(
+                    $"  {"Course Code",-12} {"Course Name",-35} {"Cr",3}  {"Score%",7}  {"Grd",4}  {"GP",5}  {"QP",7}");
+                sb.AppendLine("  " + new string('-', W - 2));
+
+                var courses = courseResultsBySemester.TryGetValue(sem.AcademicSemesterId, out var cl)
+                    ? cl
+                    : new List<ViewModel.Results.CourseResultViewModel>();
+
+                decimal semQP = 0;
+                foreach (var c in courses)
+                {
+                    decimal qp = c.GradePoint * c.CreditHours;
+                    semQP += qp;
+                    sb.AppendLine(
+                        $"  {c.CourseCode,-12} {Truncate(c.CourseName, 35),-35} {c.CreditHours,3}  {c.TotalScore,7:F1}  {c.GradeLetter,4}  {c.GradePoint,5:F2}  {qp,7:F2}");
+                }
+
+                sb.AppendLine("  " + new string('-', W - 2));
+                sb.AppendLine($"  {"Semester Total",-48} {sem.TotalCreditHours,3}  {"",7}  {"",4}  {"",5}  {semQP,7:F2}");
+                sb.AppendLine($"  Semester GPA: {sem.GPA:F2}");
+
+                cumulativeWeightedGP += semQP;
+                cumulativeCreditHours += sem.TotalCreditHours;
+                decimal runningCGPA = cumulativeCreditHours > 0
+                    ? Math.Round(cumulativeWeightedGP / cumulativeCreditHours, 2)
+                    : 0;
+                sb.AppendLine($"  Cumulative GPA: {runningCGPA:F2}");
+                sb.AppendLine();
+            }
         }
 
-        if (latestCumulative != null)
-        {
-            sb.AppendLine(new string('-', 60));
-            sb.AppendLine($"CGPA: {latestCumulative.CGPA:F2}  |  Classification: {latestCumulative.Classification}");
-        }
-
-        sb.AppendLine(new string('=', 60));
+        // Summary
+        sb.AppendLine(new string('=', W));
+        sb.AppendLine(Center("SUMMARY", W));
+        sb.AppendLine(new string('=', W));
+        sb.AppendLine($"Total Credit Hours Attempted : {latestCumulative?.TotalCreditHoursAttempted ?? cumulativeCreditHours}");
+        sb.AppendLine($"Total Credit Hours Earned    : {latestCumulative?.TotalCreditHoursEarned ?? cumulativeCreditHours}");
+        decimal finalCGPA = latestCumulative?.CGPA ??
+            (cumulativeCreditHours > 0 ? Math.Round(cumulativeWeightedGP / cumulativeCreditHours, 2) : 0);
+        sb.AppendLine($"Cumulative GPA               : {finalCGPA:F2}");
+        sb.AppendLine($"Classification               : {latestCumulative?.Classification ?? "-"}");
+        sb.AppendLine(new string('=', W));
 
         // Log the request
         var request = new TranscriptRequest
@@ -102,4 +159,13 @@ public class TranscriptService : ITranscriptService
             .Include(r => r.Student)
             .Include(r => r.RequestedBy)
             .FirstOrDefaultAsync(r => r.Id == id);
+
+    private static string Center(string text, int width)
+    {
+        int padding = Math.Max(0, (width - text.Length) / 2);
+        return new string(' ', padding) + text;
+    }
+
+    private static string Truncate(string s, int max) =>
+        s.Length <= max ? s : s[..(max - 1)] + "…";
 }

@@ -102,13 +102,28 @@
                                         }
                                         else { <span>No</span> }
                                     </td>
-                                    @if (User.HasClaim("Permission", "Permissions.StudentResults.Withhold") && !r.IsWithheld)
+                                    @if (User.HasClaim("Permission", "Permissions.StudentResults.Withhold"))
                                     {
                                         <td class="text-center">
-                                            <button class="btn btn-sm btn-outline-warning"
-                                                    onclick="withholdResult('@r.StudentId','@Model.Semester.Id')">
-                                                Withhold
-                                            </button>
+                                            @if (r.IsWithheld)
+                                            {
+                                                <form asp-action="UnWithhold" method="post" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="studentId" value="@r.StudentId" />
+                                                    <input type="hidden" name="semesterId" value="@Model.Semester.Id" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-success"
+                                                            onclick="return confirm('Un-withhold and re-publish this result?')">
+                                                        Un-Withhold
+                                                    </button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-sm btn-outline-warning"
+                                                        onclick="withholdResult('@r.StudentId','@Model.Semester.Id')">
+                                                    Withhold
+                                                </button>
+                                            }
                                         </td>
                                     }
                                 </tr>

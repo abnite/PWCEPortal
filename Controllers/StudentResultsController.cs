@@ -47,11 +47,14 @@ public class StudentResultsController : Controller
         if (activeYear != null)
             cumulative = await _gpaService.GetCumulativeResultAsync(student.Id, activeYear.Id);
 
+        var courseResults = await _gpaService.GetCourseResultsBySemesterAsync(student.Id);
+
         var vm = new StudentResultsViewModel
         {
             Student = student,
             SemesterResults = semesterResults,
-            CumulativeResult = cumulative
+            CumulativeResult = cumulative,
+            CourseResultsBySemester = courseResults
         };
 
         return View(vm);
@@ -138,6 +141,17 @@ public class StudentResultsController : Controller
         return RedirectToAction(nameof(AllResults), new { semesterId });
     }
 
+    // ── Un-withhold individual result ────────────────────────────────────────
+
+    [HttpPost, ValidateAntiForgeryToken]
+    [Authorize(Policy = Permissions.StudentResults.Withhold)]
+    public async Task<IActionResult> UnWithhold(Guid studentId, Guid semesterId)
+    {
+        await _gpaService.UnWithholdResultAsync(studentId, semesterId);
+        TempData["SuccessMessage"] = "Result un-withheld and re-published.";
+        return RedirectToAction(nameof(AllResults), new { semesterId });
+    }
+
     // ── View student's result detail ─────────────────────────────────────────
 
     [Authorize(Policy = Permissions.StudentResults.ViewAll)]
@@ -153,11 +167,14 @@ public class StudentResultsController : Controller
         if (activeYear != null)
             cumulative = await _gpaService.GetCumulativeResultAsync(studentId, activeYear.Id);
 
+        var courseResults = await _gpaService.GetCourseResultsBySemesterAsync(studentId);
+
         var vm = new StudentResultsViewModel
         {
             Student = student,
             SemesterResults = semesterResults,
-            CumulativeResult = cumulative
+            CumulativeResult = cumulative,
+            CourseResultsBySemester = courseResults
         };
         return View("MyResults", vm);
     }

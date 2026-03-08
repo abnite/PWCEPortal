@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PWCEPortal.ApplicationClass;
 using PWCEPortal.Data;
 using PWCEPortal.Interfaces;
@@ -11,11 +12,13 @@ namespace PWCEPortal.Controllers;
 public class AssessmentApprovalController : Controller
 {
     private readonly IAssessmentApprovalService _service;
+    private readonly PortalDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public AssessmentApprovalController(IAssessmentApprovalService service, UserManager<ApplicationUser> userManager)
+    public AssessmentApprovalController(IAssessmentApprovalService service, PortalDbContext context, UserManager<ApplicationUser> userManager)
     {
         _service = service;
+        _context = context;
         _userManager = userManager;
     }
 
@@ -33,6 +36,48 @@ public class AssessmentApprovalController : Controller
         var submission = await _service.GetSubmissionByIdAsync(id);
         if (submission is null) return NotFound();
         ViewBag.Logs = await _service.GetApprovalLogsAsync(id);
+
+        // Load assessment components for this assignment's course
+        var assignmentId = submission.CourseLecturerAssignmentId;
+        var course = submission.CourseLecturerAssignment?.Course;
+
+        var allStructures = await _context.AssessmentStructures
+            .Include(s => s.Components)
+            .Where(s => s.IsDeleted != true)
+            .ToListAsync();
+
+        var structure =
+            allStructures.FirstOrDefault(s => s.CollegeProgramId == course!.CollegeProgramId && s.ApplicableLevel == course.Level)
+            ?? allStructures.FirstOrDefault(s => s.CollegeProgramId == course!.CollegeProgramId && s.ApplicableLevel == null)
+            ?? allStructures.FirstOrDefault(s => s.CollegeProgramId == null && s.ApplicableLevel == course!.Level)
+            ?? allStructures.FirstOrDefault(s => s.IsDefault)
+            ?? allStructures.FirstOrDefault(s => s.CollegeProgramId == null && s.ApplicableLevel == null);
+
+        var components = structure?.Components?
+            .Where(c => c.IsDeleted != true)
+            .OrderBy(c => c.DisplayOrder)
+            .ToList() ?? new();
+
+        // Load all student marks for this assignment
+        var marks = await _context.StudentMarks
+            .Include(m => m.Student)
+            .Include(m => m.AssessmentComponent)
+            .Where(m => m.CourseLecturerAssignmentId == assignmentId && m.IsDeleted != true)
+            .ToListAsync();
+
+        // Load registered students
+        var registrations = await _context.StudentCourseRegistrations
+            .Include(r => r.Student)
+            .Where(r => r.CourseId == submission.CourseLecturerAssignment!.CourseId
+                     && r.SemesterId == submission.CourseLecturerAssignment!.AcademicSemesterId
+                     && r.IsRegistered)
+            .OrderBy(r => r.Student!.Surname)
+            .ToListAsync();
+
+        ViewBag.Components = components;
+        ViewBag.Marks = marks;
+        ViewBag.Registrations = registrations;
+
         return View(submission);
     }
 

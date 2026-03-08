@@ -38,26 +38,91 @@
 
     @if (Model.SemesterResults.Any())
     {
-        <div class="card shadow-sm">
+        <div class="card shadow-sm mb-4">
             <div class="card-header bg-light"><h5 class="mb-0">Semester Results</h5></div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered align-middle">
-                        <thead class="table-light">
-                            <tr><th>Academic Year</th><th>Semester</th><th>GPA</th><th>Credit Hours</th></tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var r in Model.SemesterResults)
-                            {
-                                <tr>
-                                    <td>@r.AcademicSemester?.AcademicYear?.Year</td>
-                                    <td>@r.AcademicSemester?.SemesterName</td>
-                                    <td><strong>@r.GPA.ToString("F2")</strong></td>
-                                    <td>@r.TotalCreditHours</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+            <div class="card-body p-0">
+                <div class="accordion" id="semesterAccordion">
+                    @{int semIdx = 0;}
+                    @foreach (var r in Model.SemesterResults)
+                    {
+                        var collapseId = $"collapse-{r.Id}";
+                        var headingId  = $"heading-{r.Id}";
+                        var courses    = Model.CourseResultsBySemester.TryGetValue(r.AcademicSemesterId, out var cl) ? cl : new List<PWCEPortal.ViewModel.Results.CourseResultViewModel>();
+                        semIdx++;
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="@headingId">
+                                <button class="accordion-button @(semIdx == 1 ? "" : "collapsed")" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#@collapseId"
+                                        aria-expanded="@(semIdx == 1 ? "true" : "false")" aria-controls="@collapseId">
+                                    <div class="d-flex w-100 justify-content-between pe-3">
+                                        <span><strong>@r.AcademicSemester?.AcademicYear?.Year</strong> &ndash; @r.AcademicSemester?.SemesterName</span>
+                                        <span>
+                                            GPA: <strong class="text-primary">@r.GPA.ToString("F2")</strong>
+                                            &nbsp;|&nbsp; Credits: <strong>@r.TotalCreditHours</strong>
+                                        </span>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div id="@collapseId" class="accordion-collapse collapse @(semIdx == 1 ? "show" : "")"
+                                 aria-labelledby="@headingId" data-bs-parent="#semesterAccordion">
+                                <div class="accordion-body p-0">
+                                    @if (courses.Any())
+                                    {
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-sm mb-0 align-middle">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Course Code</th>
+                                                        <th>Course Name</th>
+                                                        <th class="text-center">Credits</th>
+                                                        <th class="text-center">Score (%)</th>
+                                                        <th class="text-center">Grade</th>
+                                                        <th class="text-center">Grade Point</th>
+                                                        <th class="text-center">Quality Points</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var c in courses)
+                                                    {
+                                                        <tr>
+                                                            <td><span class="custom-badge bg-secondary">@c.CourseCode</span></td>
+                                                            <td>@c.CourseName</td>
+                                                            <td class="text-center">@c.CreditHours</td>
+                                                            <td class="text-center">@c.TotalScore.ToString("F1")</td>
+                                                            <td class="text-center">
+                                                                <strong class="@(c.GradeLetter == "-" ? "text-muted" : "text-success")">@c.GradeLetter</strong>
+                                                            </td>
+                                                            <td class="text-center">@c.GradePoint.ToString("F2")</td>
+                                                            <td class="text-center">@c.QualityPoints.ToString("F2")</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                                <tfoot class="table-light">
+                                                    <tr>
+                                                        <td colspan="2" class="text-end fw-bold">Semester Total</td>
+                                                        <td class="text-center fw-bold">@r.TotalCreditHours</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td class="text-center fw-bold">@courses.Sum(c => c.QualityPoints).ToString("F2")</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="7" class="text-end">
+                                                            Semester GPA: <strong class="text-primary">@r.GPA.ToString("F2")</strong>
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <p class="text-muted p-3 mb-0">No course detail available for this semester.</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

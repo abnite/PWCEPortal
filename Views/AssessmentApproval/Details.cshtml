@@ -3,6 +3,9 @@
     ViewBag.Title = "Submission Details";
     Layout = "_AdminLayout";
     var logs = ViewBag.Logs as IEnumerable<PWCEPortal.Models.Academic.AssessmentApprovalLog>;
+    var components = ViewBag.Components as List<PWCEPortal.Models.Academic.AssessmentComponent> ?? new();
+    var marks = ViewBag.Marks as List<PWCEPortal.Models.Academic.StudentMark> ?? new();
+    var registrations = ViewBag.Registrations as List<PWCEPortal.Models.Academic.StudentCourseRegistration> ?? new();
     var status = Model.Status;
     bool canHODApprove = User.HasClaim("Permission", "Permissions.AssessmentApproval.HODApprove")
                       && status == PWCEPortal.Models.Academic.SubmissionStatus.SubmittedForReview;
@@ -139,6 +142,74 @@
                             <button type="submit" class="btn btn-danger">Unlock</button>
                         </form>
                     </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Student Marks Sheet -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fas fa-table me-2"></i>Student Marks Sheet</h5>
+            <span class="custom-badge bg-light text-primary">@registrations.Count students</span>
+        </div>
+        <div class="card-body p-0">
+            @if (!registrations.Any())
+            {
+                <div class="text-center text-muted py-4">No student registrations found for this course.</div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Student ID</th>
+                                <th>Student Name</th>
+                                @foreach (var comp in components)
+                                {
+                                    <th class="text-center">
+                                        @comp.ComponentName
+                                        <br/><small class="text-muted">/ @comp.MaxScore (@comp.WeightPercent%)</small>
+                                    </th>
+                                }
+                                <th class="text-center bg-light fw-bold">Total %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ int rowNo = 1; }
+                            @foreach (var reg in registrations)
+                            {
+                                var student = reg.Student!;
+                                var studentMarks = marks.Where(m => m.StudentId == student.Id).ToList();
+                                // Compute total weighted score
+                                decimal total = 0;
+                                foreach (var comp in components)
+                                {
+                                    var m = studentMarks.FirstOrDefault(x => x.AssessmentComponentId == comp.Id);
+                                    if (m?.Score != null)
+                                        total += (m.Score.Value / comp.MaxScore) * comp.WeightPercent;
+                                }
+                                <tr>
+                                    <td>@rowNo</td>
+                                    <td><span class="custom-badge bg-secondary">@(student.StudentID ?? student.ApplicationNumber)</span></td>
+                                    <td><strong>@student.Surname @student.OtherNames</strong></td>
+                                    @foreach (var comp in components)
+                                    {
+                                        var mark = studentMarks.FirstOrDefault(m => m.AssessmentComponentId == comp.Id);
+                                        <td class="text-center @(mark == null ? "text-muted" : "")">
+                                            @(mark?.Score?.ToString("F1") ?? "-")
+                                        </td>
+                                    }
+                                    <td class="text-center fw-bold @(total >= 50 ? "text-success" : "text-danger")">
+                                        @total.ToString("F1")%
+                                    </td>
+                                </tr>
+                                rowNo++;
+                            }
+                        </tbody>
+                    </table>
                 </div>
             }
         </div>

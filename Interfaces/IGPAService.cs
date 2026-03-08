@@ -1,4 +1,5 @@
 using PWCEPortal.Models.Academic;
+using PWCEPortal.ViewModel.Results;
 
 namespace PWCEPortal.Interfaces;
 
@@ -16,4 +17,8 @@ public interface IGPAService
 
     Task<bool> PublishResultsAsync(Guid semesterId);
     Task<bool> WithholdResultAsync(Guid studentId, Guid semesterId, string reason);
+    Task<bool> UnWithholdResultAsync(Guid studentId, Guid semesterId);
+
+    /// <summary>Per-course breakdown for a student keyed by SemesterId.</summary>
+    Task<Dictionary<Guid, List<CourseResultViewModel>>> GetCourseResultsBySemesterAsync(Guid studentId);
 }
