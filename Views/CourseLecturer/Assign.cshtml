@@ -43,7 +43,7 @@
                                 <option value="">-- Select Course --</option>
                                 @foreach (var c in Model.Courses)
                                 {
-                                    <option value="@c.Id">[@c.CourseCode] @c.CourseName (L@c.Level S@c.Semester)</option>
+                                    <option value="@c.Id">[@c.CourseCode] @c.CourseName (L-@c.Level S-@c.Semester)</option>
                                 }
                             </select>
                             <label asp-for="CourseId">Course</label>

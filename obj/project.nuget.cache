@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "lxh2XeDRl7k=",
+  "dgSpecHash": "9MuL6ufL2Lw=",
   "success": true,
   "projectFilePath": "/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/PWCEPortal.csproj",
   "expectedPackageFiles": [
@@ -57,6 +57,7 @@
     "/Users/abraham/.nuget/packages/microsoft.win32.registry/5.0.0/microsoft.win32.registry.5.0.0.nupkg.sha512",
     "/Users/abraham/.nuget/packages/microsoft.win32.systemevents/7.0.0/microsoft.win32.systemevents.7.0.0.nupkg.sha512",
     "/Users/abraham/.nuget/packages/mono.texttemplating/2.2.1/mono.texttemplating.2.2.1.nupkg.sha512",
+    "/Users/abraham/.nuget/packages/questpdf/2024.3.4/questpdf.2024.3.4.nupkg.sha512",
     "/Users/abraham/.nuget/packages/system.buffers/4.5.1/system.buffers.4.5.1.nupkg.sha512",
     "/Users/abraham/.nuget/packages/system.codedom/4.4.0/system.codedom.4.4.0.nupkg.sha512",
     "/Users/abraham/.nuget/packages/system.componentmodel.annotations/5.0.0/system.componentmodel.annotations.5.0.0.nupkg.sha512",

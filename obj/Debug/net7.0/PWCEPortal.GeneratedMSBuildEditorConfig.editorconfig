@@ -376,6 +376,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTm9uVGVhY2hpbmdTdGFmZi9TdGFydEFwcHJhaXNhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/NonTeachingStaff/StartBulkAppraisal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTm9uVGVhY2hpbmdTdGFmZi9TdGFydEJ1bGtBcHByYWlzYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/Permissions/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGVybWlzc2lvbnMvRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -662,6 +666,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/TeachingAppraisal/ConductAppraisal.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGVhY2hpbmdBcHByYWlzYWwvQ29uZHVjdEFwcHJhaXNhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/TeachingAppraisal/CreateBulkSessions.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGVhY2hpbmdBcHByYWlzYWwvQ3JlYXRlQnVsa1Nlc3Npb25zLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/abraham/RiderProjects/PWCEPortal_Pharse2/PWCEPortal/Views/TeachingAppraisal/CreateSession.cshtml]

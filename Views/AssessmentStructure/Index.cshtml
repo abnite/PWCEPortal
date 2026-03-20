@@ -55,8 +55,10 @@
                                         </span>
                                     }
                                 </td>
-                                <td>@(s.CollegeProgram?.ProgramName ?? "<em class='text-muted'>All Programmes</em>")</td>
-                                <td>@(s.ApplicableLevel.HasValue ? $"Level {s.ApplicableLevel}" : "<em class='text-muted'>All Levels</em>")</td>
+                                <td>
+                                    @Html.Raw(s.CollegeProgram?.ProgramName ?? "<em class='text-muted'>All Programmes</em>")
+                                </td>
+                                <td>@Html.Raw(s.ApplicableLevel.HasValue ? $"Level {s.ApplicableLevel}" : "<em class='text-muted'>All Levels</em>")</td>
                                 <td>
                                     @if (s.CollegeProgramId == null && s.ApplicableLevel == null)
                                     {

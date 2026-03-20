@@ -6,6 +6,7 @@ using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
+
 namespace PWCEPortal.Services;
 
 public class TranscriptService : ITranscriptService
@@ -59,44 +60,57 @@ public class TranscriptService : ITranscriptService
                 // Watermark layer for unofficial transcripts
                 if (isUnofficial)
                 {
-                    page.Background().Canvas((canvas, size) =>
+                    page.Background().Svg(size =>
                     {
-                        using var paint = new SkiaSharp.SKPaint
-                        {
-                            Color = SkiaSharp.SKColors.LightGray.WithAlpha(80),
-                            TextSize = 72,
-                            IsAntialias = true,
-                            FakeBoldText = true,
-                            TextAlign = SkiaSharp.SKTextAlign.Center
-                        };
-                        canvas.Save();
-                        canvas.Translate(size.Width / 2, size.Height / 2);
-                        canvas.RotateDegrees(-45);
-                        canvas.DrawText("UNOFFICIAL", 0, 0, paint);
-                        canvas.Restore();
+                        float w = size.Width;
+                        float h = size.Height;
+                        float cx = w / 2;
+                        float cy = h / 2;
+
+                        return $@"<svg width=""{w}"" height=""{h}"" xmlns=""http://www.w3.org/2000/svg"">
+                                <text
+                                    x=""{cx}""
+                                    y=""{cy}""
+                                    font-size=""72""
+                                    font-weight=""bold""
+                                    fill=""lightgray""
+                                    fill-opacity=""0.12""
+                                    text-anchor=""middle""
+                                    dominant-baseline=""middle""
+                                    transform=""rotate(-45, {cx}, {cy})"">
+                                    UNOFFICIAL
+                                </text>
+                            </svg>";
                     });
                 }
 
                 page.Header().Column(col =>
                 {
-                    col.Item().AlignCenter().Text("PWCE SCHOOL PORTAL").Bold().FontSize(16);
+                    col.Item().AlignCenter().Text("PRESBYTERIAN WOMEN’S COLLEGE OF EDUCATION").Bold().FontSize(14);
                     col.Item().AlignCenter().Text("OFFICIAL ACADEMIC TRANSCRIPT").Bold().FontSize(12);
                     if (isUnofficial)
-                        col.Item().AlignCenter().Text("— UNOFFICIAL COPY —").FontColor(Colors.Red.Medium).Bold().FontSize(10);
+                        col.Item().AlignCenter().Text("— UNOFFICIAL COPY —").FontColor(Colors.Red.Medium).Bold()
+                            .FontSize(10);
                     col.Item().LineHorizontal(1).LineColor(Colors.Black);
                     col.Item().PaddingTop(6).Table(t =>
                     {
-                        t.ColumnsDefinition(c => { c.RelativeColumn(); c.RelativeColumn(); });
+                        t.ColumnsDefinition(c =>
+                        {
+                            c.RelativeColumn();
+                            c.RelativeColumn();
+                        });
+
                         void Row(string label, string value)
                         {
                             t.Cell().Text(label).SemiBold();
                             t.Cell().Text(value);
                         }
+
                         Row("Student Name:", studentName);
                         Row("Student ID:", student?.StudentID ?? "-");
                         Row("Programme:", student?.CollegeProgram?.ProgramName ?? "-");
-                        Row("Level of Entry:", student?.LevelOfEntry?.ToString() ?? "-");
-                        Row("Enrolment Year:", student?.EnrolmentYear ?? "-");
+                        Row("Level of Entry:", student == null ? "-" : student.LevelOfEntry.ToString());
+                        Row("Enrolment Year:", student == null ? "-" : student.EnrolmentYear.ToString());
                         Row("Generated:", DateTime.UtcNow.ToString("dd MMM yyyy HH:mm") + " UTC");
                         if (!string.IsNullOrEmpty(purpose))
                             Row("Purpose:", purpose);
@@ -118,27 +132,30 @@ public class TranscriptService : ITranscriptService
                         foreach (var sem in yearGroup)
                         {
                             var courses = courseResultsBySemester.TryGetValue(sem.AcademicSemesterId, out var cl)
-                                ? cl : new List<ViewModel.Results.CourseResultViewModel>();
+                                ? cl
+                                : new List<ViewModel.Results.CourseResultViewModel>();
 
                             decimal semQP = courses.Sum(c => c.GradePoint * c.CreditHours);
                             runningWeightedGP += semQP;
                             runningCredits += sem.TotalCreditHours;
                             decimal runningCGPA = runningCredits > 0
-                                ? Math.Round(runningWeightedGP / runningCredits, 2) : 0;
+                                ? Math.Round(runningWeightedGP / runningCredits, 2)
+                                : 0;
 
-                            content.Item().PaddingTop(4).Text($"Semester: {sem.AcademicSemester?.SemesterName}").SemiBold();
+                            content.Item().PaddingTop(4).Text($"Semester: {sem.AcademicSemester?.SemesterName}")
+                                .SemiBold();
 
                             content.Item().PaddingTop(2).Table(t =>
                             {
                                 t.ColumnsDefinition(c =>
                                 {
-                                    c.ConstantColumn(60);  // Code
-                                    c.RelativeColumn(3);   // Course Name
-                                    c.ConstantColumn(30);  // Credits
-                                    c.ConstantColumn(45);  // Score%
-                                    c.ConstantColumn(30);  // Grade
-                                    c.ConstantColumn(35);  // GP
-                                    c.ConstantColumn(40);  // QP
+                                    c.ConstantColumn(60); // Code
+                                    c.RelativeColumn(3); // Course Name
+                                    c.ConstantColumn(30); // Credits
+                                    c.ConstantColumn(45); // Score%
+                                    c.ConstantColumn(30); // Grade
+                                    c.ConstantColumn(35); // GP
+                                    c.ConstantColumn(40); // QP
                                 });
 
                                 // Header
@@ -175,8 +192,10 @@ public class TranscriptService : ITranscriptService
                                 static IContainer TotalCell(IContainer c) =>
                                     c.Background(Colors.Grey.Lighten4).Padding(3);
 
-                                t.Cell().ColumnSpan(2).Element(TotalCell).AlignRight().Text("Semester Total:").SemiBold();
-                                t.Cell().Element(TotalCell).AlignCenter().Text(sem.TotalCreditHours.ToString()).SemiBold();
+                                t.Cell().ColumnSpan(2).Element(TotalCell).AlignRight().Text("Semester Total:")
+                                    .SemiBold();
+                                t.Cell().Element(TotalCell).AlignCenter().Text(sem.TotalCreditHours.ToString())
+                                    .SemiBold();
                                 t.Cell().Element(TotalCell).Text(string.Empty);
                                 t.Cell().Element(TotalCell).Text(string.Empty);
                                 t.Cell().Element(TotalCell).Text(string.Empty);
@@ -189,7 +208,8 @@ public class TranscriptService : ITranscriptService
                                 row.AutoItem().Text(sem.GPA.ToString("F2")).FontColor(Colors.Blue.Darken2).SemiBold();
                                 row.ConstantItem(20);
                                 row.AutoItem().Text("Cumulative GPA: ").SemiBold();
-                                row.AutoItem().Text(runningCGPA.ToString("F2")).FontColor(Colors.Blue.Darken2).SemiBold();
+                                row.AutoItem().Text(runningCGPA.ToString("F2")).FontColor(Colors.Blue.Darken2)
+                                    .SemiBold();
                             });
 
                             content.Item().PaddingBottom(4);
@@ -201,18 +221,26 @@ public class TranscriptService : ITranscriptService
                     content.Item().PaddingTop(4).Text("ACADEMIC SUMMARY").Bold().FontSize(11);
                     content.Item().PaddingTop(4).Table(t =>
                     {
-                        t.ColumnsDefinition(c => { c.RelativeColumn(2); c.RelativeColumn(); });
+                        t.ColumnsDefinition(c =>
+                        {
+                            c.RelativeColumn(2);
+                            c.RelativeColumn();
+                        });
+
                         void Row(string lbl, string val)
                         {
                             t.Cell().Padding(3).Text(lbl).SemiBold();
                             t.Cell().Padding(3).Text(val);
                         }
+
                         Row("Total Credit Hours Attempted:",
                             (latestCumulative?.TotalCreditHoursAttempted ?? runningCredits).ToString());
                         Row("Total Credit Hours Earned:",
                             (latestCumulative?.TotalCreditHoursEarned ?? runningCredits).ToString());
                         decimal finalCGPA = latestCumulative?.CGPA ??
-                            (runningCredits > 0 ? Math.Round(runningWeightedGP / runningCredits, 2) : 0);
+                                            (runningCredits > 0
+                                                ? Math.Round(runningWeightedGP / runningCredits, 2)
+                                                : 0);
                         Row("Cumulative GPA:", finalCGPA.ToString("F2"));
                         Row("Classification:", latestCumulative?.Classification ?? "-");
                     });
