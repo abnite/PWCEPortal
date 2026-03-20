@@ -19,9 +19,10 @@ public class AccountController : Controller
     private readonly PortalDbContext _context;
     private readonly IEmailSender _emailSender;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
 
-    public AccountController(IAccountService accountService, PortalDbContext context, IEmailSender emailSender,UserManager<ApplicationUser> userManager,IUserCreation userCreation,SignInManager<ApplicationUser> signInManager)
+    public AccountController(IAccountService accountService, PortalDbContext context, IEmailSender emailSender,UserManager<ApplicationUser> userManager,IUserCreation userCreation,SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager)
     {
         _accountService = accountService;
         _context = context;
@@ -29,6 +30,7 @@ public class AccountController : Controller
         _userManager = userManager;
         _userCreation = userCreation;
         _signInManager = signInManager;
+        _roleManager = roleManager;
     }
 
     // GET
