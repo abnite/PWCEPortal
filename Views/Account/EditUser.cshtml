@@ -4,81 +4,124 @@
 @{
     ViewBag.Title = "Edit User";
     Layout = "_AdminLayout";
-    
-    var getRoles = await db.Roles.ToListAsync();
+
+    var allRoles = ViewBag.AllRoles as IEnumerable<PWCEPortal.Data.ApplicationRole>
+                ?? await db.Roles.OrderBy(r => r.Name).ToListAsync();
+    var currentRoles = new HashSet<string>(Model.Roles ?? new List<string>());
+
+    var deptRoleNames = new[] { "Head of Department", "Unit Head" };
+    var hasDeptRole = currentRoles.Any(r => deptRoleNames.Contains(r));
 }
 
-
-<div class="card mt-4">
-    <div class="card-header">
-        <h3>Edit User</h3>
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">Edit User</h1>
+        <a asp-action="UserList" class="btn btn-outline-secondary btn-sm">
+            <i class="fas fa-arrow-left me-1"></i> Back to User List
+        </a>
     </div>
-    <div class="card-body">
-        <hr>
-        <form asp-action="EditUser" method="post">
-            <input type="hidden" asp-for="Id" />
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label asp-for="FirstName"  class="form-label"></label>
-                    <input asp-for="FirstName" class="form-control" />
-                    <span asp-validation-for="FirstName" class="text-danger"></span>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white"><h5 class="mb-0">Edit User: @Model.FirstName @Model.LastName</h5></div>
+        <div class="card-body">
+            <form asp-action="EditUser" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="FirstName" class="form-label"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="LastName" class="form-label"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="form-group col-md-6">
-                    <label asp-for="LastName"  class="form-label"></label>
-                    <input asp-for="LastName" class="form-control" />
-                    <span asp-validation-for="LastName" class="text-danger"></span>
+
+                <div class="row g-3 mt-1">
+                    <div class="col-md-6">
+                        <label asp-for="EmailAddress" class="form-label"></label>
+                        <input asp-for="EmailAddress" class="form-control" />
+                        <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="PhoneNumber" class="form-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label asp-for="EmailAddress"  class="form-label"></label>
-                    <input asp-for="EmailAddress" class="form-control" />
-                    <span asp-validation-for="EmailAddress" class="text-danger"></span>
-                </div>
-                <div class="form-group col-md-6">
-                    <label asp-for="PhoneNumber"  class="form-label"></label>
-                    <input asp-for="PhoneNumber" class="form-control" />
-                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label asp-for="Role"  class="form-label"></label>
-                    <select id="Role" asp-for="Role" class="form-control">
-                        <option value="">Select Role</option>
-                        @foreach (var role in getRoles)
-                        {
-                            <option value="@role.Name">@role.Name</option>
-                        }
-                    </select>
-                    <span asp-validation-for="Role" class="text-danger"></span>
-                </div>
-                <div class="form-group col-md-6" id="departmentSection">
-                    <label asp-for="DepartmentId" class="form-label">
-                        Department / Unit
-                        <small class="text-muted">(required for HOD and Unit Head)</small>
-                    </label>
-                    <select asp-for="DepartmentId" class="form-control">
-                        <option value="">-- None --</option>
-                        @if (ViewBag.Departments is IEnumerable<PWCEPortal.Models.Academic.Department> depts)
-                        {
-                            @foreach (var dept in depts)
+
+                <div class="row g-3 mt-1">
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Roles <span class="text-danger">*</span></label>
+                        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 p-2 border rounded">
+                            @foreach (var role in allRoles)
                             {
-                                <option value="@dept.Id">@dept.DepartmentName</option>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input edit-role-checkbox"
+                                               type="checkbox"
+                                               name="Roles"
+                                               value="@role.Name"
+                                               id="editrole_@role.Id"
+                                               @(currentRoles.Contains(role.Name!) ? "checked" : "") />
+                                        <label class="form-check-label" for="editrole_@role.Id">@role.Name</label>
+                                    </div>
+                                </div>
                             }
-                        }
-                    </select>
-                    <span class="form-text text-muted">
-                        Assigning a department scopes this user to only manage staff/lecturers in that department.
-                    </span>
+                        </div>
+                        <small class="text-muted">A user can hold multiple roles simultaneously (e.g. Lecturer + Head of Department).</small>
+                    </div>
                 </div>
-            </div>
-            <hr/>
-            <button type="submit" class="btn btn-success">Update User</button>
-        </form>
+
+                <div class="row g-3 mt-1" id="deptSectionEdit" style="@(hasDeptRole ? "" : "display:none;")">
+                    <div class="col-md-6">
+                        <label asp-for="DepartmentId" class="form-label">
+                            Department / Unit
+                            <small class="text-muted">(required for HOD and Unit Head)</small>
+                        </label>
+                        <select asp-for="DepartmentId" class="form-control">
+                            <option value="">-- None --</option>
+                            @if (ViewBag.Departments is IEnumerable<PWCEPortal.Models.Academic.Department> depts)
+                            {
+                                @foreach (var dept in depts)
+                                {
+                                    <option value="@dept.Id">@dept.DepartmentName</option>
+                                }
+                            }
+                        </select>
+                        <small class="form-text text-muted">
+                            Assigning a department scopes this user to only manage staff/lecturers in that department.
+                        </small>
+                    </div>
+                </div>
+
+                <hr />
+                <div class="d-flex gap-2">
+                    <a asp-action="UserList" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save me-1"></i>Update User
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-
 @section Scripts {
+<script>
+$(document).ready(function () {
+    var deptRoles = ['Head of Department', 'Unit Head'];
+    function toggleEditDept() {
+        var any = false;
+        $('.edit-role-checkbox:checked').each(function () {
+            if (deptRoles.indexOf($(this).val()) !== -1) any = true;
+        });
+        $('#deptSectionEdit').toggle(any);
+    }
+    $('.edit-role-checkbox').on('change', toggleEditDept);
+});
+</script>
 }

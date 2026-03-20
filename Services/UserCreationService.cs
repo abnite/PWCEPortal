@@ -28,6 +28,7 @@ public class UserCreationService:IUserCreation
     
     public async Task<IdentityResult> CreateNewAccount(UserRegistrationViewModel model)
     {
+        var primaryRole = model.Roles.FirstOrDefault();
         var user = new ApplicationUser
         {
             UserName = model.EmailAddress,
@@ -35,20 +36,17 @@ public class UserCreationService:IUserCreation
             LastName = model.LastName,
             Email = model.EmailAddress,
             PhoneNumber = model.PhoneNumber,
-            AccountType = model.Role
+            AccountType = primaryRole,
+            DepartmentId = model.DepartmentId
         };
 
-        var result = await _userManager.CreateAsync(user, "PASSWORD1"); // Use the provided password
+        var result = await _userManager.CreateAsync(user, "PASSWORD1");
         if (result.Succeeded)
         {
-            var role = await _roleManager.FindByNameAsync(model.Role);
-            if (role != null)
+            foreach (var roleName in model.Roles.Where(r => !string.IsNullOrWhiteSpace(r)))
             {
-                var checkUserIsInRole = await _userManager.IsInRoleAsync(user, role.Name);
-                if (!checkUserIsInRole)
-                {
-                    await _userManager.AddToRoleAsync(user, role.Name);
-                }
+                if (!await _userManager.IsInRoleAsync(user, roleName))
+                    await _userManager.AddToRoleAsync(user, roleName);
             }
         }
 
@@ -84,23 +82,22 @@ public class UserCreationService:IUserCreation
         user.Email = model.EmailAddress;
         user.UserName = model.EmailAddress;
         user.PhoneNumber = model.PhoneNumber;
-        user.AccountType = model.Role;
-        // DepartmentId scopes HOD / Unit Head to their department
+        user.AccountType = model.Roles.FirstOrDefault();
         user.DepartmentId = model.DepartmentId;
 
-        // Update the user
         var result = await _userManager.UpdateAsync(user);
         if (result.Succeeded)
         {
-            // Update the user's role if it has changed
             var currentRoles = await _userManager.GetRolesAsync(user);
-            if (!currentRoles.Contains(model.Role))
-            {
-                // Remove existing roles
-                await _userManager.RemoveFromRolesAsync(user, currentRoles);
-                // Add the new role
-                await _userManager.AddToRoleAsync(user, model.Role);
-            }
+            var newRoles = model.Roles.Where(r => !string.IsNullOrWhiteSpace(r)).ToList();
+
+            var toRemove = currentRoles.Except(newRoles).ToList();
+            var toAdd    = newRoles.Except(currentRoles).ToList();
+
+            if (toRemove.Any())
+                await _userManager.RemoveFromRolesAsync(user, toRemove);
+            foreach (var r in toAdd)
+                await _userManager.AddToRoleAsync(user, r);
         }
 
         return result;
@@ -139,12 +136,12 @@ public class UserCreationService:IUserCreation
                 continue;
             var userViewModel = new UserRegistrationViewModel
             {
-                Id =Guid.Parse(user.Id),
-                EmailAddress = user. UserName,
-                FirstName = user. FirstName,
-                LastName = user. LastName,
-                PhoneNumber = user. PhoneNumber,
-                Role = roles. FirstOrDefault() // Assuming one role per user
+                Id = Guid.Parse(user.Id),
+                EmailAddress = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                Roles = roles.ToList()
             };
             userViewModels.Add(userViewModel);
         }

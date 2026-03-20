@@ -62,18 +62,37 @@
                 </div>
                 
                 <div class="row g-3 mt-2">
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            <select asp-for="Registration.Role" class="form-select">
-                                <option value="">Select Role</option>
-                                @foreach (var role in getRoles)
-                                {
-                                    <option value="@role.Name">@role.Name</option>
-                                }
-                            </select>
-                            <label asp-for="Registration.Role">User Role</label>
-                            <span asp-validation-for="Registration.Role" class="text-danger small"></span>
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Roles <span class="text-danger">*</span></label>
+                        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 p-2 border rounded">
+                            @foreach (var role in getRoles.OrderBy(r => r.Name))
+                            {
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input role-checkbox"
+                                               type="checkbox"
+                                               name="Registration.Roles"
+                                               value="@role.Name"
+                                               id="newrole_@role.Id" />
+                                        <label class="form-check-label" for="newrole_@role.Id">@role.Name</label>
+                                    </div>
+                                </div>
+                            }
                         </div>
+                        <small class="text-muted">Select one or more roles. A user can be both a Lecturer and a Head of Department, for example.</small>
+                    </div>
+                </div>
+                <div class="row g-3 mt-2" id="deptSectionNew" style="display:none;">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Department / Unit</label>
+                        <select name="Registration.DepartmentId" class="form-select">
+                            <option value="">-- None --</option>
+                            @foreach (var dept in await db.Set<PWCEPortal.Models.Academic.Department>().Where(d => d.IsDeleted != true).OrderBy(d => d.DepartmentName).ToListAsync())
+                            {
+                                <option value="@dept.Id">@dept.DepartmentName</option>
+                            }
+                        </select>
+                        <small class="text-muted">Required for HOD and Unit Head roles.</small>
                     </div>
                 </div>
                 
@@ -119,14 +138,11 @@
                             foreach (var user in Model.Users)
                             {
                                 var getUser = await db.Users.Where(i => i.Email == user.EmailAddress).FirstOrDefaultAsync();
-                                var userRoles = getUser != null ? await db.UserRoles.Where(ur => ur.UserId == getUser.Id).ToListAsync() : null;
-                                var roleName = "No Role";
-                                
-                                if (userRoles != null && userRoles.Any())
-                                {
-                                    var roleId = userRoles.First().RoleId;
-                                    roleName = (await db.Roles.FirstOrDefaultAsync(r => r.Id == roleId))?.Name ?? "No Role";
-                                }
+                                var userRoleIds = getUser != null ? await db.UserRoles.Where(ur => ur.UserId == getUser.Id).Select(ur => ur.RoleId).ToListAsync() : new List<string>();
+                                var roleNames = userRoleIds.Any()
+                                    ? await db.Roles.Where(r => userRoleIds.Contains(r.Id)).Select(r => r.Name).ToListAsync()
+                                    : new List<string>();
+                                var roleName = roleNames.Any() ? string.Join(", ", roleNames) : "No Role";
                                 
                                 <tr>
                                     <td>@index</td>
@@ -187,6 +203,17 @@
 @section Scripts {
     <script>
         $(document).ready(function() {
+            // Show/hide department section based on HOD or Unit Head selection
+            var deptRoles = ['Head of Department', 'Unit Head'];
+            function toggleDeptSection() {
+                var anyDeptRole = false;
+                $('.role-checkbox:checked').each(function() {
+                    if (deptRoles.indexOf($(this).val()) !== -1) anyDeptRole = true;
+                });
+                $('#deptSectionNew').toggle(anyDeptRole);
+            }
+            $('.role-checkbox').on('change', toggleDeptSection);
+
             // Initialize DataTable with search functionality
             $('#userTable').DataTable({
                 responsive: true,

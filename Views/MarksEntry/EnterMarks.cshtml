@@ -98,11 +98,11 @@
                     </div>
                 </form>
 
-                @* Submit for Review form is now a sibling, not nested inside SaveMarks form *@
+                @* Submit for Review form is a sibling, not nested inside SaveMarks form *@
                 @if (!isLocked)
                 {
-                    <div class="d-flex gap-2 mt-3">
-                        <button type="submit" form="markForm" class="btn btn-success">
+                    <div class="d-flex gap-2 mt-3 align-items-center">
+                        <button type="submit" form="markForm" class="btn btn-success" id="saveMarksBtn">
                             <i class="fas fa-save me-1"></i>Save Marks
                         </button>
 
@@ -110,13 +110,16 @@
                             (Model.Submission == null || Model.Submission.Status == PWCEPortal.Models.Academic.SubmissionStatus.Draft || Model.Submission.Status == PWCEPortal.Models.Academic.SubmissionStatus.HODRejected))
                         {
                             <form asp-controller="MarksEntry" asp-action="SubmitForReview" method="post" class="d-inline"
-                                  onsubmit="return confirm('Submit marks for HOD review? Ensure all marks are entered.')">
+                                  id="submitReviewForm">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="assignmentId" value="@Model.Assignment.Id" />
-                                <button type="submit" class="btn btn-warning">
+                                <button type="submit" class="btn btn-warning" id="submitReviewBtn">
                                     <i class="fas fa-paper-plane me-1"></i>Submit for Review
                                 </button>
                             </form>
+                            <small class="text-danger d-none" id="dirtyWarning">
+                                <i class="fas fa-exclamation-triangle me-1"></i>You have unsaved changes — save marks before submitting.
+                            </small>
                         }
                     </div>
                 }
@@ -124,3 +127,62 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+<script>
+(function () {
+    var isDirty = false;
+    var hasSavedMarks = @(Model.StudentRows.Any(r => r.ComponentScores.Any(s => s.Value.HasValue)) ? "true" : "false");
+
+    function setDirty() {
+        isDirty = true;
+        var btn = document.getElementById('submitReviewBtn');
+        var warn = document.getElementById('dirtyWarning');
+        if (btn)  { btn.disabled = true; btn.title = 'Save marks before submitting for review'; }
+        if (warn) { warn.classList.remove('d-none'); }
+    }
+
+    function clearDirty() {
+        isDirty = false;
+        var btn = document.getElementById('submitReviewBtn');
+        var warn = document.getElementById('dirtyWarning');
+        if (btn)  { btn.disabled = false; btn.title = ''; }
+        if (warn) { warn.classList.add('d-none'); }
+    }
+
+    // Watch all score inputs for changes
+    var scoreInputs = document.querySelectorAll('#markForm input[type="number"]');
+    scoreInputs.forEach(function (inp) {
+        inp.addEventListener('change', setDirty);
+        inp.addEventListener('input', setDirty);
+    });
+
+    // Clear dirty state after save
+    var saveBtn = document.getElementById('saveMarksBtn');
+    if (saveBtn) {
+        document.getElementById('markForm').addEventListener('submit', function () {
+            clearDirty();
+        });
+    }
+
+    // Guard: if no marks saved at all and form is untouched, warn on submit
+    var reviewForm = document.getElementById('submitReviewForm');
+    if (reviewForm) {
+        reviewForm.addEventListener('submit', function (e) {
+            if (isDirty) {
+                e.preventDefault();
+                alert('You have unsaved changes. Please save marks before submitting for review.');
+                return false;
+            }
+            if (!hasSavedMarks) {
+                var ok = confirm('No marks appear to have been saved yet. Submit anyway?');
+                if (!ok) { e.preventDefault(); return false; }
+            } else {
+                var ok2 = confirm('Submit marks for HOD review? Ensure all marks are correctly saved.');
+                if (!ok2) { e.preventDefault(); return false; }
+            }
+        });
+    }
+})();
+</script>
+}

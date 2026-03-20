@@ -251,6 +251,15 @@ public class MarksEntryController : Controller
     [Authorize(Policy = Permissions.MarksEntry.SubmitForReview)]
     public async Task<IActionResult> SubmitForReview(Guid assignmentId)
     {
+        // Guard: at least one mark must be saved before submission
+        var hasMarks = await _context.StudentMarks
+            .AnyAsync(m => m.CourseLecturerAssignmentId == assignmentId && m.IsDeleted != true);
+        if (!hasMarks)
+        {
+            TempData["ErrorMessage"] = "No marks found. Please enter and save marks before submitting for review.";
+            return RedirectToAction(nameof(EnterMarks), new { assignmentId });
+        }
+
         var user = await _userManager.GetUserAsync(User);
         var result = await _approvalService.SubmitForReviewAsync(assignmentId, user!.Id);
         TempData[result ? "SuccessMessage" : "ErrorMessage"] = result

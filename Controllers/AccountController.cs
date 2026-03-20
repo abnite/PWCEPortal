@@ -481,6 +481,10 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> AddUser(UserRegistrationAndListViewModel model)
     {
+        // Require at least one role
+        if (model.Registration?.Roles == null || !model.Registration.Roles.Any(r => !string.IsNullOrWhiteSpace(r)))
+            ModelState.AddModelError("Registration.Roles", "Please select at least one role.");
+
         if (ModelState.IsValid)
         {
             var result = await _userCreation.CreateNewAccount(model.Registration);
@@ -552,9 +556,11 @@ public class AccountController : Controller
             return RedirectToAction("UserList");
         }
 
-        // Get the user's current role
+        // Get all current roles
         var userRoles = await _userManager.GetRolesAsync(user);
-        var currentRole = userRoles.FirstOrDefault();
+
+        // All available roles for the checkboxes
+        ViewBag.AllRoles = await _roleManager.Roles.OrderBy(r => r.Name).ToListAsync();
 
         // Populate departments for HOD/Unit Head dropdown
         ViewBag.Departments = await _context.Departments
@@ -570,7 +576,7 @@ public class AccountController : Controller
             LastName = user.LastName,
             EmailAddress = user.Email,
             PhoneNumber = user.PhoneNumber,
-            Role = currentRole,
+            Roles = userRoles.ToList(),
             DepartmentId = user.DepartmentId
         };
 
@@ -581,22 +587,27 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> EditUser(UserRegistrationViewModel model)
     {
+        // At least one role must be selected
+        if (model.Roles == null || !model.Roles.Any(r => !string.IsNullOrWhiteSpace(r)))
+            ModelState.AddModelError("Roles", "Please select at least one role.");
+
         if (ModelState.IsValid)
         {
             var result = await _userCreation.EditUser(model.Id, model);
             if (result.Succeeded)
             {
-                TempData["Message"] = "User updated successfully.";
+                TempData["SuccessMessage"] = "User updated successfully.";
                 return RedirectToAction("UserList");
             }
 
             foreach (var error in result.Errors)
-            {
                 ModelState.AddModelError("", error.Description);
-            }
         }
 
-        // If the model is invalid, return to the edit view with errors
+        // Reload ViewBag data for re-render
+        ViewBag.AllRoles = await _roleManager.Roles.OrderBy(r => r.Name).ToListAsync();
+        ViewBag.Departments = await _context.Departments
+            .Where(d => d.IsDeleted != true).OrderBy(d => d.DepartmentName).ToListAsync();
         return View(model);
     }
 

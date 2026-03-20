@@ -149,7 +149,6 @@ public static class Permissions
 
     public static readonly IReadOnlyList<string> LecturerPermissions = new[]
     {
-        CourseLecturer.View,
         MarksEntry.ViewOwn,
         MarksEntry.EnterMarks,
         MarksEntry.UploadBulk,
