@@ -255,6 +255,21 @@
                 </li>
             }
 
+            <!-- Phase 2: QA / Principal Assessment Approvals -->
+            @if (User.HasClaim("Permission", "Permissions.AssessmentApproval.QAReview") || User.HasClaim("Permission", "Permissions.AssessmentApproval.PrincipalApprove"))
+            {
+                <li class="dropdown @(ViewContext.RouteData.Values["Controller"].ToString() == "AssessmentApproval" ? "active" : "")">
+                    <a href="#">
+                        <i class="fas fa-clipboard-check"></i>
+                        <span>Assessment Approvals</span>
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a asp-action="Pending" asp-controller="AssessmentApproval"><i class="fas fa-tasks"></i> Approval Queue</a></li>
+                    </ul>
+                </li>
+            }
+
             <!-- Phase 2: Unit Head (Non-Teaching Staff in their dept) -->
             @if (User.IsInRole("Unit Head") || (User.HasClaim("Permission", "Permissions.NonTeachingStaff.View") && !User.HasClaim("Permission", "Permissions.TeachingAppraisal.ViewAll") && !User.IsInRole("HR Officer")))
             {
