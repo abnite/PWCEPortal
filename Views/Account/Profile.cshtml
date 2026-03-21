@@ -1,0 +1,101 @@
+@model PWCEPortal.Data.ApplicationUser
+@{
+    ViewBag.Title = "My Profile";
+    Layout = "_AdminLayout";
+    var roles = ViewBag.Roles as IList<string> ?? new List<string>();
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mt-4">My Profile</h1>
+    </div>
+
+    <div class="row">
+        <!-- Profile Summary Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm text-center">
+                <div class="card-body py-4">
+                    <div class="mb-3">
+                        <span style="font-size:5rem; color:#6c757d;"><i class="fas fa-user-circle"></i></span>
+                    </div>
+                    <h4 class="mb-1">@Model.FirstName @Model.LastName</h4>
+                    <p class="text-muted mb-2">@Model.Email</p>
+                    @foreach (var role in roles)
+                    {
+                        <span class="custom-badge bg-primary me-1">@role</span>
+                    }
+                    @if (!roles.Any())
+                    {
+                        <span class="custom-badge bg-secondary">No Role</span>
+                    }
+                </div>
+            </div>
+
+            <!-- Account Details -->
+            <div class="card shadow-sm mt-3">
+                <div class="card-header bg-light"><h6 class="mb-0">Account Info</h6></div>
+                <div class="card-body">
+                    <dl class="row mb-0 small">
+                        <dt class="col-sm-5">Username</dt>
+                        <dd class="col-sm-7 text-break">@Model.UserName</dd>
+                        <dt class="col-sm-5">Phone</dt>
+                        <dd class="col-sm-7">@(Model.PhoneNumber ?? "—")</dd>
+                        <dt class="col-sm-5">Account Type</dt>
+                        <dd class="col-sm-7">@(Model.AccountType ?? "—")</dd>
+                        <dt class="col-sm-5">Last Login</dt>
+                        <dd class="col-sm-7">@(Model.LastLoginTime?.ToString("dd MMM yyyy HH:mm") ?? "—")</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Profile Form -->
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light"><h5 class="mb-0"><i class="fas fa-edit me-2"></i>Edit Profile</h5></div>
+                <div class="card-body">
+                    <form asp-action="Profile" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">First Name</label>
+                                <input type="text" name="firstName" class="form-control"
+                                       value="@Model.FirstName" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" name="lastName" class="form-control"
+                                       value="@Model.LastName" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" class="form-control" value="@Model.Email" disabled />
+                                <small class="text-muted">Contact an administrator to change your email.</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" name="phoneNumber" class="form-control"
+                                       value="@Model.PhoneNumber" />
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fas fa-save me-1"></i>Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Change Password Card -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-light"><h5 class="mb-0"><i class="fas fa-key me-2"></i>Change Password</h5></div>
+                <div class="card-body">
+                    <a asp-action="ChangePassword" asp-controller="Account" class="btn btn-outline-secondary">
+                        <i class="fas fa-lock me-1"></i>Go to Change Password
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

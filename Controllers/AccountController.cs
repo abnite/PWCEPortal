@@ -613,4 +613,33 @@ public class AccountController : Controller
         return View(model);
     }
 
+    [Authorize]
+    public async Task<IActionResult> Profile()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null) return RedirectToAction("Login");
+        var roles = await _userManager.GetRolesAsync(user);
+        ViewBag.Roles = roles;
+        return View(user);
+    }
+
+    [HttpPost, ValidateAntiForgeryToken, Authorize]
+    public async Task<IActionResult> Profile(string firstName, string lastName, string? phoneNumber)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null) return RedirectToAction("Login");
+
+        user.FirstName = firstName;
+        user.LastName = lastName;
+        user.PhoneNumber = phoneNumber;
+
+        var result = await _userManager.UpdateAsync(user);
+        if (result.Succeeded)
+            TempData["SuccessMessage"] = "Profile updated successfully.";
+        else
+            TempData["ErrorMessage"] = string.Join("; ", result.Errors.Select(e => e.Description));
+
+        return RedirectToAction(nameof(Profile));
+    }
+
 }
