@@ -131,7 +131,7 @@
                 </li>
             }
 
-            @if (!User.IsInRole("Student") && !User.IsInRole("Student Records Officer"))
+            @if (!User.IsInRole("Student"))
             {
                 <!-- Reports Section -->
                 <li class="dropdown">
@@ -228,7 +228,7 @@
             }
 
             <!-- Phase 2: HOD (Course Assignment & Approvals) -->
-            @if (User.HasClaim("Permission", "Permissions.CourseLecturer.View") || User.HasClaim("Permission", "Permissions.AssessmentApproval.HODReview") || User.HasClaim("Permission", "Permissions.TeachingAppraisal.ConductAsHOD"))
+            @if (User.HasClaim("Permission", "Permissions.CourseLecturer.View") || User.HasClaim("Permission", "Permissions.AssessmentApproval.HODReview") || User.HasClaim("Permission", "Permissions.TeachingAppraisal.ConductAsHOD") || User.HasClaim("Permission", "Permissions.MarksEntry.ViewAllCourses"))
             {
                 <li class="dropdown @(ViewContext.RouteData.Values["Controller"].ToString() == "CourseLecturer" || ViewContext.RouteData.Values["Controller"].ToString() == "AssessmentApproval" || (ViewContext.RouteData.Values["Controller"].ToString() == "TeachingAppraisal" && ViewContext.RouteData.Values["Action"].ToString() == "Sessions") ? "active" : "")">
                     <a href="#">
@@ -242,6 +242,10 @@
                             <li><a asp-action="Index" asp-controller="CourseLecturer"><i class="fas fa-link"></i> Course Assignments</a></li>
                             <li><a asp-action="Lecturers" asp-controller="CourseLecturer"><i class="fas fa-user-tie"></i> Lecturers</a></li>
                             <li><a asp-action="Departments" asp-controller="CourseLecturer"><i class="fas fa-sitemap"></i> Departments</a></li>
+                        }
+                        @if (User.HasClaim("Permission", "Permissions.MarksEntry.ViewAllCourses"))
+                        {
+                            <li><a asp-action="AllCourses" asp-controller="MarksEntry"><i class="fas fa-table"></i> All Course Marks</a></li>
                         }
                         @if (User.HasClaim("Permission", "Permissions.AssessmentApproval.HODReview"))
                         {

@@ -4,7 +4,7 @@ namespace PWCEPortal.Interfaces;
 
 public interface IAssessmentApprovalService
 {
-    Task<List<AssessmentSubmission>> GetPendingSubmissionsAsync(string userId);
+    Task<List<AssessmentSubmission>> GetPendingSubmissionsAsync(string userId, bool includeApproved = false);
     Task<AssessmentSubmission?> GetSubmissionByIdAsync(Guid id);
     Task<bool> SubmitForReviewAsync(Guid assignmentId, string lecturerUserId);
     Task<bool> HODReviewAsync(Guid submissionId, string hodUserId, bool approve, string comments);

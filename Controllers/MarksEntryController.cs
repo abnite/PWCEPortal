@@ -267,4 +267,38 @@ public class MarksEntryController : Controller
             : "Failed to submit. Please ensure all marks are entered.";
         return RedirectToAction(nameof(EnterMarks), new { assignmentId });
     }
+
+    /// <summary>
+    /// HOD / authorised staff: view all course-lecturer assignments for the current semester.
+    /// </summary>
+    [Authorize(Policy = Permissions.MarksEntry.ViewAllCourses)]
+    public async Task<IActionResult> AllCourses()
+    {
+        var activeSemester = await _context.AcademicSemesters
+            .Include(s => s.AcademicYear)
+            .Where(s => s.IsDeleted != true)
+            .OrderByDescending(s => s.IsRegistrationActive)
+            .ThenByDescending(s => s.AcademicYear!.Year)
+            .ThenByDescending(s => s.SemesterName)
+            .FirstOrDefaultAsync();
+
+        if (activeSemester is null)
+        {
+            ViewBag.Message = "No semester found.";
+            return View(new List<CourseLecturerAssignment>());
+        }
+
+        ViewBag.Semester = activeSemester;
+
+        var assignments = await _context.CourseLecturerAssignments
+            .Include(a => a.Course).ThenInclude(c => c!.CollegeProgram)
+            .Include(a => a.AcademicSemester).ThenInclude(s => s!.AcademicYear)
+            .Include(a => a.Lecturer).ThenInclude(l => l!.User)
+            .Include(a => a.Submissions)
+            .Where(a => a.IsDeleted != true && a.AcademicSemesterId == activeSemester.Id)
+            .OrderBy(a => a.Course!.CourseName)
+            .ToListAsync();
+
+        return View(assignments);
+    }
 }

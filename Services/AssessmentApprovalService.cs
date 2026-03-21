@@ -14,7 +14,7 @@ public class AssessmentApprovalService : IAssessmentApprovalService
         _context = context;
     }
 
-    public async Task<List<AssessmentSubmission>> GetPendingSubmissionsAsync(string userId)
+    public async Task<List<AssessmentSubmission>> GetPendingSubmissionsAsync(string userId, bool includeApproved = false)
     {
         return await _context.AssessmentSubmissions
             .Include(s => s.CourseLecturerAssignment).ThenInclude(a => a!.Course)
@@ -22,7 +22,7 @@ public class AssessmentApprovalService : IAssessmentApprovalService
             .Include(s => s.CourseLecturerAssignment).ThenInclude(a => a!.AcademicSemester)
             .Where(s => s.IsDeleted != true
                      && s.Status != SubmissionStatus.Draft
-                     && s.Status != SubmissionStatus.PrincipalApproved)
+                     && (includeApproved || s.Status != SubmissionStatus.PrincipalApproved))
             .OrderByDescending(s => s.SubmittedAt)
             .ToListAsync();
     }

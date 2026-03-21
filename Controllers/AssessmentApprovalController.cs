@@ -26,7 +26,8 @@ public class AssessmentApprovalController : Controller
     public async Task<IActionResult> Pending()
     {
         var user = await _userManager.GetUserAsync(User);
-        var submissions = await _service.GetPendingSubmissionsAsync(user!.Id);
+        bool canUnlock = User.HasClaim(Permissions.ClaimType, Permissions.AssessmentApproval.UnlockAssessment);
+        var submissions = await _service.GetPendingSubmissionsAsync(user!.Id, includeApproved: canUnlock);
         return View(submissions);
     }
 
