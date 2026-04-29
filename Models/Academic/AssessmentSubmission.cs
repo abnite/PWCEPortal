@@ -51,6 +51,10 @@ public class AssessmentSubmission : EntityHelper
     public DateTime? PrincipalReviewedAt { get; set; }
     public string? PrincipalComments { get; set; }
 
+    // Interim publish (marks visible to fee-paid students before all components arrive)
+    public bool IsInterimPublished { get; set; } = false;
+    public DateTime? InterimPublishedAt { get; set; }
+
     // Navigation
     public ICollection<AssessmentApprovalLog>? ApprovalLogs { get; set; }
 }

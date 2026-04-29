@@ -1,0 +1,28 @@
+@{
+    ViewBag.Title = "Results Locked";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6 text-center">
+            <div class="card shadow-sm border-danger">
+                <div class="card-body py-5">
+                    <i class="fas fa-lock fa-4x text-danger mb-4"></i>
+                    <h3 class="text-danger mb-3">Results Access Restricted</h3>
+                    <p class="lead mb-4">
+                        You must pay at least <strong>70%</strong> of your outstanding fees before
+                        you can view your academic results.
+                    </p>
+                    <p class="text-muted mb-4">
+                        Please visit the Finance Office or your student portal to make a payment.
+                        Once your payment is recorded and verified, your results will become available.
+                    </p>
+                    <a asp-action="Index" asp-controller="StudentDashboard" class="btn btn-primary px-4">
+                        <i class="fas fa-home me-1"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

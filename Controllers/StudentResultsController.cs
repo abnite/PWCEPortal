@@ -40,6 +40,11 @@ public class StudentResultsController : Controller
             return RedirectToAction("Index", "StudentDashboard");
         }
 
+        // Fee gate: student must have paid ≥ 70% of overall fees
+        var hasPaid = await _gpaService.HasSufficientFeePaymentAsync(student.Id);
+        if (!hasPaid)
+            return View("ResultsFeeLocked");
+
         var semesterResults = await _gpaService.GetStudentSemesterResultsAsync(student.Id);
 
         var activeYear = await _context.AcademicYears.FirstOrDefaultAsync(y => y.IsActive);
@@ -48,13 +53,15 @@ public class StudentResultsController : Controller
             cumulative = await _gpaService.GetCumulativeResultAsync(student.Id, activeYear.Id);
 
         var courseResults = await _gpaService.GetCourseResultsBySemesterAsync(student.Id);
+        var interimResults = await _gpaService.GetInterimCourseResultsAsync(student.Id);
 
         var vm = new StudentResultsViewModel
         {
             Student = student,
             SemesterResults = semesterResults,
             CumulativeResult = cumulative,
-            CourseResultsBySemester = courseResults
+            CourseResultsBySemester = courseResults,
+            InterimResults = interimResults
         };
 
         return View(vm);
@@ -93,12 +100,15 @@ public class StudentResultsController : Controller
             .OrderBy(r => r.Student!.Surname)
             .ToListAsync();
 
+        var pending = await _gpaService.GetPendingSubmissionsForSemesterAsync(selectedId.Value);
+
         var vm = new ResultsPublishViewModel
         {
             Semester = semester!,
             Results = results,
             PublishedCount = results.Count(r => r.IsPublished),
-            WithheldCount = results.Count(r => r.IsWithheld)
+            WithheldCount = results.Count(r => r.IsWithheld),
+            PendingSubmissions = pending
         };
 
         return View(vm);
@@ -127,6 +137,19 @@ public class StudentResultsController : Controller
         TempData[result ? "SuccessMessage" : "ErrorMessage"] = result
             ? "Results published successfully."
             : "No results found to publish.";
+        return RedirectToAction(nameof(AllResults), new { semesterId });
+    }
+
+    // ── Interim publish (per course assignment) ──────────────────────────────
+
+    [HttpPost, ValidateAntiForgeryToken]
+    [Authorize(Policy = Permissions.StudentResults.Publish)]
+    public async Task<IActionResult> PublishInterim(Guid assignmentId, Guid semesterId)
+    {
+        var result = await _gpaService.PublishInterimAsync(assignmentId);
+        TempData[result ? "SuccessMessage" : "ErrorMessage"] = result
+            ? "Provisional results published. Fee-paying students can now view these marks."
+            : "Could not publish. Ensure the submission is Principal-Approved.";
         return RedirectToAction(nameof(AllResults), new { semesterId });
     }
 

@@ -522,6 +522,13 @@ namespace PWCEPortal.Migrations
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsInterimPublished")
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime?>("InterimPublishedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("PrincipalComments")
                         .HasColumnType("nvarchar(max)");
 

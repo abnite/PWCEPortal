@@ -26,6 +26,17 @@
                     <label class="form-label">Select Excel File (.xlsx)</label>
                     <input type="file" name="file" class="form-control" accept=".xlsx,.xls" required />
                 </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="fillBlanksOnly" value="true" id="fillBlanksOnly" />
+                        <label class="form-check-label" for="fillBlanksOnly">
+                            <strong>Fill blanks only</strong> — skip rows where a mark already exists
+                        </label>
+                    </div>
+                    <small class="text-muted ms-4">
+                        Use this option when uploading external/third-party marks so that existing internal marks are not overwritten.
+                    </small>
+                </div>
                 <div class="d-flex gap-2">
                     <a asp-action="EnterMarks" asp-route-assignmentId="@assignment?.Id" class="btn btn-outline-secondary">Cancel</a>
                     <button type="submit" class="btn btn-success"><i class="fas fa-upload me-1"></i>Upload Marks</button>

@@ -48,6 +48,82 @@
         }
     </div>
 
+    @* ── Pending / Interim Publish Section ── *@
+    @if (Model.Semester != null && Model.PendingSubmissions.Any() && User.HasClaim("Permission", "Permissions.StudentResults.Publish"))
+    {
+        <div class="card shadow-sm mb-4 border-warning">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="fas fa-upload me-2"></i>Approved Assessments — Publish Controls</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Course</th>
+                                <th>Code</th>
+                                <th class="text-center">Marks Status</th>
+                                <th class="text-center">Interim Published</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var p in Model.PendingSubmissions)
+                            {
+                                <tr>
+                                    <td><strong>@p.CourseName</strong></td>
+                                    <td><span class="custom-badge bg-secondary">@p.CourseCode</span></td>
+                                    <td class="text-center">
+                                        @if (p.IsComplete)
+                                        {
+                                            <span class="custom-badge bg-success">All Marks Complete</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="custom-badge bg-warning text-dark">Partial (Some Pending)</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        @if (p.IsInterimPublished)
+                                        {
+                                            <span class="custom-badge bg-info text-dark">Yes</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">No</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        @if (!p.IsInterimPublished && !p.IsComplete)
+                                        {
+                                            <form asp-action="PublishInterim" method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="assignmentId" value="@p.AssignmentId" />
+                                                <input type="hidden" name="semesterId" value="@Model.Semester.Id" />
+                                                <button type="submit" class="btn btn-sm btn-warning text-dark"
+                                                        onclick="return confirm('Publish provisional marks for @p.CourseName? Students with ≥70% fee payment will see these marks.')">
+                                                    <i class="fas fa-eye me-1"></i>Publish Interim
+                                                </button>
+                                            </form>
+                                        }
+                                        else if (p.IsComplete)
+                                        {
+                                            <span class="text-success small"><i class="fas fa-check-circle me-1"></i>Ready for final Compute &amp; Publish</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small">Already interim published</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+
     @if (Model.Semester != null)
     {
         <div class="row mb-3">

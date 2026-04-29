@@ -10,7 +10,7 @@ public interface IMarksEntryService
     Task<bool> SaveMarkAsync(StudentMark mark);
     Task<bool> SaveMarksAsync(List<StudentMark> marks);
     Task<(int saved, int errors, List<string> errorMessages)> BulkUploadMarksFromExcelAsync(
-        Guid assignmentId, Stream fileStream);
+        Guid assignmentId, Stream fileStream, bool fillBlanksOnly = false);
     Task<bool> MarksDraftExistsAsync(Guid assignmentId);
     Task<AssessmentSubmission?> GetSubmissionForAssignmentAsync(Guid assignmentId);
 }

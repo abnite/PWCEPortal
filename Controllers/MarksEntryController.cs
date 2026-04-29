@@ -229,7 +229,7 @@ public class MarksEntryController : Controller
 
     [HttpPost, ValidateAntiForgeryToken]
     [Authorize(Policy = Permissions.MarksEntry.UploadBulk)]
-    public async Task<IActionResult> BulkUpload(Guid assignmentId, IFormFile file)
+    public async Task<IActionResult> BulkUpload(Guid assignmentId, IFormFile file, bool fillBlanksOnly = false)
     {
         if (file is null || file.Length == 0)
         {
@@ -238,7 +238,7 @@ public class MarksEntryController : Controller
         }
 
         using var stream = file.OpenReadStream();
-        var (saved, errors, errorMessages) = await _service.BulkUploadMarksFromExcelAsync(assignmentId, stream);
+        var (saved, errors, errorMessages) = await _service.BulkUploadMarksFromExcelAsync(assignmentId, stream, fillBlanksOnly);
 
         TempData["SuccessMessage"] = $"Bulk upload complete: {saved} marks saved, {errors} errors.";
         if (errorMessages.Any())

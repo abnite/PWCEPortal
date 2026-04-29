@@ -63,7 +63,7 @@ public class MarksEntryService : IMarksEntryService
     }
 
     public async Task<(int saved, int errors, List<string> errorMessages)> BulkUploadMarksFromExcelAsync(
-        Guid assignmentId, Stream fileStream)
+        Guid assignmentId, Stream fileStream, bool fillBlanksOnly = false)
     {
         int saved = 0, errors = 0;
         var errorMessages = new List<string>();
@@ -132,6 +132,17 @@ public class MarksEntryService : IMarksEntryService
                     errors++;
                     errorMessages.Add($"Row {row}: Invalid score '{scoreStr}'.");
                     continue;
+                }
+
+                // In fill-blanks-only mode skip rows where a mark already exists
+                if (fillBlanksOnly)
+                {
+                    var existing = await _context.StudentMarks.FirstOrDefaultAsync(m =>
+                        m.CourseLecturerAssignmentId == assignmentId
+                        && m.StudentId == student.Id
+                        && m.AssessmentComponentId == component.Id
+                        && m.IsDeleted != true);
+                    if (existing?.Score != null) continue;
                 }
 
                 var mark = new StudentMark

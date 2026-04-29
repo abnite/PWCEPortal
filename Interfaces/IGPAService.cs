@@ -5,7 +5,8 @@ namespace PWCEPortal.Interfaces;
 
 public interface IGPAService
 {
-    /// <summary>Compute or recompute GPA for all students in a semester and persist the results.</summary>
+    /// <summary>Compute or recompute GPA for all students in a semester and persist the results.
+    /// Only processes course assignments where every registered student has marks for every component.</summary>
     Task<bool> ComputeSemesterResultsAsync(Guid semesterId);
 
     /// <summary>Compute CGPA for a specific student up to and including the given academic year.</summary>
@@ -21,4 +22,16 @@ public interface IGPAService
 
     /// <summary>Per-course breakdown for a student keyed by SemesterId.</summary>
     Task<Dictionary<Guid, List<CourseResultViewModel>>> GetCourseResultsBySemesterAsync(Guid studentId);
+
+    /// <summary>Mark a course assignment as interim-published so fee-paying students can see provisional marks.</summary>
+    Task<bool> PublishInterimAsync(Guid assignmentId);
+
+    /// <summary>Provisional component-level results for courses that are interim-published but not yet finally published.</summary>
+    Task<List<InterimCourseResultViewModel>> GetInterimCourseResultsAsync(Guid studentId);
+
+    /// <summary>True when the student has paid at least 70% of their total outstanding fees across all years.</summary>
+    Task<bool> HasSufficientFeePaymentAsync(Guid studentId);
+
+    /// <summary>For the AllResults admin page: PrincipalApproved submissions with completeness info.</summary>
+    Task<List<PendingInterimSubmissionViewModel>> GetPendingSubmissionsForSemesterAsync(Guid semesterId);
 }
