@@ -14,12 +14,14 @@ namespace PWCEPortal.Controllers;
 public class TranscriptController : Controller
 {
     private readonly ITranscriptService _transcriptService;
+    private readonly IGPAService _gpaService;
     private readonly PortalDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public TranscriptController(ITranscriptService transcriptService, PortalDbContext context, UserManager<ApplicationUser> userManager)
+    public TranscriptController(ITranscriptService transcriptService, IGPAService gpaService, PortalDbContext context, UserManager<ApplicationUser> userManager)
     {
         _transcriptService = transcriptService;
+        _gpaService = gpaService;
         _context = context;
         _userManager = userManager;
     }
@@ -36,6 +38,10 @@ public class TranscriptController : Controller
             TempData["ErrorMessage"] = "Student profile not found.";
             return RedirectToAction("Index", "StudentDashboard");
         }
+
+        if (!await _gpaService.HasSufficientFeePaymentAsync(student.Id))
+            return View("../StudentResults/ResultsFeeLocked");
+
         return View(student);
     }
 
@@ -48,6 +54,9 @@ public class TranscriptController : Controller
             .Include(s => s.CollegeProgram)
             .FirstOrDefaultAsync(s => s.Email == user!.Email);
         if (student is null) return NotFound();
+
+        if (!await _gpaService.HasSufficientFeePaymentAsync(student.Id))
+            return View("../StudentResults/ResultsFeeLocked");
 
         var bytes = await _transcriptService.GenerateTranscriptPdfAsync(student.Id, TranscriptType.Unofficial, user!.Id, purpose);
         var safeName = SanitizeName($"{student.Surname}{student.OtherNames}");
