@@ -1,0 +1,30 @@
++---------------+       +---------------+       +---------------+
+| categories    |       | concerns      |       | comments      |
++---------------+       +---------------+       +---------------+
+| id            |<----->| category_id   |       | id            |
+| name          |       | id            |<----->| concern_id    |
+| description   |       | title         |       | comment       |
+| created_at    |       | description   |       | submission_date|
+| updated_at    |       | status        |       | status        |
++---------------+       | submission_date|      | unique_identifier|
+                        | unique_identifier|    +---------------+
+                        +---------------+
+                               ^
+                               |
+                               |
++---------------+       +---------------+       +---------------+
+| administrators |       | responses     |       | tags          |
++---------------+       +---------------+       +---------------+
+| id            |       | id            |       | id            |
+| username      |       | concern_id    |       | name          |
+| password      |<----->| admin_id      |       | created_at    |
+| email         |       | response      |       +---------------+
+| full_name     |       | is_public     |              ^
+| role          |       | created_at    |              |
+| last_login    |       | updated_at    |              |
+| created_at    |       +---------------+       +---------------+
+| updated_at    |                               | concern_tags  |
++---------------+                               +---------------+
+                                                | concern_id    |
+                                                | tag_id        |
+                                                +---------------+
