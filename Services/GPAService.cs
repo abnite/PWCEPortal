@@ -46,11 +46,11 @@ public class GPAService : IGPAService
                                    .Select(c => c.Id).ToList() ?? new();
             if (!componentIds.Any()) { completeAssignments.Add(a); continue; }
 
-            var studentIds = await _context.StudentCourseRegistrations
+            var courseStudentIds = await _context.StudentCourseRegistrations
                 .Where(r => r.CourseId == a.CourseId && r.SemesterId == semesterId && r.IsRegistered)
                 .Select(r => r.StudentId).ToListAsync();
 
-            int expected = studentIds.Count * componentIds.Count;
+            int expected = courseStudentIds.Count * componentIds.Count;
             int actual = await _context.StudentMarks
                 .CountAsync(m => m.CourseLecturerAssignmentId == a.Id
                               && m.Score != null
